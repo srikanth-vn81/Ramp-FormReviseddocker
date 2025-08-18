@@ -505,8 +505,9 @@ body {
     flex: 1;
 }
 
-/* Add space below navigation for pillar 2 */
-.col-lg-6:last-child .card {
+/* Align both pillars with same top spacing */
+.col-lg-6 .card,
+.col-lg-6 .row .card {
     margin-top: 1rem;
 }
 
