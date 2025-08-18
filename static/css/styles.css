@@ -492,13 +492,14 @@ body {
     margin-bottom: 0.5rem !important;
 }
 
-/* Simple column layout */
+/* Equal height column layout */
 .col-lg-6 {
     margin-bottom: 0;
     padding: 0 0.5rem;
     display: flex;
     flex-direction: column;
     overflow: visible;
+    height: 100%;
 }
 
 .col-lg-6 .row {
@@ -506,6 +507,7 @@ body {
     display: flex;
     flex-direction: column;
     overflow: visible;
+    height: 100%;
 }
 
 .col-lg-6 .card {
@@ -514,12 +516,29 @@ body {
     flex-direction: column;
     overflow: visible;
     position: relative;
+    min-height: 100%;
 }
 
 .col-lg-6 .card .card-body {
     flex: 1;
     overflow: visible;
     position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Force equal heights */
+.row.align-items-stretch {
+    min-height: 600px;
+}
+
+.row.align-items-stretch > .col-lg-6 {
+    height: 100%;
+}
+
+.row.align-items-stretch > .col-lg-6 > .row,
+.row.align-items-stretch > .col-lg-6 > .card {
+    height: 100%;
 }
 
 /* Fix specific alignment issues */
