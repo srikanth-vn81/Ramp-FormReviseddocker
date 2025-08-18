@@ -428,6 +428,67 @@ function initializeNavbarEffects() {
 }
 
 /**
+ * Initialize progress tracking for form completion
+ */
+function initializeProgressTracking() {
+    const formFields = document.querySelectorAll('input[required], select[required], textarea[required]');
+    const progressBar = document.getElementById('form-progress');
+    const progressText = document.getElementById('progress-text');
+    const submitBtn = document.getElementById('submit-btn');
+    
+    function updateProgress() {
+        let filledFields = 0;
+        let totalRequired = formFields.length;
+        
+        formFields.forEach(field => {
+            if (field.type === 'checkbox' || field.type === 'radio') {
+                if (field.checked) filledFields++;
+            } else if (field.value && field.value.trim() !== '') {
+                filledFields++;
+            }
+        });
+        
+        const percentage = totalRequired > 0 ? Math.round((filledFields / totalRequired) * 100) : 0;
+        
+        if (progressBar) {
+            progressBar.style.width = percentage + '%';
+            progressBar.setAttribute('aria-valuenow', percentage);
+            
+            // Update progress bar color based on completion
+            progressBar.className = 'progress-bar';
+            if (percentage >= 80) {
+                progressBar.classList.add('bg-success');
+            } else if (percentage >= 50) {
+                progressBar.classList.add('bg-warning');
+            } else {
+                progressBar.classList.add('bg-primary');
+            }
+        }
+        
+        if (progressText) {
+            progressText.textContent = percentage + '%';
+        }
+        
+        if (submitBtn) {
+            submitBtn.disabled = percentage < 70; // Enable when 70% complete
+            if (percentage >= 70) {
+                submitBtn.classList.remove('btn-secondary');
+                submitBtn.classList.add('btn-success');
+            }
+        }
+    }
+    
+    // Add event listeners to all form fields
+    formFields.forEach(field => {
+        field.addEventListener('input', updateProgress);
+        field.addEventListener('change', updateProgress);
+    });
+    
+    // Initial progress calculation
+    updateProgress();
+}
+
+/**
  * Initialize application when DOM is loaded
  */
 document.addEventListener('DOMContentLoaded', function() {
@@ -436,6 +497,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize navbar effects
     initializeNavbarEffects();
+    
+    // Initialize progress tracking
+    initializeProgressTracking();
     
     // Initialize tooltips if Bootstrap is available
     if (typeof bootstrap !== 'undefined') {

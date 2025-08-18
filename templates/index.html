@@ -75,22 +75,48 @@
                 {% endif %}
             {% endwith %}
 
+            <!-- Compact Header with Progress and Submit -->
+            <div class="row align-items-center mb-3 bg-light rounded p-2">
+                <div class="col-md-3">
+                    <h5 class="fw-bold text-primary mb-0">
+                        <i class="fas fa-clipboard-check me-2"></i>Ramp Input Form
+                    </h5>
+                    <small class="text-muted">Configure Training & Location</small>
+                </div>
+                <div class="col-md-5">
+                    <div class="progress-container">
+                        <div class="progress" style="height: 6px;">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: 0%" id="form-progress"></div>
+                        </div>
+                        <small class="text-muted mt-1 d-block text-center">Form Completion: <span id="progress-text">0%</span></small>
+                    </div>
+                </div>
+                <div class="col-md-4 text-end">
+                    <button type="button" class="btn btn-outline-primary btn-sm me-2" onclick="validateForm()">
+                        <i class="fas fa-check-circle me-1"></i>Validate
+                    </button>
+                    <button type="submit" class="btn btn-success btn-sm" id="submit-btn" disabled>
+                        <i class="fas fa-paper-plane me-1"></i>Submit
+                    </button>
+                </div>
+            </div>
+
             <form method="POST" class="form-container">
                 {{ form.hidden_tag() }}
                 
-                <div class="row g-4">
+                <div class="row g-2">
                     <!-- Left Section - Training & Configuration -->
                     <div class="col-lg-6">
-                        <div class="row g-3">
+                        <div class="row g-2">
                             <!-- Training Schedule Card -->
                             <div class="col-12">
                                 <div class="card shadow-sm">
-                                    <div class="card-header bg-primary text-white py-2">
-                                        <h5 class="card-title mb-0">
+                                    <div class="card-header bg-primary text-white py-1">
+                                        <h6 class="card-title mb-0">
                                             <i class="fas fa-calendar-alt me-2"></i>Training Schedule
-                                        </h5>
+                                        </h6>
                                     </div>
-                                    <div class="card-body py-3">
+                                    <div class="card-body py-2">
                                         <div class="row g-2 mb-3">
                                             <!-- Dates Row -->
                                             <div class="col-md-6">
@@ -170,12 +196,12 @@
                             <!-- Operational Assumptions Card -->
                             <div class="col-12">
                                 <div class="card shadow-sm">
-                                    <div class="card-header bg-success text-white py-2">
-                                        <h5 class="card-title mb-0">
+                                    <div class="card-header bg-success text-white py-1">
+                                        <h6 class="card-title mb-0">
                                             <i class="fas fa-cogs me-2"></i>Operational Assumptions
-                                        </h5>
+                                        </h6>
                                     </div>
-                                    <div class="card-body py-3">
+                                    <div class="card-body py-2">
                                         <div class="row g-2">
                                             <div class="col-md-4">
                                                 <label class="form-label small fw-semibold">Supervisor Ratio</label>
@@ -197,12 +223,12 @@
                             <!-- Language & Channel Support Card -->
                             <div class="col-12">
                                 <div class="card shadow-sm">
-                                    <div class="card-header bg-info text-white py-2">
-                                        <h5 class="card-title mb-0">
+                                    <div class="card-header bg-info text-white py-1">
+                                        <h6 class="card-title mb-0">
                                             <i class="fas fa-language me-2"></i>Language & Channel Support
-                                        </h5>
+                                        </h6>
                                     </div>
-                                    <div class="card-body py-3">
+                                    <div class="card-body py-2">
                                         <div class="row g-2 mb-3">
                                             <div class="col-md-6">
                                                 <label class="form-label small fw-semibold">Languages Supported</label>
@@ -265,11 +291,11 @@
 
                     <!-- Right Section - Location Details -->
                     <div class="col-lg-6">
-                        <div class="card shadow-sm sticky-top">
-                            <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center py-2">
-                                <h4 class="card-title mb-0">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center py-1">
+                                <h6 class="card-title mb-0">
                                     <i class="fas fa-map-marker-alt me-2"></i>Location & Resource Planning
-                                </h4>
+                                </h6>
                                 <div class="location-actions">
                                     <button type="button" class="btn btn-sm btn-outline-dark me-2" onclick="resetLocationForm()">
                                         <i class="fas fa-undo me-1"></i>Reset
