@@ -546,14 +546,9 @@ function initializeProgressTracking() {
         }
         
         if (submitBtn) {
-            submitBtn.disabled = percentage < 70; // Enable when 70% complete
-            if (percentage >= 70) {
-                submitBtn.classList.remove('btn-secondary');
-                submitBtn.classList.add('btn-success');
-            } else {
-                submitBtn.classList.add('btn-secondary');
-                submitBtn.classList.remove('btn-success');
-            }
+            submitBtn.disabled = false; // Always enable submit button
+            submitBtn.classList.remove('btn-secondary');
+            submitBtn.classList.add('btn-success');
         }
     }
     
