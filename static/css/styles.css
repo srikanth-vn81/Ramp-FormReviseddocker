@@ -23,7 +23,6 @@ body {
     margin: 0;
     padding-bottom: 0;
     overflow-x: hidden;
-    height: 100vh;
 }
 
 .navbar {
@@ -89,12 +88,8 @@ body {
 
 /* Main Content */
 .main-content {
-    padding: 0;
+    padding: 0.5rem 0;
     margin: 0;
-    height: calc(100vh - 70px);
-    overflow-y: auto;
-    overflow-x: hidden;
-    position: relative;
 }
 
 /* Cards */
@@ -464,9 +459,7 @@ body {
 /* Simple column layout */
 .col-lg-6 {
     margin-bottom: 0;
-    min-height: calc(100vh - 140px);
-    padding-right: 0.5rem;
-    padding-left: 0.5rem;
+    padding: 0 0.5rem;
 }
 
 /* Fix specific alignment issues */
@@ -521,9 +514,8 @@ html, body {
 
 /* Reset container */
 .container-fluid {
-    padding: 0.5rem 1rem 0 1rem;
+    padding: 0 1rem;
     margin: 0;
-    min-height: calc(100vh - 70px);
 }
 
 /* Country Grid Styles */
