@@ -114,14 +114,21 @@ document.addEventListener('DOMContentLoaded', function() {
     document.head.appendChild(style);
     
     // Convert all form-select elements to sideways dropdowns
-    const selects = document.querySelectorAll('select.form-select');
+    function convertAllSelects() {
+        const selects = document.querySelectorAll('select.form-select');
+        
+        selects.forEach(select => {
+            if (!select.classList.contains('sideways-hidden')) {
+                convertToSidewaysDropdown(select);
+            }
+        });
+    }
     
-    selects.forEach(select => {
-        // Wait a bit for dynamic content to load
-        setTimeout(() => {
-            convertToSidewaysDropdown(select);
-        }, 100);
-    });
+    // Initial conversion with delay for page load
+    setTimeout(convertAllSelects, 100);
+    
+    // Also convert after a longer delay to catch any late-loading elements
+    setTimeout(convertAllSelects, 500);
     
     // Also watch for dynamically added selects (like date fields that appear)
     const observer = new MutationObserver(function(mutations) {
