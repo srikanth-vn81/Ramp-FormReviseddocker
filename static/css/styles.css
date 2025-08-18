@@ -492,7 +492,12 @@ body {
     margin-bottom: 0.5rem !important;
 }
 
-/* Simple column layout */
+/* Equal height column layout */
+.row.g-1 {
+    display: flex;
+    align-items: stretch;
+}
+
 .col-lg-6 {
     margin-bottom: 0;
     padding: 0 0.5rem;
@@ -503,12 +508,20 @@ body {
 .col-lg-6 .card.h-100,
 .col-lg-6 .row {
     flex: 1;
+    height: 100%;
 }
 
 /* Align both pillars with same top spacing */
 .col-lg-6 .card,
 .col-lg-6 .row .card {
     margin-top: 1rem;
+}
+
+/* Force equal bottom alignment */
+.col-lg-6:first-child,
+.col-lg-6:last-child {
+    align-items: stretch;
+    height: 100%;
 }
 
 /* Zero bottom spacing overrides */
