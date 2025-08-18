@@ -505,6 +505,11 @@ body {
     flex: 1;
 }
 
+/* Add space below navigation for pillar 2 */
+.col-lg-6:last-child .card {
+    margin-top: 1rem;
+}
+
 /* Zero bottom spacing overrides */
 .row:last-child,
 .card:last-child,
