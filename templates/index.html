@@ -56,6 +56,19 @@
         </div>
     </nav>
 
+    <!-- Header with IQOR Logo -->
+    <header class="bg-white shadow-sm py-3 mb-3">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-12 text-center">
+                    <img src="{{ url_for('static', filename='IQOR_1755524479255.png') }}" alt="IQOR Logo" style="width: 80px; height: 80px; margin-bottom: 10px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <h1 class="fw-bold text-primary mb-0">WFM Analytics - Ramp Input Form</h1>
+                    <p class="text-muted mb-0">Comprehensive workforce management and training analytics</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
     <!-- Main Content -->
     <main class="main-content">
         <div class="container-fluid">
@@ -75,18 +88,12 @@
                 {% endif %}
             {% endwith %}
 
-            <!-- Compact Header with Progress and Submit -->
+            <!-- Compact Progress and Submit Bar -->
             <div class="row align-items-center mb-2 bg-light rounded p-2">
-                <div class="col-md-3">
-                    <div class="d-flex align-items-center">
-                        <img src="{{ url_for('static', filename='iqor_logo.png') }}" alt="IQOR Logo" style="width: 32px; height: 32px; margin-right: 8px; border-radius: 6px;">
-                        <div>
-                            <h5 class="fw-bold text-primary mb-0">WFM Analytics</h5>
-                            <small class="text-muted">Ramp Input Form</small>
-                        </div>
-                    </div>
+                <div class="col-md-4">
+                    <small class="text-muted fw-semibold">Configure Training & Assumptions</small>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-4">
                     <div class="progress-container">
                         <div class="progress" style="height: 6px;">
                             <div class="progress-bar" role="progressbar" style="width: 0%" id="form-progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
