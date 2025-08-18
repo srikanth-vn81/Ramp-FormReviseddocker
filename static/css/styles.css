@@ -500,7 +500,8 @@ body {
     flex-direction: column;
 }
 
-.col-lg-6 .card.h-100 {
+.col-lg-6 .card.h-100,
+.col-lg-6 .row {
     flex: 1;
 }
 
