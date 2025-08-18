@@ -149,7 +149,13 @@ class RampFormController {
                 const clientCount = (hasClientTrainer) ? parseInt(clientTrainer.value) || 0 : 0;
                 const internalCount = (hasInternalTrainer) ? parseInt(internalTrainer.value) || 0 : 0;
                 const calculatedTotal = clientCount + internalCount;
-                totalTrainers.value = calculatedTotal;
+                
+                // Only show value if both trainers are selected, otherwise empty
+                if (hasClientTrainer && hasInternalTrainer && calculatedTotal > 0) {
+                    totalTrainers.value = calculatedTotal;
+                } else {
+                    totalTrainers.value = '';
+                }
             }
 
             // Show additional fields if any trainer field is filled (more flexible)

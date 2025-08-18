@@ -37,8 +37,7 @@ class RampInputForm(FlaskForm):
     )
     total_trainers = IntegerField(
         'Total Trainers',
-        validators=[DataRequired(), NumberRange(min=1, max=100)],
-        render_kw={'placeholder': 'Enter number (1-100)'}
+        validators=[DataRequired(), NumberRange(min=1, max=100)]
     )
     
     # Training details (conditional fields)
