@@ -141,7 +141,8 @@ class RampFormController {
             const hasInternalTrainer = internalTrainer && internalTrainer.value !== '';
             const hasTotalTrainers = totalTrainers && parseInt(totalTrainers.value) > 0;
 
-            if (hasClientTrainer && hasInternalTrainer && hasTotalTrainers && additionalFields) {
+            // Show additional fields if any trainer field is filled (more flexible)
+            if ((hasClientTrainer || hasInternalTrainer || hasTotalTrainers) && additionalFields) {
                 additionalFields.style.display = 'block';
                 additionalFields.classList.add('show');
                 
@@ -438,9 +439,15 @@ function initializeProgressTracking() {
     
     function updateProgress() {
         let filledFields = 0;
-        let totalRequired = formFields.length;
+        let totalRequired = 0;
         
+        // Only count visible and required fields
         formFields.forEach(field => {
+            // Skip hidden fields or fields in hidden containers
+            const isVisible = field.offsetParent !== null;
+            if (!isVisible) return;
+            
+            totalRequired++;
             if (field.type === 'checkbox' || field.type === 'radio') {
                 if (field.checked) filledFields++;
             } else if (field.value && field.value.trim() !== '') {
@@ -474,6 +481,9 @@ function initializeProgressTracking() {
             if (percentage >= 70) {
                 submitBtn.classList.remove('btn-secondary');
                 submitBtn.classList.add('btn-success');
+            } else {
+                submitBtn.classList.add('btn-secondary');
+                submitBtn.classList.remove('btn-success');
             }
         }
     }
@@ -484,8 +494,22 @@ function initializeProgressTracking() {
         field.addEventListener('change', updateProgress);
     });
     
-    // Initial progress calculation
-    updateProgress();
+    // Initialize with 0% progress
+    if (progressBar) {
+        progressBar.style.width = '0%';
+        progressBar.className = 'progress-bar bg-primary';
+    }
+    if (progressText) {
+        progressText.textContent = '0%';
+    }
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.classList.add('btn-secondary');
+        submitBtn.classList.remove('btn-success');
+    }
+    
+    // Delayed initial progress calculation to ensure all fields are rendered
+    setTimeout(updateProgress, 100);
 }
 
 /**
