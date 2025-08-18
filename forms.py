@@ -1,0 +1,89 @@
+from flask_wtf import FlaskForm
+from wtforms import StringField, SelectField, IntegerField, DateField, BooleanField, TextAreaField
+from wtforms.validators import DataRequired, NumberRange, Optional
+from wtforms.widgets import CheckboxInput, ListWidget
+
+class MultiCheckboxField(SelectField):
+    """Custom field for multiple checkboxes"""
+    widget = ListWidget(prefix_label=False)
+    option_widget = CheckboxInput()
+
+class RampInputForm(FlaskForm):
+    # Ramp dates
+    ramp_start_availability = SelectField(
+        'Ramp Start Date Availability',
+        choices=[('', 'Select'), ('available', 'Available'), ('not-available', 'Not Available')],
+        validators=[DataRequired()]
+    )
+    ramp_start_date = DateField('Ramp Start Date', validators=[Optional()])
+    
+    ramp_end_availability = SelectField(
+        'Ramp End Date Availability',
+        choices=[('', 'Select'), ('available', 'Available'), ('not-available', 'Not Available')],
+        validators=[DataRequired()]
+    )
+    ramp_end_date = DateField('Ramp End Date', validators=[Optional()])
+    
+    # Trainers
+    client_trainer = SelectField(
+        'Client Trainer',
+        choices=[('', 'Select')] + [(str(i), str(i)) for i in range(1, 11)],
+        validators=[DataRequired()]
+    )
+    internal_trainer = SelectField(
+        'Internal Trainer',
+        choices=[('', 'Select')] + [(str(i), str(i)) for i in range(1, 11)],
+        validators=[DataRequired()]
+    )
+    total_trainers = IntegerField(
+        'Total Trainers',
+        validators=[DataRequired(), NumberRange(min=0)],
+        default=0
+    )
+    
+    # Training details (conditional fields)
+    training_duration = SelectField(
+        'Training Duration Type',
+        choices=[('', 'Select'), ('days', 'Days'), ('weeks', 'Weeks')],
+        validators=[Optional()]
+    )
+    training_duration_number = SelectField(
+        'Training Duration Number',
+        choices=[('', 'Select')] + [(str(i), str(i)) for i in range(1, 11)],
+        validators=[Optional()]
+    )
+    
+    nesting_duration = SelectField(
+        'Nesting Duration Type',
+        choices=[('', 'Select'), ('days', 'Days'), ('weeks', 'Weeks')],
+        validators=[Optional()]
+    )
+    nesting_duration_number = SelectField(
+        'Nesting Duration Number',
+        choices=[('', 'Select')] + [(str(i), str(i)) for i in range(1, 11)],
+        validators=[Optional()]
+    )
+    
+    batch_size = SelectField(
+        'Batch Size',
+        choices=[('', 'Select')] + [(str(i), str(i)) for i in range(5, 55, 5)],
+        validators=[Optional()]
+    )
+    
+    # Operational assumptions
+    supervisor_ratio = StringField('Supervisor Ratio', default='1:1')
+    qa_ratio = StringField('QA Ratio', default='1:1')
+    trainer_ratio = StringField('Trainer Ratio', default='1:1')
+    
+    # Language support
+    languages_supported = SelectField(
+        'Languages Supported',
+        choices=[('', 'Select'), ('single', 'Single'), ('bilingual', 'Bilingual')]
+    )
+    
+    # Channel support
+    voice_inbound = BooleanField('Voice - Inbound')
+    voice_outbound = BooleanField('Voice - Outbound')
+    chat = BooleanField('Chat')
+    email = BooleanField('Email')
+    back_office = BooleanField('Back Office')
