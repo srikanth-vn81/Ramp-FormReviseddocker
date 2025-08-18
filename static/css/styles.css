@@ -527,18 +527,31 @@ body {
     flex-direction: column;
 }
 
-/* Force equal heights */
+/* Force equal heights - pillar 1 matches pillar 2 */
 .row.align-items-stretch {
-    min-height: 600px;
+    display: flex;
+    align-items: stretch;
 }
 
 .row.align-items-stretch > .col-lg-6 {
-    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
-.row.align-items-stretch > .col-lg-6 > .row,
-.row.align-items-stretch > .col-lg-6 > .card {
+/* Left pillar (pillar 1) should match right pillar (pillar 2) height */
+.row.align-items-stretch > .col-lg-6:first-child .row {
     height: 100%;
+    flex: 1;
+}
+
+.row.align-items-stretch > .col-lg-6:first-child .card {
+    height: auto;
+    flex: 1;
+}
+
+/* Right pillar (pillar 2) sets the height */
+.row.align-items-stretch > .col-lg-6:last-child .card {
+    min-height: 600px;
 }
 
 /* Fix specific alignment issues */

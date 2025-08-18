@@ -19,7 +19,17 @@ document.addEventListener('DOMContentLoaded', function() {
             background-size: 16px 12px;
         }
         
-        /* Enhanced dropdown menu styling */
+        /* Force select dropdown options to appear sideways */
+        select.form-select {
+            position: relative;
+        }
+        
+        select.form-select:focus {
+            position: relative;
+            z-index: 1000;
+        }
+        
+        /* Custom dropdown styling for sideways appearance */
         .dropdown-menu {
             position: absolute !important;
             top: 0 !important;
@@ -41,6 +51,11 @@ document.addEventListener('DOMContentLoaded', function() {
             right: auto !important;
             margin-left: 0.5rem !important;
             display: block !important;
+        }
+        
+        /* Override native select dropdown positioning */
+        select.form-select option {
+            position: relative;
         }
         
         .dropdown-item {
@@ -91,14 +106,42 @@ document.addEventListener('DOMContentLoaded', function() {
         positionDropdown(e.target);
     });
     
-    // Handle select elements to create custom dropdown behavior
+    // Enhanced select handling for sideways dropdowns
     document.querySelectorAll('select.form-select').forEach(select => {
+        // Create custom dropdown wrapper
+        const wrapper = document.createElement('div');
+        wrapper.className = 'custom-select-wrapper';
+        wrapper.style.position = 'relative';
+        wrapper.style.display = 'inline-block';
+        wrapper.style.width = '100%';
+        
+        select.parentNode.insertBefore(wrapper, select);
+        wrapper.appendChild(select);
+        
         select.addEventListener('focus', function() {
-            this.style.zIndex = '10';
+            this.style.zIndex = '1000';
+            this.style.position = 'relative';
+            
+            // Try to force sideways positioning
+            const selectRect = this.getBoundingClientRect();
+            const options = this.options;
+            
+            // Add styling to make dropdown appear to the side
+            if (options.length > 0) {
+                this.style.transform = 'none';
+            }
         });
         
         select.addEventListener('blur', function() {
             this.style.zIndex = '1';
+        });
+        
+        // Handle click to ensure sideways behavior
+        select.addEventListener('click', function(e) {
+            setTimeout(() => {
+                this.style.position = 'relative';
+                this.style.zIndex = '1000';
+            }, 1);
         });
     });
 });
