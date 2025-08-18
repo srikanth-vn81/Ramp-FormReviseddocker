@@ -87,3 +87,28 @@ class RampInputForm(FlaskForm):
     chat = BooleanField('Chat')
     email = BooleanField('Email')
     back_office = BooleanField('Back Office')
+    social_sms = BooleanField('Social Media/SMS')
+    others = BooleanField('Others')
+    
+    # Location Details
+    requirement_type = SelectField(
+        'Requirement Type',
+        choices=[('headcount', 'Headcount'), ('fte', 'FTE')],
+        default='headcount'
+    )
+    requirement_value = IntegerField(
+        'Requirement Value',
+        validators=[DataRequired(), NumberRange(min=1)],
+        default=100
+    )
+    geo_country = SelectField(
+        'Geo (Country)',
+        choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')],
+        default='4'
+    )
+    
+    # Country headcount distribution
+    phl_headcount = IntegerField('Philippines Headcount', validators=[Optional(), NumberRange(min=0)], default=0)
+    usa_headcount = IntegerField('USA Headcount', validators=[Optional(), NumberRange(min=0)], default=0)
+    ind_headcount = IntegerField('India Headcount', validators=[Optional(), NumberRange(min=0)], default=0)
+    col_headcount = IntegerField('Colombia Headcount', validators=[Optional(), NumberRange(min=0)], default=0)
