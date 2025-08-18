@@ -1,0 +1,28 @@
+[
+  {
+    "ramp_start_availability": "available",
+    "ramp_start_date": "2025-08-05",
+    "ramp_end_availability": "available",
+    "ramp_end_date": "2025-08-05",
+    "client_trainer": "1",
+    "internal_trainer": "7",
+    "total_trainers": 8,
+    "training_duration": "days",
+    "training_duration_number": "8",
+    "nesting_duration": "days",
+    "nesting_duration_number": "10",
+    "batch_size": "50",
+    "supervisor_ratio": "1:1",
+    "qa_ratio": "1:1",
+    "trainer_ratio": "1:1",
+    "languages_supported": "",
+    "channels": {
+      "voice_inbound": false,
+      "voice_outbound": false,
+      "chat": false,
+      "email": false,
+      "back_office": false
+    },
+    "timestamp": "2025-08-18T16:17:17.929035"
+  }
+]
