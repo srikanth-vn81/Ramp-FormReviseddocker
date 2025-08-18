@@ -22,8 +22,7 @@ body {
     padding-top: 70px; /* Account for fixed navbar */
     margin: 0;
     padding-bottom: 0;
-    overflow: hidden;
-    height: 100vh;
+    overflow-x: hidden;
 }
 
 .navbar {
@@ -89,9 +88,7 @@ body {
 
 /* Main Content */
 .main-content {
-    padding: 0;
-    height: calc(100vh - 70px);
-    overflow-y: auto;
+    padding: 1rem 0 0 0;
 }
 
 /* Cards */
@@ -101,7 +98,7 @@ body {
     box-shadow: var(--box-shadow);
     transition: var(--transition);
     overflow: hidden;
-    margin-bottom: 0;
+    margin-bottom: 0.75rem;
 }
 
 .card:hover {
@@ -499,10 +496,8 @@ body {
 
 /* Reset container */
 .container-fluid {
-    padding: 1rem 1rem 0 1rem;
+    padding: 1rem;
     margin-bottom: 0;
-    height: calc(100vh - 70px);
-    overflow-y: auto;
 }
 
 /* Country Grid Styles */
