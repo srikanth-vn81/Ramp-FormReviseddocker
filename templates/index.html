@@ -82,7 +82,7 @@
                         <img src="{{ url_for('static', filename='iqor_logo.png') }}" alt="IQOR Logo" style="width: 32px; height: 32px; margin-right: 8px; border-radius: 6px;">
                         <div>
                             <h5 class="fw-bold text-primary mb-0">WFM Analytics</h5>
-                            <small class="text-muted">Logged in as: {{ current_user.username }}</small>
+                            <small class="text-muted">Ramp Input Form</small>
                         </div>
                     </div>
                 </div>
@@ -95,9 +95,6 @@
                     </div>
                 </div>
                 <div class="col-md-4 text-end">
-                    <a href="{{ url_for('logout') }}" class="btn btn-outline-secondary btn-sm me-2">
-                        <i class="fas fa-sign-out-alt me-1"></i>Logout
-                    </a>
                     <button type="button" class="btn btn-outline-primary btn-sm me-2" onclick="validateForm()">
                         <i class="fas fa-check-circle me-1"></i>Validate
                     </button>
