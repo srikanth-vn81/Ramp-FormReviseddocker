@@ -43,12 +43,24 @@ document.addEventListener('DOMContentLoaded', function() {
             background: white;
             border: 1px solid #e2e8f0;
             border-radius: 8px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            min-width: 200px;
-            max-height: 200px;
+            box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.1);
+            min-width: 220px;
+            max-height: 250px;
             overflow-y: auto;
-            z-index: 1000;
+            z-index: 9999;
             display: none;
+            animation: slideInRight 0.2s ease-out;
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
         
         .custom-dropdown.open .custom-dropdown-menu {
@@ -89,7 +101,9 @@ document.addEventListener('DOMContentLoaded', function() {
         'client_trainer',
         'internal_trainer',
         'training_duration',
-        'nesting_duration'
+        'nesting_duration',
+        'requirement_type',
+        'geo_country'
     ];
     
     selectsToConvert.forEach(selectId => {
@@ -170,6 +184,29 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Toggle current dropdown
             wrapper.classList.toggle('open');
+            
+            // Ensure proper positioning after opening
+            if (wrapper.classList.contains('open')) {
+                setTimeout(() => {
+                    const rect = wrapper.getBoundingClientRect();
+                    const viewportWidth = window.innerWidth;
+                    
+                    // Check if there's space on the right
+                    if (rect.right + 220 > viewportWidth) {
+                        // Position to the left instead
+                        menu.style.left = 'auto';
+                        menu.style.right = '100%';
+                        menu.style.marginLeft = '0';
+                        menu.style.marginRight = '0.5rem';
+                    } else {
+                        // Default right positioning
+                        menu.style.left = '100%';
+                        menu.style.right = 'auto';
+                        menu.style.marginLeft = '0.5rem';
+                        menu.style.marginRight = '0';
+                    }
+                }, 1);
+            }
         });
         
         // Close dropdown when clicking outside

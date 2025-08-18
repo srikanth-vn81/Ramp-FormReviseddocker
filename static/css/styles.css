@@ -538,54 +538,22 @@ body {
     flex-direction: column;
 }
 
-/* Left pillar (pillar 1) should match right pillar (pillar 2) height */
-.row.align-items-stretch > .col-lg-6:first-child .row {
-    height: 100%;
-    flex: 1;
-}
-
-.row.align-items-stretch > .col-lg-6:first-child .card {
-    height: auto;
-    flex: 1;
-}
-
-/* Right pillar (pillar 2) sets the height */
-.row.align-items-stretch > .col-lg-6:last-child .card {
+/* Both pillars equal height - pillar 1 matches pillar 2 */
+.row.align-items-stretch > .col-lg-6 {
     min-height: 600px;
 }
 
-/* Fix specific alignment issues */
-.align-items-stretch {
-    align-items: stretch !important;
-}
-
-.flex-fill {
-    flex: 1 1 auto;
-}
-
-.d-flex {
-    display: flex !important;
-}
-
-.flex-column {
-    flex-direction: column !important;
-}
-
-/* Ensure all cards have the same structure */
-.card.shadow-sm {
-    width: 100%;
-    margin-bottom: 0.5rem;
-}
-
-/* Fix the right column to match left column height */
-.col-lg-6:last-child .card {
+.row.align-items-stretch > .col-lg-6:first-child .row {
     height: 100%;
-    min-height: 100%;
+    flex: 1;
+    min-height: 600px;
 }
 
-/* Remove any unwanted margins from card containers */
-.col-12.d-flex {
-    margin-bottom: 0;
+/* Both pillar cards same height */
+.row.align-items-stretch > .col-lg-6:first-child .card,
+.row.align-items-stretch > .col-lg-6:last-child .card {
+    min-height: 600px;
+    flex: 1;
 }
 
 /* Zero bottom spacing overrides */
