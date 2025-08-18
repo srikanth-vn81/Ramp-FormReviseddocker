@@ -22,6 +22,13 @@ body {
     padding-top: 76px; /* Account for fixed navbar */
 }
 
+.navbar {
+    position: fixed !important;
+    top: 0;
+    width: 100%;
+    z-index: 1030;
+}
+
 .container-fluid {
     max-width: 1400px;
 }
