@@ -141,8 +141,21 @@ class RampFormController {
             const hasInternalTrainer = internalTrainer && internalTrainer.value !== '';
             const hasTotalTrainers = totalTrainers && parseInt(totalTrainers.value) > 0;
 
+            // Auto-calculate total trainers if both client and internal trainers are selected
+            if (hasClientTrainer && hasInternalTrainer && totalTrainers) {
+                const clientCount = parseInt(clientTrainer.value) || 0;
+                const internalCount = parseInt(internalTrainer.value) || 0;
+                const calculatedTotal = clientCount + internalCount;
+                
+                // Only auto-fill if the field is empty or zero
+                if (!totalTrainers.value || parseInt(totalTrainers.value) === 0) {
+                    totalTrainers.value = calculatedTotal;
+                }
+            }
+
             // Show additional fields if any trainer field is filled (more flexible)
-            if ((hasClientTrainer || hasInternalTrainer || hasTotalTrainers) && additionalFields) {
+            const updatedHasTotalTrainers = totalTrainers && parseInt(totalTrainers.value) > 0;
+            if ((hasClientTrainer || hasInternalTrainer || updatedHasTotalTrainers) && additionalFields) {
                 additionalFields.style.display = 'block';
                 additionalFields.classList.add('show');
                 
