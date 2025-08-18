@@ -1,8 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, IntegerField, DateField, BooleanField, TextAreaField, PasswordField
-from wtforms.validators import DataRequired, NumberRange, Optional, Email, ValidationError
+from wtforms import StringField, SelectField, IntegerField, DateField, BooleanField, TextAreaField
+from wtforms.validators import DataRequired, NumberRange, Optional
 from wtforms.widgets import CheckboxInput, ListWidget
-import re
 
 class MultiCheckboxField(SelectField):
     """Custom field for multiple checkboxes"""
@@ -86,31 +85,6 @@ class RampInputForm(FlaskForm):
     voice_outbound = BooleanField('Voice - Outbound')
     chat = BooleanField('Chat')
     email = BooleanField('Email')
-
-
-class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    
-    def validate_username(self, username):
-        if not username.data.endswith('@iqor.com'):
-            raise ValidationError('Username must end with @iqor.com')
-
-
-class RegisterForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    
-    def validate_username(self, username):
-        if not username.data.endswith('@iqor.com'):
-            raise ValidationError('Username must end with @iqor.com')
-    
-    def validate_email(self, email):
-        if not email.data.endswith('@iqor.com'):
-            raise ValidationError('Email must be from @iqor.com domain')
-
-    # Additional channel fields
     social_sms = BooleanField('Social Media/SMS')
     back_office = BooleanField('Back Office')
     others = BooleanField('Others')
