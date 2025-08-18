@@ -785,13 +785,14 @@ body {
 
 /* Compact Single View Layout */
 .main-content {
-    padding: 0.5rem 0;
+    padding: 0;
     max-height: 100vh;
     overflow-y: auto;
 }
 
 .container-fluid {
     padding: 0 1rem;
+    margin: 0;
 }
 
 /* Compact Cards for Single View */
@@ -863,4 +864,23 @@ body {
 .is-invalid {
     border-color: #dc3545 !important;
     box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+}
+
+/* Remove all top spacing */
+.navbar {
+    margin-bottom: 0 !important;
+}
+
+body {
+    padding-top: 0 !important;
+    margin: 0 !important;
+}
+
+.main-content {
+    margin-top: 0 !important;
+    padding-top: 0.5rem;
+}
+
+.container-fluid .row:first-child {
+    margin-top: 0 !important;
 }

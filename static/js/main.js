@@ -507,10 +507,11 @@ function initializeProgressTracking() {
         field.addEventListener('change', updateProgress);
     });
     
-    // Initialize with 0% progress
+    // Initialize with 0% progress and keep it at 0%
     if (progressBar) {
         progressBar.style.width = '0%';
         progressBar.className = 'progress-bar bg-primary';
+        progressBar.setAttribute('aria-valuenow', '0');
     }
     if (progressText) {
         progressText.textContent = '0%';
@@ -521,8 +522,8 @@ function initializeProgressTracking() {
         submitBtn.classList.remove('btn-success');
     }
     
-    // Delayed initial progress calculation to ensure all fields are rendered
-    setTimeout(updateProgress, 100);
+    // Don't auto-calculate progress on load to keep it at 0%
+    // Progress will only update when user interacts with fields
 }
 
 /**
