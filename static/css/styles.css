@@ -445,18 +445,139 @@ body {
 /* Custom Compact Layout */
 .container-fluid {
     padding: 0.5rem;
+    max-width: none;
 }
 
-.row.g-2 > * {
+.row.g-1 > * {
     margin-bottom: 0.25rem;
 }
 
-.row.mb-3 {
+.row.mb-2 {
     margin-bottom: 0.5rem !important;
 }
 
-.mb-4 {
-    margin-bottom: 0.75rem !important;
+.mb-2 {
+    margin-bottom: 0.5rem !important;
+}
+
+/* Equal height columns */
+.row.g-1 {
+    display: flex;
+    align-items: stretch;
+}
+
+.col-lg-6 {
+    display: flex;
+    flex-direction: column;
+}
+
+.col-lg-6 > .row {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.col-lg-6 .card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.col-lg-6 .card-body {
+    flex: 1;
+}
+
+/* Fix specific alignment issues */
+.align-items-stretch {
+    align-items: stretch !important;
+}
+
+.flex-fill {
+    flex: 1 1 auto;
+}
+
+.d-flex {
+    display: flex !important;
+}
+
+.flex-column {
+    flex-direction: column !important;
+}
+
+/* Ensure all cards have the same structure */
+.card.shadow-sm {
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+/* Fix the right column to match left column height */
+.col-lg-6:last-child .card {
+    height: 100%;
+    min-height: 100%;
+}
+
+/* Remove any unwanted margins from card containers */
+.col-12.d-flex {
+    margin-bottom: 0.5rem;
+}
+
+/* Force equal column heights and proper alignment */
+.row.align-items-stretch .col-lg-6 {
+    display: flex !important;
+    flex-direction: column;
+}
+
+.row.align-items-stretch .col-lg-6 > .row.flex-fill {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+.row.align-items-stretch .col-lg-6 .col-12.d-flex {
+    flex: 1;
+    display: flex;
+    margin-bottom: 0.5rem;
+}
+
+.row.align-items-stretch .col-lg-6 .col-12.d-flex:last-child {
+    margin-bottom: 0;
+}
+
+.row.align-items-stretch .col-lg-6:last-child {
+    display: flex;
+}
+
+.row.align-items-stretch .col-lg-6:last-child > .card {
+    flex: 1;
+    height: 100%;
+}
+
+/* Ensure proper top alignment */
+.row.g-1.align-items-stretch {
+    align-items: flex-start !important;
+}
+
+/* Fix navbar and content positioning */
+.main-content {
+    padding-top: 0.5rem;
+    height: calc(100vh - 70px);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.container-fluid {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Country Grid Styles */
