@@ -62,20 +62,20 @@
             {% endwith %}
 
             <!-- Compact Progress and Submit Bar -->
-            <div class="row align-items-center mb-2 bg-light rounded p-2">
+            <div class="row align-items-center mb-1 bg-light rounded p-1">
                 <div class="col-md-4">
                     <small class="text-muted fw-semibold">Configure Training & Assumptions</small>
                 </div>
                 <div class="col-md-4">
                     <div class="progress-container">
-                        <div class="progress" style="height: 6px;">
+                        <div class="progress" style="height: 4px;">
                             <div class="progress-bar" role="progressbar" style="width: 0%" id="form-progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
-                        <small class="text-muted mt-1 d-block text-center">Form Completion: <span id="progress-text">0%</span></small>
+                        <small class="text-muted d-block text-center" style="font-size: 0.7rem;">Form Completion: <span id="progress-text">0%</span></small>
                     </div>
                 </div>
                 <div class="col-md-4 text-end">
-                    <button type="button" class="btn btn-outline-primary btn-sm me-2" onclick="validateForm()">
+                    <button type="button" class="btn btn-outline-primary btn-sm me-1" onclick="validateForm()">
                         <i class="fas fa-check-circle me-1"></i>Validate
                     </button>
                     <button type="submit" class="btn btn-success btn-sm" id="submit-btn" disabled>
@@ -87,10 +87,10 @@
             <form method="POST" class="form-container">
                 {{ form.hidden_tag() }}
                 
-                <div class="row g-2">
+                <div class="row g-1">
                     <!-- Left Section - Training & Configuration -->
                     <div class="col-lg-6">
-                        <div class="row g-2">
+                        <div class="row g-1">
                             <!-- Training Schedule Card -->
                             <div class="col-12">
                                 <div class="card shadow-sm">
@@ -99,8 +99,8 @@
                                             <i class="fas fa-calendar-alt me-2"></i>Training Schedule
                                         </h6>
                                     </div>
-                                    <div class="card-body py-2">
-                                        <div class="row g-2 mb-3">
+                                    <div class="card-body py-1">
+                                        <div class="row g-1 mb-2">
                                             <!-- Dates Row -->
                                             <div class="col-md-6">
                                                 <label class="form-label small fw-semibold required">Ramp Start Date</label>
@@ -125,7 +125,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row g-2">
+                                        <div class="row g-1">
                                             <!-- Trainers Row -->
                                             <div class="col-md-4">
                                                 <label class="form-label small fw-semibold required">Client Trainer</label>
@@ -142,8 +142,8 @@
                                         </div>
 
                                         <!-- Additional Fields (shown conditionally) -->
-                                        <div id="additional-fields" class="additional-fields mt-3" style="display: none;">
-                                            <div class="row g-2">
+                                        <div id="additional-fields" class="additional-fields mt-1" style="display: none;">
+                                            <div class="row g-1">
                                                 <div class="col-md-4">
                                                     <label class="form-label small fw-semibold">Training Duration</label>
                                                     <div class="row g-1">
@@ -184,8 +184,8 @@
                                             <i class="fas fa-cogs me-2"></i>Operational Assumptions
                                         </h6>
                                     </div>
-                                    <div class="card-body py-2">
-                                        <div class="row g-2">
+                                    <div class="card-body py-1">
+                                        <div class="row g-1">
                                             <div class="col-md-4">
                                                 <label class="form-label small fw-semibold">Supervisor Ratio</label>
                                                 {{ form.supervisor_ratio(class="form-control form-control-sm", value="1:1") }}
@@ -211,8 +211,8 @@
                                             <i class="fas fa-language me-2"></i>Language & Channel Support
                                         </h6>
                                     </div>
-                                    <div class="card-body py-2">
-                                        <div class="row g-2 mb-3">
+                                    <div class="card-body py-1">
+                                        <div class="row g-1 mb-2">
                                             <div class="col-md-6">
                                                 <label class="form-label small fw-semibold">Languages Supported</label>
                                                 {{ form.languages_supported(class="form-select form-select-sm") }}
@@ -220,7 +220,7 @@
                                         </div>
                                         
                                         <div class="channel-support">
-                                            <label class="form-label small fw-semibold mb-2">Channel Support</label>
+                                            <label class="form-label small fw-semibold mb-1">Channel Support</label>
                                             <div class="row g-1">
                                                 <div class="col-6">
                                                     <div class="form-check form-check-sm">
@@ -288,9 +288,9 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body" style="padding: 0.5rem;">
                                 <!-- Requirement Section -->
-                                <div class="row mb-3">
+                                <div class="row mb-2">
                                     <label class="col-sm-4 col-form-label fw-semibold required">Requirement</label>
                                     <div class="col-sm-8">
                                         <div class="row g-2">
@@ -305,7 +305,7 @@
                                 </div>
 
                                 <!-- Geo Country Section -->
-                                <div class="row mb-3">
+                                <div class="row mb-2">
                                     <label class="col-sm-4 col-form-label fw-semibold required">Geo (Country)</label>
                                     <div class="col-sm-8">
                                         <div class="row g-2">
@@ -320,8 +320,8 @@
                                 </div>
 
                                 <!-- Country Headcount Distribution -->
-                                <div class="mb-4">
-                                    <label class="form-label fw-semibold required">Country-wise Headcount Distribution</label>
+                                <div class="mb-2">
+                                    <label class="form-label fw-semibold required" style="font-size: 0.8rem;">Country-wise Headcount Distribution</label>
                                     <div class="country-grid" id="country-grid">
                                         <div class="country-item">
                                             <label class="form-label small">PHL</label>
@@ -342,7 +342,7 @@
                                     </div>
                                     
                                     <!-- Headcount Summary -->
-                                    <div class="headcount-summary mt-3 p-2 bg-light rounded">
+                                    <div class="headcount-summary mt-1 p-1 bg-light rounded">
                                         <div class="row text-center">
                                             <div class="col-4">
                                                 <div class="small text-muted">Total Allocated</div>
@@ -365,7 +365,7 @@
 
                                 <!-- Sites Configuration -->
                                 <div class="sites-configuration-section">
-                                    <h6 class="fw-semibold mb-3">Sites Configuration</h6>
+                                    <h6 class="fw-semibold mb-1" style="font-size: 0.9rem;">Sites Configuration</h6>
                                     <div class="sites-table-container">
                                         <table class="table table-sm table-bordered" id="sites-table">
                                             <thead class="table-dark">
@@ -420,8 +420,7 @@
                                     </div>
                                 </div>
 
-                                <hr class="my-4">
-                                
+
 
                             </div>
                         </div>
