@@ -492,68 +492,10 @@ body {
     margin-bottom: 0.5rem !important;
 }
 
-/* Equal height column layout */
+/* Simple column layout */
 .col-lg-6 {
     margin-bottom: 0;
     padding: 0 0.5rem;
-    display: flex;
-    flex-direction: column;
-    overflow: visible;
-    height: 100%;
-}
-
-.col-lg-6 .row {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: visible;
-    height: 100%;
-}
-
-.col-lg-6 .card {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: visible;
-    position: relative;
-    min-height: 100%;
-}
-
-.col-lg-6 .card .card-body {
-    flex: 1;
-    overflow: visible;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Force equal heights - pillar 1 matches pillar 2 */
-.row.align-items-stretch {
-    display: flex;
-    align-items: stretch;
-}
-
-.row.align-items-stretch > .col-lg-6 {
-    display: flex;
-    flex-direction: column;
-}
-
-/* Both pillars equal height - pillar 1 matches pillar 2 */
-.row.align-items-stretch > .col-lg-6 {
-    min-height: 600px;
-}
-
-.row.align-items-stretch > .col-lg-6:first-child .row {
-    height: 100%;
-    flex: 1;
-    min-height: 600px;
-}
-
-/* Both pillar cards same height */
-.row.align-items-stretch > .col-lg-6:first-child .card,
-.row.align-items-stretch > .col-lg-6:last-child .card {
-    min-height: 600px;
-    flex: 1;
 }
 
 /* Zero bottom spacing overrides */
