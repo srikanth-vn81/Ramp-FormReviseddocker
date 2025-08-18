@@ -117,7 +117,48 @@ document.addEventListener('DOMContentLoaded', function() {
     const selects = document.querySelectorAll('select.form-select');
     
     selects.forEach(select => {
-        convertToSidewaysDropdown(select);
+        // Wait a bit for dynamic content to load
+        setTimeout(() => {
+            convertToSidewaysDropdown(select);
+        }, 100);
+    });
+    
+    // Also watch for dynamically added selects (like date fields that appear)
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            // Check for added nodes
+            mutation.addedNodes.forEach(function(node) {
+                if (node.nodeType === 1) { // Element node
+                    const newSelects = node.querySelectorAll ? node.querySelectorAll('select.form-select') : [];
+                    newSelects.forEach(select => {
+                        if (!select.classList.contains('sideways-hidden')) {
+                            setTimeout(() => convertToSidewaysDropdown(select), 50);
+                        }
+                    });
+                }
+            });
+            
+            // Check for attribute changes (like style changes that make elements visible)
+            if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                const target = mutation.target;
+                if (target.style.display !== 'none' && target.classList.contains('date-input-container')) {
+                    // Check for selects in the newly visible container
+                    const selects = target.querySelectorAll('select.form-select');
+                    selects.forEach(select => {
+                        if (!select.classList.contains('sideways-hidden')) {
+                            setTimeout(() => convertToSidewaysDropdown(select), 100);
+                        }
+                    });
+                }
+            }
+        });
+    });
+    
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['style']
     });
     
     function convertToSidewaysDropdown(select) {
@@ -206,25 +247,25 @@ document.addEventListener('DOMContentLoaded', function() {
             // Toggle current dropdown
             wrapper.classList.toggle('open');
             
-            // Smart positioning
+            // Smart positioning - always try to position to the right first
             if (wrapper.classList.contains('open')) {
                 setTimeout(() => {
                     const rect = wrapper.getBoundingClientRect();
                     const viewportWidth = window.innerWidth;
                     
-                    // Check if there's space on the right
+                    // Always try right side first (sideways positioning)
+                    menu.style.left = '100%';
+                    menu.style.right = 'auto';
+                    menu.style.marginLeft = '0.5rem';
+                    menu.style.marginRight = '0';
+                    menu.style.top = '0';
+                    
+                    // Only if absolutely no space, fall back to left
                     if (rect.right + 220 > viewportWidth) {
-                        // Position to the left instead
                         menu.style.left = 'auto';
                         menu.style.right = '100%';
                         menu.style.marginLeft = '0';
                         menu.style.marginRight = '0.5rem';
-                    } else {
-                        // Default right positioning
-                        menu.style.left = '100%';
-                        menu.style.right = 'auto';
-                        menu.style.marginLeft = '0.5rem';
-                        menu.style.marginRight = '0';
                     }
                 }, 1);
             }
