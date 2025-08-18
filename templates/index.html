@@ -145,18 +145,22 @@
                                             <div class="row g-2">
                                                 <div class="col-md-4">
                                                     <label class="form-label small fw-semibold">Training Duration</label>
-                                                    <div class="d-flex gap-1">
-                                                        {{ form.training_duration(class="form-select form-select-sm") }}
-                                                        <div id="training-duration-number-container" style="display: none;">
+                                                    <div class="d-flex gap-1 align-items-center">
+                                                        <div class="flex-shrink-0" style="min-width: 80px;">
+                                                            {{ form.training_duration(class="form-select form-select-sm") }}
+                                                        </div>
+                                                        <div id="training-duration-number-container" style="display: none; min-width: 70px;">
                                                             {{ form.training_duration_number(class="form-select form-select-sm") }}
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="form-label small fw-semibold">Nesting Duration</label>
-                                                    <div class="d-flex gap-1">
-                                                        {{ form.nesting_duration(class="form-select form-select-sm") }}
-                                                        <div id="nesting-duration-number-container" style="display: none;">
+                                                    <div class="d-flex gap-1 align-items-center">
+                                                        <div class="flex-shrink-0" style="min-width: 80px;">
+                                                            {{ form.nesting_duration(class="form-select form-select-sm") }}
+                                                        </div>
+                                                        <div id="nesting-duration-number-container" style="display: none; min-width: 70px;">
                                                             {{ form.nesting_duration_number(class="form-select form-select-sm") }}
                                                         </div>
                                                     </div>

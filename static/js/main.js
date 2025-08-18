@@ -99,7 +99,7 @@ class RampFormController {
         if (trainingDuration && trainingDurationNumberContainer && trainingDurationNumber) {
             trainingDuration.addEventListener('change', (e) => {
                 if (e.target.value && e.target.value !== '') {
-                    trainingDurationNumberContainer.style.display = 'block';
+                    trainingDurationNumberContainer.style.display = 'flex';
                     trainingDurationNumber.required = true;
                 } else {
                     trainingDurationNumberContainer.style.display = 'none';
@@ -118,7 +118,7 @@ class RampFormController {
         if (nestingDuration && nestingDurationNumberContainer && nestingDurationNumber) {
             nestingDuration.addEventListener('change', (e) => {
                 if (e.target.value && e.target.value !== '') {
-                    nestingDurationNumberContainer.style.display = 'block';
+                    nestingDurationNumberContainer.style.display = 'flex';
                     nestingDurationNumber.required = true;
                 } else {
                     nestingDurationNumberContainer.style.display = 'none';
