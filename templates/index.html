@@ -87,20 +87,20 @@
             <form method="POST" class="form-container">
                 {{ form.hidden_tag() }}
                 
-                <div class="row g-1 align-items-stretch">
+                <div class="row g-2">
                     <!-- Left Section - Training & Configuration -->
-                    <div class="col-lg-6 d-flex flex-column">
-                        <div class="row g-1 flex-fill">
+                    <div class="col-lg-6">
+                        <div class="row g-2">
                             <!-- Training Schedule Card -->
-                            <div class="col-12 d-flex">
-                                <div class="card shadow-sm w-100">
-                                    <div class="card-header bg-primary text-white py-1">
+                            <div class="col-12">
+                                <div class="card shadow-sm">
+                                    <div class="card-header bg-primary text-white">
                                         <h6 class="card-title mb-0">
                                             <i class="fas fa-calendar-alt me-2"></i>Training Schedule
                                         </h6>
                                     </div>
-                                    <div class="card-body py-1">
-                                        <div class="row g-1 mb-2">
+                                    <div class="card-body">
+                                        <div class="row g-2 mb-3">
                                             <!-- Dates Row -->
                                             <div class="col-md-6">
                                                 <label class="form-label small fw-semibold required">Ramp Start Date</label>
@@ -125,7 +125,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row g-1">
+                                        <div class="row g-2">
                                             <!-- Trainers Row -->
                                             <div class="col-md-4">
                                                 <label class="form-label small fw-semibold required">Client Trainer</label>
@@ -142,8 +142,8 @@
                                         </div>
 
                                         <!-- Additional Fields (shown conditionally) -->
-                                        <div id="additional-fields" class="additional-fields mt-1" style="display: none;">
-                                            <div class="row g-1">
+                                        <div id="additional-fields" class="additional-fields mt-3" style="display: none;">
+                                            <div class="row g-2">
                                                 <div class="col-md-4">
                                                     <label class="form-label small fw-semibold">Training Duration</label>
                                                     <div class="row g-1">
@@ -177,15 +177,15 @@
                             </div>
 
                             <!-- Operational Assumptions Card -->
-                            <div class="col-12 d-flex">
-                                <div class="card shadow-sm w-100">
-                                    <div class="card-header bg-success text-white py-1">
+                            <div class="col-12">
+                                <div class="card shadow-sm">
+                                    <div class="card-header bg-success text-white">
                                         <h6 class="card-title mb-0">
                                             <i class="fas fa-cogs me-2"></i>Operational Assumptions
                                         </h6>
                                     </div>
-                                    <div class="card-body py-1">
-                                        <div class="row g-1">
+                                    <div class="card-body">
+                                        <div class="row g-2">
                                             <div class="col-md-4">
                                                 <label class="form-label small fw-semibold">Supervisor Ratio</label>
                                                 {{ form.supervisor_ratio(class="form-control form-control-sm", value="1:1") }}
@@ -204,15 +204,15 @@
                             </div>
 
                             <!-- Language & Channel Support Card -->
-                            <div class="col-12 d-flex">
-                                <div class="card shadow-sm w-100">
-                                    <div class="card-header bg-info text-white py-1">
+                            <div class="col-12">
+                                <div class="card shadow-sm">
+                                    <div class="card-header bg-info text-white">
                                         <h6 class="card-title mb-0">
                                             <i class="fas fa-language me-2"></i>Language & Channel Support
                                         </h6>
                                     </div>
-                                    <div class="card-body py-1">
-                                        <div class="row g-1 mb-2">
+                                    <div class="card-body">
+                                        <div class="row g-2 mb-3">
                                             <div class="col-md-6">
                                                 <label class="form-label small fw-semibold">Languages Supported</label>
                                                 {{ form.languages_supported(class="form-select form-select-sm") }}
@@ -220,8 +220,8 @@
                                         </div>
                                         
                                         <div class="channel-support">
-                                            <label class="form-label small fw-semibold mb-1">Channel Support</label>
-                                            <div class="row g-1">
+                                            <label class="form-label small fw-semibold mb-2">Channel Support</label>
+                                            <div class="row g-2">
                                                 <div class="col-6">
                                                     <div class="form-check form-check-sm">
                                                         {{ form.voice_inbound(class="form-check-input form-check-input-sm") }}
@@ -273,9 +273,9 @@
                     </div>
 
                     <!-- Right Section - Location Details -->
-                    <div class="col-lg-6 d-flex">
-                        <div class="card shadow-sm w-100">
-                            <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center py-1">
+                    <div class="col-lg-6">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
                                 <h6 class="card-title mb-0">
                                     <i class="fas fa-map-marker-alt me-2"></i>Location & Resource Planning
                                 </h6>
@@ -288,9 +288,9 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="card-body" style="padding: 0.5rem;">
+                            <div class="card-body">
                                 <!-- Requirement Section -->
-                                <div class="row mb-2">
+                                <div class="row mb-3">
                                     <label class="col-sm-4 col-form-label fw-semibold required">Requirement</label>
                                     <div class="col-sm-8">
                                         <div class="row g-2">
@@ -305,7 +305,7 @@
                                 </div>
 
                                 <!-- Geo Country Section -->
-                                <div class="row mb-2">
+                                <div class="row mb-3">
                                     <label class="col-sm-4 col-form-label fw-semibold required">Geo (Country)</label>
                                     <div class="col-sm-8">
                                         <div class="row g-2">
@@ -320,8 +320,8 @@
                                 </div>
 
                                 <!-- Country Headcount Distribution -->
-                                <div class="mb-2">
-                                    <label class="form-label fw-semibold required" style="font-size: 0.8rem;">Country-wise Headcount Distribution</label>
+                                <div class="mb-4">
+                                    <label class="form-label fw-semibold required">Country-wise Headcount Distribution</label>
                                     <div class="country-grid" id="country-grid">
                                         <div class="country-item">
                                             <label class="form-label small">PHL</label>
@@ -342,7 +342,7 @@
                                     </div>
                                     
                                     <!-- Headcount Summary -->
-                                    <div class="headcount-summary mt-1 p-1 bg-light rounded">
+                                    <div class="headcount-summary mt-3 p-2 bg-light rounded">
                                         <div class="row text-center">
                                             <div class="col-4">
                                                 <div class="small text-muted">Total Allocated</div>
@@ -365,7 +365,7 @@
 
                                 <!-- Sites Configuration -->
                                 <div class="sites-configuration-section">
-                                    <h6 class="fw-semibold mb-1" style="font-size: 0.9rem;">Sites Configuration</h6>
+                                    <h6 class="fw-semibold mb-3">Sites Configuration</h6>
                                     <div class="sites-table-container">
                                         <table class="table table-sm table-bordered" id="sites-table">
                                             <thead class="table-dark">
