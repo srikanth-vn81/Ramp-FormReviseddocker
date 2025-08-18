@@ -496,6 +496,12 @@ body {
 .col-lg-6 {
     margin-bottom: 0;
     padding: 0 0.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.col-lg-6 .card.h-100 {
+    flex: 1;
 }
 
 /* Zero bottom spacing overrides */
