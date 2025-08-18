@@ -1,0 +1,1224 @@
+// Calendar functionality
+class DateCalendar {
+    constructor() {
+        this.currentDate = new Date();
+        this.selectedDate = null;
+        this.currentField = null;
+        this.modal = document.getElementById('calendar-modal');
+        this.init();
+    }
+
+    init() {
+        this.bindEvents();
+        this.setupDateAvailabilityHandlers();
+    }
+
+    bindEvents() {
+        // Modal events
+        document.querySelector('.close-calendar').addEventListener('click', () => this.closeModal());
+        document.getElementById('calendar-cancel').addEventListener('click', () => this.closeModal());
+        document.getElementById('calendar-confirm').addEventListener('click', () => this.confirmDate());
+
+        // Navigation events
+        document.getElementById('prev-month').addEventListener('click', () => this.previousMonth());
+        document.getElementById('next-month').addEventListener('click', () => this.nextMonth());
+
+        // Click outside to close
+        this.modal.addEventListener('click', (e) => {
+            if (e.target === this.modal) {
+                this.closeModal();
+            }
+        });
+    }
+
+    setupDateAvailabilityHandlers() {
+        // Start date availability
+        const startAvailability = document.getElementById('ramp-start-availability');
+        const startDateInput = document.getElementById('ramp-start-date');
+
+        if (startAvailability && startDateInput) {
+            startAvailability.addEventListener('change', (e) => {
+                if (e.target.value === 'available') {
+                    startDateInput.style.display = 'block';
+                    startDateInput.required = true;
+                } else {
+                    startDateInput.style.display = 'none';
+                    startDateInput.required = false;
+                    startDateInput.value = '';
+                }
+            });
+        }
+
+        // End date availability
+        const endAvailability = document.getElementById('ramp-end-availability');
+        const endDateInput = document.getElementById('ramp-end-date');
+
+        if (endAvailability && endDateInput) {
+            endAvailability.addEventListener('change', (e) => {
+                if (e.target.value === 'available') {
+                    endDateInput.style.display = 'block';
+                    endDateInput.required = true;
+                } else {
+                    endDateInput.style.display = 'none';
+                    endDateInput.required = false;
+                    endDateInput.value = '';
+                }
+            });
+        }
+    }
+
+    openModal(field, title) {
+        this.currentField = field;
+        document.getElementById('calendar-title').textContent = title;
+        this.currentDate = new Date();
+        this.selectedDate = null;
+        this.renderCalendar();
+        this.modal.style.display = 'block';
+    }
+
+    closeModal() {
+        this.modal.style.display = 'none';
+        this.currentField = null;
+        this.selectedDate = null;
+    }
+
+
+
+    renderCalendar() {
+        const monthNames = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+
+        document.getElementById('current-month-year').textContent =
+            `${monthNames[this.currentDate.getMonth()]} ${this.currentDate.getFullYear()}`;
+
+        const firstDay = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1);
+        const lastDay = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1, 0);
+        const startDate = new Date(firstDay);
+        startDate.setDate(startDate.getDate() - firstDay.getDay());
+
+        const calendarDays = document.getElementById('calendar-days');
+        calendarDays.innerHTML = '';
+
+        for (let i = 0; i < 42; i++) {
+            const cellDate = new Date(startDate);
+            cellDate.setDate(startDate.getDate() + i);
+
+            const dayElement = document.createElement('div');
+            dayElement.className = 'calendar-day';
+            dayElement.textContent = cellDate.getDate();
+
+            if (cellDate.getMonth() !== this.currentDate.getMonth()) {
+                dayElement.classList.add('other-month');
+            }
+
+            dayElement.addEventListener('click', () => {
+                document.querySelectorAll('.calendar-day.selected').forEach(el =>
+                    el.classList.remove('selected'));
+                dayElement.classList.add('selected');
+                this.selectedDate = new Date(cellDate);
+            });
+
+            calendarDays.appendChild(dayElement);
+        }
+    }
+
+    previousMonth() {
+        this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+        this.renderCalendar();
+    }
+
+    nextMonth() {
+        this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+        this.renderCalendar();
+    }
+
+    confirmDate() {
+        if (this.selectedDate && this.currentField) {
+            const dateText = document.getElementById(`${this.currentField}-date-text`);
+            if (dateText) {
+                const formattedDate = this.selectedDate.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+                dateText.textContent = formattedDate;
+                dateText.style.color = '#10b981';
+            }
+            this.closeModal();
+        }
+    }
+}
+
+// Navbar scroll effect
+window.addEventListener('scroll', function() {
+    const navbar = document.querySelector('.navbar');
+    if (window.scrollY > 50) {
+        navbar.style.backgroundColor = '#1f2937';
+    } else {
+        navbar.style.backgroundColor = '#2c2c2c';
+    }
+});
+
+// Login button click handler
+document.addEventListener('DOMContentLoaded', function() {
+    const loginBtn = document.querySelector('.login-btn');
+    if (loginBtn) {
+        loginBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Login button clicked');
+        });
+    }
+
+    // Form switching functionality
+    function showBlankPage() {
+        const mainContent = document.querySelector('.main-content');
+        mainContent.innerHTML = `
+            <div class="blank-page">
+                <div class="loading-message">
+                    <h2>Loading...</h2>
+                    <p>Please wait while we load the form</p>
+                </div>
+            </div>
+        `;
+    }
+
+    function showHomePage() {
+        const mainContent = document.querySelector('.main-content');
+        mainContent.innerHTML = `
+            <div class="blank-page">
+                <div class="loading-message">
+                </div>
+            </div>
+        `;
+    }
+
+    function showRampInputForm() {
+        const mainContent = document.querySelector('.main-content');
+        mainContent.innerHTML = `
+            <div class="form-container">
+                <!-- Left Side - Training Form -->
+                <div class="left-section">
+                    <form class="training-form">
+                        <div class="form-row">
+                            <label for="ramp-start">* Ramp Start Date</label>
+                            <div class="date-controls">
+                                <select id="ramp-start-availability" name="ramp-start-availability" required>
+                                    <option value="" selected disabled>Select</option>
+                                    <option value="available">Available</option>
+                                    <option value="not-available">Not Available</option>
+                                </select>
+                                <input type="date" id="ramp-start-date" name="ramp-start-date" style="display: none;" class="date-input">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="ramp-end">* Ramp End Date</label>
+                            <div class="date-controls">
+                                <select id="ramp-end-availability" name="ramp-end-availability" required>
+                                    <option value="" selected disabled>Select</option>
+                                    <option value="available">Available</option>
+                                    <option value="not-available">Not Available</option>
+                                </select>
+                                <input type="date" id="ramp-end-date" name="ramp-end-date" style="display: none;" class="date-input">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="client-trainer">* Client Trainer</label>
+                            <select id="client-trainer" name="client-trainer" required>
+                                <option value="" selected disabled>Select</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="internal-trainer">* Internal Trainer</label>
+                            <select id="internal-trainer" name="internal-trainer" required>
+                                <option value="" selected disabled>Select</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="total-trainers">* # of Total Trainer</label>
+                            <input type="number" id="total-trainers" name="total-trainers" value="0" min="0" required>
+                        </div>
+
+                        <!-- Additional fields that appear after trainer selection -->
+                        <div id="additional-fields" class="additional-fields" style="display: none;">
+                            <div class="form-row">
+                                <label for="training-duration">* Training Duration</label>
+                                <div class="duration-controls">
+                                    <select id="training-duration" name="training-duration" required>
+                                        <option value="" selected disabled>Select</option>
+                                        <option value="days">Days</option>
+                                        <option value="weeks">Weeks</option>
+                                    </select>
+                                    <select id="training-duration-number" name="training-duration-number" style="display: none;" required>
+                                        <option value="" selected disabled>Select</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="nesting-duration">* Nesting Duration</label>
+                                <div class="duration-controls">
+                                    <select id="nesting-duration" name="nesting-duration" required>
+                                        <option value="" selected disabled>Select</option>
+                                        <option value="days">Days</option>
+                                        <option value="weeks">Weeks</option>
+                                    </select>
+                                    <select id="nesting-duration-number" name="nesting-duration-number" style="display: none;" required>
+                                        <option value="" selected disabled>Select</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="batch-size">* Batch Size</label>
+                                <select id="batch-size" name="batch-size" required>
+                                    <option value="" selected disabled>Select</option>
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                    <option value="25">25</option>
+                                    <option value="30">30</option>
+                                    <option value="35">35</option>
+                                    <option value="40">40</option>
+                                    <option value="45">45</option>
+                                    <option value="50">50</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="operational-assumptions">
+                        <h2>Operational Assumptions</h2>
+                        <div class="assumptions-table">
+                            <div class="assumption-row">
+                                <span class="assumption-label">Supervisor Ratio</span>
+                                <input class="assumption-input" type="text" value="1:1" />
+                            </div>
+                            <div class="assumption-row">
+                                <span class="assumption-label">QA Ratio</span>
+                                <input class="assumption-input" type="text" value="1:1" />
+                            </div>
+                            <div class="assumption-row">
+                                <span class="assumption-label">Trainer Ratio</span>
+                                <input class="assumption-input" type="text" value="1:1" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="language-channel-support">
+                        <h2>Language & Channel Support</h2>
+
+                        <div class="language-row">
+                            <label for="languages-supported">Languages Supported</label>
+                            <select id="languages-supported" name="languages-supported">
+                                <option value="" selected disabled>Select</option>
+                                <option value="single">Single</option>
+                                <option value="bilingual">Bilingual</option>
+                            </select>
+                        </div>
+
+                        <div class="channel-section">
+                            <h3>Channel Support :-</h3>
+                            <div class="channel-checkboxes">
+                                <div class="checkbox-row">
+                                    <input type="checkbox" id="voice-inbound" name="channels" value="voice-inbound">
+                                    <label for="voice-inbound">Voice- Inbound</label>
+                                </div>
+                                <div class="checkbox-row">
+                                    <input type="checkbox" id="voice-outbound" name="channels" value="voice-outbound">
+                                    <label for="voice-outbound">Voice- Outbound</label>
+                                </div>
+                                <div class="checkbox-row">
+                                    <input type="checkbox" id="chat" name="channels" value="chat">
+                                    <label for="chat">Chat</label>
+                                </div>
+                                <div class="checkbox-row">
+                                    <input type="checkbox" id="email" name="channels" value="email">
+                                    <label for="email">Email</label>
+                                </div>
+                                <div class="checkbox-row">
+                                    <input type="checkbox" id="back-office" name="channels" value="back-office">
+                                    <label for="back-office">Back Office</label>
+                                </div>
+                                <div class="checkbox-row">
+                                    <input type="checkbox" id="social-sms" name="channels" value="social-sms">
+                                    <label for="social-sms">Social Media/SMS</label>
+                                </div>
+                                <div class="checkbox-row">
+                                    <input type="checkbox" id="others" name="channels" value="others">
+                                    <label for="others">Others</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side - Location Details Form -->
+                <div class="right-section">
+                    <div class="location-details">
+                        <div class="location-header">
+                            <h2>Location Details</h2>
+                            <div class="location-actions">
+                                <button type="button" class="reset-btn">Reset</button>
+                                <button type="button" class="save-btn">
+                                    <span class="save-icon">💾</span>
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="location-form">
+                            <div class="location-row">
+                                <label class="location-label required">* Requirement</label>
+                                <div class="location-fields">
+                                    <select class="location-select" id="requirement-select">
+                                        <option value="" disabled>Select</option>
+                                        <option value="headcount" selected>Headcount</option>
+                                        <option value="fte">FTE</option>
+                                    </select>
+                                    <button type="button" class="update-btn">Update</button>
+                                </div>
+                            </div>
+
+                            <div class="location-row">
+                                <label class="location-label required">* Geo (Country)</label>
+                                <div class="location-fields">
+                                    <select class="location-select" id="geo-country-select">
+                                        <option value="" disabled>Select</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4" selected>4</option>
+                                    </select>
+                                    <div class="country-codes">
+                                        <span class="country-code">PHL</span>
+                                        <span class="country-code">USA</span>
+                                        <span class="country-code">IND</span>
+                                        <span class="country-code">COL</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="location-row">
+                                <label class="location-label required">* Headcount #</label>
+                                <div class="location-fields">
+                                    <input type="text" class="location-input red-bg" value="1" readonly>
+                                    <div class="headcount-boxes">
+                                        <input type="text" class="headcount-box red-bg" placeholder="">
+                                        <input type="text" class="headcount-box red-bg" placeholder="">
+                                        <input type="text" class="headcount-box red-bg" placeholder="">
+                                        <input type="text" class="headcount-box red-bg" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="location-row">
+                                <label class="location-label">Sites #</label>
+                                <div class="location-fields">
+                                    <input type="text" class="location-input" value="2" readonly>
+                                    <div class="sites-boxes">
+                                        <span class="site-box">Sites #</span>
+                                        <span class="site-box">Sites #</span>
+                                        <span class="site-box">Sites #</span>
+                                        <span class="site-box">Sites #</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Reinitialize all event handlers for the new form elements
+        initializeFormHandlers();
+
+        // Initialize geo country functionality for dynamically loaded form
+        const geoSelect = document.getElementById('geo-country-select');
+        if (geoSelect) {
+            geoSelect.addEventListener('change', function() {
+                updateCountryDisplayDynamic();
+            });
+            // Set initial display
+            updateCountryDisplayDynamic();
+        }
+    }
+
+    function initializeFormHandlers() {
+        // Re-setup all the form functionality after dynamic content loading
+        const clientTrainerSelect = document.getElementById('client-trainer');
+        const internalTrainerSelect = document.getElementById('internal-trainer');
+        const totalTrainersInput = document.getElementById('total-trainers');
+
+        // All the form handler functions need to be called again
+        setupDateAvailabilityHandlers();
+        setupTrainerHandlers();
+        setupDurationHandlers();
+        setupOperationalAssumptions();
+        setupLocationButtons();
+        setupRequirementHandlers();
+    }
+
+    function setupDateAvailabilityHandlers() {
+        const startAvailability = document.getElementById('ramp-start-availability');
+        const startDateInput = document.getElementById('ramp-start-date');
+        const endAvailability = document.getElementById('ramp-end-availability');
+        const endDateInput = document.getElementById('ramp-end-date');
+
+        if (startAvailability && startDateInput) {
+            startAvailability.addEventListener('change', (e) => {
+                if (e.target.value === 'available') {
+                    startDateInput.style.display = 'block';
+                    startDateInput.required = true;
+                } else {
+                    startDateInput.style.display = 'none';
+                    startDateInput.required = false;
+                    startDateInput.value = '';
+                }
+            });
+        }
+
+        if (endAvailability && endDateInput) {
+            endAvailability.addEventListener('change', (e) => {
+                if (e.target.value === 'available') {
+                    endDateInput.style.display = 'block';
+                    endDateInput.required = true;
+                } else {
+                    endDateInput.style.display = 'none';
+                    endDateInput.required = false;
+                    endDateInput.value = '';
+                }
+            });
+        }
+    }
+
+    function setupTrainerHandlers() {
+        const clientTrainerSelect = document.getElementById('client-trainer');
+        const internalTrainerSelect = document.getElementById('internal-trainer');
+
+        if (clientTrainerSelect) {
+            clientTrainerSelect.addEventListener('change', function() {
+                updateLocationDetails();
+                toggleAdditionalFields();
+            });
+        }
+
+        if (internalTrainerSelect) {
+            internalTrainerSelect.addEventListener('change', function() {
+                updateLocationDetails();
+                toggleAdditionalFields();
+            });
+        }
+    }
+
+    function setupDurationHandlers() {
+        const trainingDuration = document.getElementById('training-duration');
+        const trainingDurationNumber = document.getElementById('training-duration-number');
+        const nestingDuration = document.getElementById('nesting-duration');
+        const nestingDurationNumber = document.getElementById('nesting-duration-number');
+
+        if (trainingDuration && trainingDurationNumber) {
+            trainingDuration.addEventListener('change', function() {
+                if (this.value === 'days' || this.value === 'weeks') {
+                    trainingDurationNumber.style.display = 'block';
+                    trainingDurationNumber.required = true;
+                } else {
+                    trainingDurationNumber.style.display = 'none';
+                    trainingDurationNumber.required = false;
+                    trainingDurationNumber.value = '';
+                }
+            });
+        }
+
+        if (nestingDuration && nestingDurationNumber) {
+            nestingDuration.addEventListener('change', function() {
+                if (this.value === 'days' || this.value === 'weeks') {
+                    nestingDurationNumber.style.display = 'block';
+                    nestingDurationNumber.required = true;
+                } else {
+                    nestingDurationNumber.style.display = 'none';
+                    nestingDurationNumber.required = false;
+                    nestingDurationNumber.value = '';
+                }
+            });
+        }
+    }
+
+    function setupOperationalAssumptions() {
+        const assumptionInputs = document.querySelectorAll('.assumption-input');
+
+        assumptionInputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                if (this.value.startsWith('1:')) {
+                    this.value = this.value.substring(2);
+                }
+            });
+
+            input.addEventListener('blur', function() {
+                let value = this.value.replace(/[^0-9]/g, '');
+                if (value && value !== '') {
+                    this.value = `1:${value}`;
+                } else {
+                    this.value = '1:1';
+                }
+            });
+
+            input.addEventListener('keypress', function(e) {
+                if (!/[0-9]/.test(e.key) && !['Backspace', 'Delete', 'Tab', 'Enter'].includes(e.key)) {
+                    e.preventDefault();
+                }
+            });
+        });
+    }
+
+    function setupLocationButtons() {
+        const resetBtn = document.querySelector('.reset-btn');
+        const saveBtn = document.querySelector('.save-btn');
+
+        if (resetBtn) {
+            resetBtn.addEventListener('click', function() {
+                console.log('Reset button clicked');
+                // Reset form logic here
+            });
+        }
+
+        if (saveBtn) {
+            saveBtn.addEventListener('click', function() {
+                console.log('Save button clicked');
+            });
+        }
+
+        // Setup requirement handlers
+        setupRequirementHandlers();
+    }
+
+    // Requirement input change handler
+    function setupRequirementHandlers() {
+        const requirementSelect = document.getElementById('requirement-select');
+        const requirementValueInput = document.getElementById('requirement-value-input');
+
+        if (requirementSelect) {
+            requirementSelect.addEventListener('change', function() {
+                console.log('Requirement type changed to:', this.value);
+                updateSummaryValues();
+            });
+        }
+
+        if (requirementValueInput) {
+            requirementValueInput.addEventListener('input', function() {
+                console.log('Requirement value changed to:', this.value);
+                updateSummaryValues();
+                validateHeadcountDistribution();
+            });
+        }
+    }
+
+    // Updated function to handle new country grid UI
+    function updateCountryDisplay() {
+        const geoSelect = document.getElementById('geo-country-select');
+        const countryGrid = document.getElementById('country-grid');
+        const countryCountDisplay = document.querySelector('.country-count-display');
+
+        if (!geoSelect || !countryGrid) return;
+
+        const selectedValue = geoSelect.value;
+        const countryMappings = {
+            '1': ['PHL'],
+            '2': ['PHL', 'USA'],
+            '3': ['PHL', 'USA', 'IND'],
+            '4': ['PHL', 'USA', 'IND', 'COL']
+        };
+
+        const countries = countryMappings[selectedValue] || ['PHL', 'USA', 'IND', 'COL'];
+
+        // Update country count display
+        if (countryCountDisplay) {
+            countryCountDisplay.textContent = `${countries.length} Countries Selected`;
+        }
+
+        // Clear existing country items
+        countryGrid.innerHTML = '';
+
+        // Add new country items only for selected countries
+        countries.forEach(country => {
+            const countryItem = document.createElement('div');
+            countryItem.className = 'country-item';
+
+            countryItem.innerHTML = `
+                <label class="country-label">${country}</label>
+                <input type="number" class="country-headcount" data-country="${country}" min="0" placeholder="0">
+            `;
+
+            countryGrid.appendChild(countryItem);
+        });
+
+        // Update grid template columns based on number of countries
+        countryGrid.style.gridTemplateColumns = `repeat(${countries.length}, 1fr)`;
+
+        // Re-setup event handlers for new inputs
+        setupCountryHeadcountHandlers();
+
+        // Update sites count
+        const sitesInput = document.querySelector('.location-row:last-child .location-input');
+        if (sitesInput) {
+            sitesInput.value = countries.length;
+        }
+
+        // Update total allocated, required, and remaining values
+        updateSummaryValues();
+
+        // Reset validation
+        validateHeadcountDistribution();
+    }
+
+
+    // Updated function to handle new country grid UI
+    function updateCountryDisplayDynamic() {
+        const geoSelect = document.getElementById('geo-country-select');
+        const countryGrid = document.getElementById('country-grid');
+        const countryCountDisplay = document.querySelector('.country-count-display');
+
+        if (!geoSelect || !countryGrid) return;
+
+        const selectedValue = geoSelect.value;
+        const countryMappings = {
+            '1': ['PHL'],
+            '2': ['PHL', 'USA'],
+            '3': ['PHL', 'USA', 'IND'],
+            '4': ['PHL', 'USA', 'IND', 'COL']
+        };
+
+        const countries = countryMappings[selectedValue] || [];
+
+        // Update country count display
+        if (countryCountDisplay) {
+            countryCountDisplay.textContent = `${countries.length} Countries Selected`;
+        }
+
+        // Clear existing country items
+        countryGrid.innerHTML = '';
+
+        // Add new country items only for selected countries
+        countries.forEach(country => {
+            const countryItem = document.createElement('div');
+            countryItem.className = 'country-item';
+
+            countryItem.innerHTML = `
+                <label class="country-label">${country}</label>
+                <input type="number" class="country-headcount" data-country="${country}" min="0" placeholder="0">
+            `;
+
+            countryGrid.appendChild(countryItem);
+        });
+
+        // Update grid template columns based on number of countries
+        countryGrid.style.gridTemplateColumns = `repeat(${countries.length}, 1fr)`;
+
+        // Re-setup event handlers for new inputs
+        setupCountryHeadcountHandlers();
+
+        // Update sites count
+        const sitesInput = document.querySelector('.location-row:last-child .location-input');
+        if (sitesInput) {
+            sitesInput.value = countries.length;
+        }
+
+        // Reset validation
+        validateHeadcountDistribution();
+    }
+
+
+    // Home link functionality
+    const homePageLink = document.querySelector('.home-link');
+    if (homePageLink) {
+        homePageLink.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            // Remove active class from all navigation items
+            document.querySelectorAll('.nav-link, .dropdown-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Add active class to home link
+            this.classList.add('active');
+
+            console.log('Switched to Home');
+            showHomePage();
+        });
+    }
+
+    // Dropdown menu functionality
+    const dropdownItems = document.querySelectorAll('.dropdown-item');
+    dropdownItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            // Remove active class from all navigation items
+            document.querySelectorAll('.nav-link, .dropdown-item').forEach(navItem => {
+                navItem.classList.remove('active');
+            });
+
+            // Add active class to clicked item
+            this.classList.add('active');
+
+            // Handle form switching based on clicked item
+            const itemText = this.textContent.trim();
+            if (itemText === 'Ramp Input Form') {
+                console.log('Switched to Ramp Input Form');
+                showBlankPage();
+                setTimeout(() => {
+                    showRampInputForm();
+                }, 500); // Show blank page for 500ms then load the form
+            } else if (itemText === 'Sizing Form') {
+                console.log('Switched to Sizing Form');
+                showBlankPage();
+                setTimeout(() => {
+                    // For now, just show a message - future implementation would load Sizing Form
+                    const mainContent = document.querySelector('.main-content');
+                    mainContent.innerHTML = `
+                        <div class="blank-page">
+                            <div class="loading-message">
+                                <h2>Sizing Form</h2>
+                                <p>This form will be implemented soon!</p>
+                            </div>
+                        </div>
+                    `;
+                }, 500);
+            }
+        });
+    });
+
+    // Dropdown change handlers for dynamic form updates
+    const clientTrainerSelect = document.getElementById('client-trainer');
+    const internalTrainerSelect = document.getElementById('internal-trainer');
+    const totalTrainersInput = document.getElementById('total-trainers');
+
+    // Function to calculate and update total trainers
+    function updateTotalTrainers() {
+        const clientTrainerValue = parseInt(clientTrainerSelect.value) || 0;
+        const internalTrainerValue = parseInt(internalTrainerSelect.value) || 0;
+        const totalTrainers = clientTrainerValue + internalTrainerValue;
+
+        if (totalTrainersInput) {
+            totalTrainersInput.value = totalTrainers;
+        }
+
+        return totalTrainers;
+    }
+
+    // Function to update Location Details form
+    function updateLocationDetails() {
+        const totalTrainers = updateTotalTrainers();
+
+        // Default values
+        let countries = ['PHL', 'USA', 'IND', 'COL'];
+        let headcount = 1;
+        let sites = 2;
+
+        // Update the form fields
+        updateCountryCodes(countries);
+        updateHeadcountBoxes(headcount, totalTrainers);
+        updateSitesBoxes(sites);
+    }
+
+    // Update country codes
+    function updateCountryCodes(countries) {
+        const countryCodesContainer = document.querySelector('.country-codes');
+        const geoInput = document.querySelector('.location-row:nth-child(2) .location-input');
+
+        if (countryCodesContainer && geoInput) {
+            geoInput.value = countries.length;
+            countryCodesContainer.innerHTML = '';
+
+            countries.forEach(country => {
+                const span = document.createElement('span');
+                span.className = 'country-code';
+                span.textContent = country;
+                countryCodesContainer.appendChild(span);
+            });
+        }
+    }
+
+    // Update headcount boxes
+    function updateHeadcountBoxes(headcount, totalTrainers) {
+        const headcountInput = document.querySelector('.location-row:nth-child(3) .location-input');
+        const headcountBoxesContainer = document.querySelector('.headcount-boxes');
+
+        if (headcountInput && headcountBoxesContainer) {
+            headcountInput.value = headcount;
+            headcountBoxesContainer.innerHTML = '';
+
+            // Create boxes based on total trainers
+            for (let i = 0; i < totalTrainers; i++) {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'headcount-box red-bg';
+                input.placeholder = '';
+                headcountBoxesContainer.appendChild(input);
+            }
+        }
+    }
+
+    // Update sites boxes
+    function updateSitesBoxes(sites) {
+        const sitesInput = document.querySelector('.location-row:nth-child(4) .location-input');
+        const sitesBoxesContainer = document.querySelector('.sites-boxes');
+
+        if (sitesInput && sitesBoxesContainer) {
+            sitesInput.value = sites;
+            sitesBoxesContainer.innerHTML = '';
+
+            for (let i = 0; i < sites; i++) {
+                const span = document.createElement('span');
+                span.className = 'site-box';
+                span.textContent = 'Sites #';
+                sitesBoxesContainer.appendChild(span);
+            }
+        }
+    }
+
+    // Function to show/hide additional fields
+    function toggleAdditionalFields() {
+        const additionalFields = document.getElementById('additional-fields');
+        const hasClientTrainer = clientTrainerSelect && clientTrainerSelect.value !== '';
+        const hasInternalTrainer = internalTrainerSelect && internalTrainerSelect.value !== '';
+
+        if (additionalFields) {
+            if (hasClientTrainer || hasInternalTrainer) {
+                additionalFields.style.display = 'block';
+            } else {
+                additionalFields.style.display = 'none';
+                // Reset the additional field values when hiding
+                const additionalSelects = additionalFields.querySelectorAll('select');
+                additionalSelects.forEach(select => select.value = '');
+            }
+        }
+    }
+
+    // Add event listeners
+    if (clientTrainerSelect) {
+        clientTrainerSelect.addEventListener('change', function() {
+            updateLocationDetails();
+            toggleAdditionalFields();
+        });
+    }
+
+    if (internalTrainerSelect) {
+        internalTrainerSelect.addEventListener('change', function() {
+            updateLocationDetails();
+            toggleAdditionalFields();
+        });
+    }
+
+    // Reset button functionality
+    const resetBtn = document.querySelector('.reset-btn');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', function() {
+            // Reset all form fields to default values
+            if (clientTrainerSelect) clientTrainerSelect.value = '';
+            if (internalTrainerSelect) internalTrainerSelect.value = '';
+            if (totalTrainersInput) totalTrainersInput.value = '0';
+
+            // Reset date dropdowns and date inputs
+            const startAvailability = document.getElementById('ramp-start-availability');
+            const startDateInput = document.getElementById('ramp-start-date');
+            const endAvailability = document.getElementById('ramp-end-availability');
+            const endDateInput = document.getElementById('ramp-end-date');
+
+            if (startAvailability) startAvailability.value = '';
+            if (startDateInput) {
+                startDateInput.style.display = 'none';
+                startDateInput.required = false;
+                startDateInput.value = '';
+            }
+            if (endAvailability) endAvailability.value = '';
+            if (endDateInput) {
+                endDateInput.style.display = 'none';
+                endDateInput.required = false;
+                endDateInput.value = '';
+            }
+
+            // Reset additional fields
+            const additionalFields = document.getElementById('additional-fields');
+            if (additionalFields) {
+                const additionalSelects = additionalFields.querySelectorAll('select');
+                additionalSelects.forEach(select => select.value = '');
+                additionalFields.style.display = 'none';
+
+                // Hide and reset duration number dropdowns
+                const trainingDurationNumber = document.getElementById('training-duration-number');
+                const nestingDurationNumber = document.getElementById('nesting-duration-number');
+                if (trainingDurationNumber) {
+                    trainingDurationNumber.style.display = 'none';
+                    trainingDurationNumber.required = false;
+                }
+                if (nestingDurationNumber) {
+                    nestingDurationNumber.style.display = 'none';
+                    nestingDurationNumber.required = false;
+                }
+            }
+
+            // Reset location details to default
+            updateLocationDetails();
+        });
+    }
+
+    // Save button functionality
+    const saveBtn = document.querySelector('.save-btn');
+    if (saveBtn) {
+        saveBtn.addEventListener('click', function() {
+            console.log('Save button clicked - Form data would be saved here');
+            // In real app, this would collect all form data and send to server
+        });
+    }
+
+    // Update button functionality
+    const updateBtn = document.querySelector('.update-btn');
+    if (updateBtn) {
+        updateBtn.addEventListener('click', function() {
+            console.log('Update button clicked - Would open edit modal/form');
+            // In real app, this would open a modal or form to edit the requirement
+        });
+    }
+
+    // Function to set up event handlers for country headcount inputs
+    function setupCountryHeadcountHandlers() {
+        const headcountInputs = document.querySelectorAll('.country-headcount');
+        headcountInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                updateSummaryValues();
+                validateHeadcountDistribution();
+            });
+            input.addEventListener('change', function() {
+                updateSummaryValues();
+                validateHeadcountDistribution();
+            });
+        });
+    }
+
+    // Function to update summary values
+    function updateSummaryValues() {
+        const requirementValueInput = document.getElementById('requirement-value-input');
+        const totalAllocated = document.getElementById('total-allocated');
+        const requiredTotal = document.getElementById('required-total');
+        const remainingTotal = document.getElementById('remaining-total');
+
+        if (!requirementValueInput || !totalAllocated || !requiredTotal || !remainingTotal) {
+            return;
+        }
+
+        const requiredValue = parseInt(requirementValueInput.value) || 0;
+
+        // Update required total
+        requiredTotal.textContent = requiredValue;
+
+        // Calculate allocated total from country inputs
+        const headcountInputs = document.querySelectorAll('.country-headcount');
+        let allocatedValue = 0;
+        headcountInputs.forEach(input => {
+            const value = parseInt(input.value) || 0;
+            allocatedValue += value;
+        });
+
+        // Update total allocated
+        totalAllocated.textContent = allocatedValue;
+
+        // Calculate remaining
+        const remaining = requiredValue - allocatedValue;
+        remainingTotal.textContent = remaining;
+
+        // Apply color styling based on remaining value
+        remainingTotal.classList.remove('zero', 'error', 'positive');
+        if (remaining === 0 && requiredValue > 0) {
+            remainingTotal.classList.add('zero');
+        } else if (remaining < 0) {
+            remainingTotal.classList.add('error');
+        } else if (remaining > 0) {
+            remainingTotal.classList.add('positive');
+        }
+    }
+
+    // Function to validate headcount distribution against total requirement
+    function validateHeadcountDistribution() {
+        const requirementValueInput = document.getElementById('requirement-value-input');
+        const totalRequirement = parseInt(requirementValueInput.value) || 0;
+        const headcountInputs = document.querySelectorAll('.country-headcount');
+        let currentTotalHeadcount = 0;
+
+        headcountInputs.forEach(input => {
+            const value = parseInt(input.value) || 0;
+            currentTotalHeadcount += value;
+        });
+
+        // Update summary values
+        updateSummaryValues();
+
+        // Show validation message
+        const validationMessage = document.getElementById('validation-message');
+        if (validationMessage) {
+            if (currentTotalHeadcount === totalRequirement && totalRequirement > 0) {
+                validationMessage.textContent = '✓ Perfect! All headcount has been allocated.';
+                validationMessage.className = 'validation-message success';
+                validationMessage.style.display = 'block';
+            } else if (currentTotalHeadcount > totalRequirement) {
+                const excess = currentTotalHeadcount - totalRequirement;
+                validationMessage.textContent = `⚠ Over-allocated by ${excess}. Please reduce the numbers.`;
+                validationMessage.className = 'validation-message error';
+                validationMessage.style.display = 'block';
+            } else if (currentTotalHeadcount < totalRequirement && currentTotalHeadcount > 0) {
+                const remaining = totalRequirement - currentTotalHeadcount;
+                validationMessage.textContent = `⚠ ${remaining} more needed to meet requirement.`;
+                validationMessage.className = 'validation-message error';
+                validationMessage.style.display = 'block';
+            } else {
+                validationMessage.style.display = 'none';
+            }
+        }
+    }
+
+    // Function to update the total requirement display
+    function updateRequiredTotal() {
+        const requirementSelect = document.getElementById('requirement-select');
+        const totalTrainersInput = document.getElementById('total-trainers');
+        const requirementRow = document.querySelector('.location-row:nth-child(3)');
+
+        if (requirementSelect && totalTrainersInput && requirementRow) {
+            const requirementType = requirementSelect.value;
+            const requirementLabel = requirementRow.querySelector('.location-label');
+
+            if (requirementType === 'headcount') {
+                requirementLabel.textContent = '* Headcount #';
+                totalTrainersInput.setAttribute('name', 'headcount');
+            } else if (requirementType === 'fte') {
+                requirementLabel.textContent = '* FTE #';
+                totalTrainersInput.setAttribute('name', 'fte');
+            }
+        }
+    }
+
+    // Initialize form with default values
+    updateLocationDetails();
+
+    // Initialize country headcount functionality
+    setupCountryHeadcountHandlers();
+    updateRequiredTotal();
+
+    // Add event listener for requirement value input
+    const requirementValueInput = document.getElementById('requirement-value-input');
+    if (requirementValueInput) {
+        requirementValueInput.addEventListener('input', function() {
+            updateSummaryValues();
+            validateHeadcountDistribution();
+        });
+    }
+
+    // Duration dropdown handlers
+    const trainingDuration = document.getElementById('training-duration');
+    const trainingDurationNumber = document.getElementById('training-duration-number');
+    const nestingDuration = document.getElementById('nesting-duration');
+    const nestingDurationNumber = document.getElementById('nesting-duration-number');
+
+    if (trainingDuration && trainingDurationNumber) {
+        trainingDuration.addEventListener('change', function() {
+            if (this.value === 'days' || this.value === 'weeks') {
+                trainingDurationNumber.style.display = 'block';
+                trainingDurationNumber.required = true;
+            } else {
+                trainingDurationNumber.style.display = 'none';
+                trainingDurationNumber.required = false;
+                trainingDurationNumber.value = '';
+            }
+        });
+    }
+
+    if (nestingDuration && nestingDurationNumber) {
+        nestingDuration.addEventListener('change', function() {
+            if (this.value === 'days' || this.value === 'weeks') {
+                nestingDurationNumber.style.display = 'block';
+                nestingDurationNumber.required = true;
+            } else {
+                nestingDurationNumber.style.display = 'none';
+                nestingDurationNumber.required = false;
+                nestingDurationNumber.value = '';
+            }
+        });
+    }
+
+    // Operational assumptions auto-formatting
+    const assumptionInputs = document.querySelectorAll('.assumption-input');
+
+    assumptionInputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            // Remove the "1:" prefix when focusing to allow easy editing
+            if (this.value.startsWith('1:')) {
+                this.value = this.value.substring(2);
+            }
+        });
+
+        input.addEventListener('blur', function() {
+            // Add back the "1:" prefix when losing focus if there's a value
+            let value = this.value.replace(/[^0-9]/g, '');
+            if (value && value !== '') {
+                this.value = `1:${value}`;
+            } else {
+                this.value = '1:1'; // Default to 1:1 if empty
+            }
+        });
+
+        input.addEventListener('keypress', function(e) {
+            // Only allow numbers
+            if (!/[0-9]/.test(e.key) && !['Backspace', 'Delete', 'Tab', 'Enter'].includes(e.key)) {
+                e.preventDefault();
+            }
+        });
+    });
+
+    // Initialize calendar
+    new DateCalendar();
+});

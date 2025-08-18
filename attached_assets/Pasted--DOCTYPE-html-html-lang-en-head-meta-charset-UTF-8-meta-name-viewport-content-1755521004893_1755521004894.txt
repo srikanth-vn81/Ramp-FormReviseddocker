@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramp Input Form - Navigation Bar</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="#" class="logo">WFM Analytics</a>
+            </div>
+
+            <div class="nav-menu">
+                <a href="#" class="nav-link home-link active">
+                    <span class="nav-icon">🏠</span>Home
+                </a>
+                <div class="nav-dropdown">
+                    <a href="#" class="nav-link dropdown-toggle">
+                        <span class="nav-icon">📋</span>Forms <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item">
+                            <span class="dropdown-icon">📊</span>Ramp Input Form
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <span class="dropdown-icon">📏</span>Sizing Form
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-login">
+                <a href="#" class="nav-link login-btn">
+                    <span class="nav-icon">👤</span>Login
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="form-container">
+            <!-- Left Side - Training Form -->
+            <div class="left-section">
+                <form class="training-form">
+                    <h1>Training Details</h1>
+
+                    <div class="form-row">
+                        <label for="ramp-start">* Ramp Start Date</label>
+                        <div class="date-controls">
+                            <select id="ramp-start-availability" name="ramp-start-availability" required>
+                                <option value="" selected disabled>Select</option>
+                                <option value="available">Available</option>
+                                <option value="not-available">Not Available</option>
+                            </select>
+                            <input type="date" id="ramp-start-date" name="ramp-start-date" style="display: none;" class="date-input">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="ramp-end">* Ramp End Date</label>
+                        <div class="date-controls">
+                            <select id="ramp-end-availability" name="ramp-end-availability" required>
+                                <option value="" selected disabled>Select</option>
+                                <option value="available">Available</option>
+                                <option value="not-available">Not Available</option>
+                            </select>
+                            <input type="date" id="ramp-end-date" name="ramp-end-date" style="display: none;" class="date-input">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="client-trainer">* Client Trainer</label>
+                        <select id="client-trainer" name="client-trainer" required>
+                            <option value="" selected disabled>Select</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="internal-trainer">* Internal Trainer</label>
+                        <select id="internal-trainer" name="internal-trainer" required>
+                            <option value="" selected disabled>Select</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="total-trainers">* # of Total Trainer</label>
+                        <input type="number" id="total-trainers" name="total-trainers" value="0" min="0" required>
+                    </div>
+
+                    <!-- Additional fields that appear after trainer selection -->
+                    <div id="additional-fields" class="additional-fields" style="display: none;">
+                        <div class="form-row">
+                            <label for="training-duration">* Training Duration</label>
+                            <div class="duration-controls">
+                                <select id="training-duration" name="training-duration" required>
+                                    <option value="" selected disabled>Select</option>
+                                    <option value="days">Days</option>
+                                    <option value="weeks">Weeks</option>
+                                </select>
+                                <select id="training-duration-number" name="training-duration-number" style="display: none;" required>
+                                    <option value="" selected disabled>Select</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="nesting-duration">* Nesting Duration</label>
+                            <div class="duration-controls">
+                                <select id="nesting-duration" name="nesting-duration" required>
+                                    <option value="" selected disabled>Select</option>
+                                    <option value="days">Days</option>
+                                    <option value="weeks">Weeks</option>
+                                </select>
+                                <select id="nesting-duration-number" name="nesting-duration-number" style="display: none;" required>
+                                    <option value="" selected disabled>Select</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="batch-size">* Batch Size</label>
+                            <select id="batch-size" name="batch-size" required>
+                                <option value="" selected disabled>Select</option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="25">25</option>
+                                <option value="30">30</option>
+                                <option value="35">35</option>
+                                <option value="40">40</option>
+                                <option value="45">45</option>
+                                <option value="50">50</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="operational-assumptions">
+                    <h2>Operational Assumptions</h2>
+                    <div class="assumptions-table">
+                        <div class="assumption-row">
+                            <span class="assumption-label">Supervisor Ratio</span>
+                            <input class="assumption-input" type="text" value="1:1" />
+                        </div>
+                        <div class="assumption-row">
+                            <span class="assumption-label">QA Ratio</span>
+                            <input class="assumption-input" type="text" value="1:1" />
+                        </div>
+                        <div class="assumption-row">
+                            <span class="assumption-label">Trainer Ratio</span>
+                            <input class="assumption-input" type="text" value="1:1" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="language-channel-support">
+                    <h2>Language & Channel Support</h2>
+
+                    <div class="language-row">
+                        <label for="languages-supported">Languages Supported</label>
+                        <select id="languages-supported" name="languages-supported">
+                            <option value="" selected disabled>Select</option>
+                            <option value="single">Single</option>
+                            <option value="bilingual">Bilingual</option>
+                        </select>
+                    </div>
+
+                    <div class="channel-section">
+                        <h3>Channel Support :-</h3>
+                        <div class="channel-checkboxes">
+                            <div class="checkbox-row">
+                                <input type="checkbox" id="voice-inbound" name="channels" value="voice-inbound">
+                                <label for="voice-inbound">Voice- Inbound</label>
+                            </div>
+                            <div class="checkbox-row">
+                                <input type="checkbox" id="voice-outbound" name="channels" value="voice-outbound">
+                                <label for="voice-outbound">Voice- Outbound</label>
+                            </div>
+                            <div class="checkbox-row">
+                                <input type="checkbox" id="chat" name="channels" value="chat">
+                                <label for="chat">Chat</label>
+                            </div>
+                            <div class="checkbox-row">
+                                <input type="checkbox" id="email" name="channels" value="email">
+                                <label for="email">Email</label>
+                            </div>
+                            <div class="checkbox-row">
+                                <input type="checkbox" id="back-office" name="channels" value="back-office">
+                                <label for="back-office">Back Office</label>
+                            </div>
+                            <div class="checkbox-row">
+                                <input type="checkbox" id="social-sms" name="channels" value="social-sms">
+                                <label for="social-sms">Social Media/SMS</label>
+                            </div>
+                            <div class="checkbox-row">
+                                <input type="checkbox" id="others" name="channels" value="others">
+                                <label for="others">Others</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side - Location Details Form -->
+            <div class="right-section">
+                <div class="location-details">
+                    <div class="location-header">
+                        <h2>Location Details</h2>
+                        <div class="location-actions">
+                            <button type="button" class="reset-btn">Reset</button>
+                            <button type="button" class="save-btn">
+                                <span class="save-icon">💾</span>
+                                Save
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="location-form">
+                        <div class="location-row">
+                            <label class="location-label required">* Requirement</label>
+                            <div class="location-fields">
+                                <select class="location-select" id="requirement-select">
+                                    <option value="" disabled>Select</option>
+                                    <option value="headcount" selected>Headcount</option>
+                                    <option value="fte">FTE</option>
+                                </select>
+                                <input type="number" id="requirement-value-input" class="location-input requirement-number" value="100" placeholder="Enter value" min="1">
+                            </div>
+                        </div>
+
+                        <div class="location-row">
+                            <label class="location-label required">* Geo (Country)</label>
+                            <div class="location-fields">
+                                <select class="location-select" id="geo-country-select">
+                                    <option value="" disabled>Select</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4" selected>4</option>
+                                </select>
+                                <span class="country-count-display">4 Countries Selected</span>
+                            </div>
+                        </div>
+
+                        <div class="country-headcount-section">
+                            <label class="section-label">* Country-wise Headcount Distribution</label>
+                            <div class="country-grid" id="country-grid">
+                                <div class="country-item">
+                                    <label class="country-label">PHL</label>
+                                    <input type="number" class="country-headcount" data-country="PHL" min="0" placeholder="0">
+                                </div>
+                                <div class="country-item">
+                                    <label class="country-label">USA</label>
+                                    <input type="number" class="country-headcount" data-country="USA" min="0" placeholder="0">
+                                </div>
+                                <div class="country-item">
+                                    <label class="country-label">IND</label>
+                                    <input type="number" class="country-headcount" data-country="IND" min="0" placeholder="0">
+                                </div>
+                                <div class="country-item">
+                                    <label class="country-label">COL</label>
+                                    <input type="number" class="country-headcount" data-country="COL" min="0" placeholder="0">
+                                </div>
+                            </div>
+                            <div class="headcount-summary">
+                                <div class="summary-item">
+                                    <span class="summary-label">Total Allocated:</span>
+                                    <span class="summary-value" id="total-allocated">0</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Required:</span>
+                                    <span class="summary-value" id="required-total">100</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Remaining:</span>
+                                    <span class="summary-value" id="remaining-total">100</span>
+                                </div>
+                            </div>
+                            <div class="validation-message" id="validation-message" style="display: none;"></div>
+                        </div>
+
+                        <!-- Dynamic Sites Configuration Section -->
+                        <div class="sites-configuration-section">
+                            <div class="sites-header">
+                                <label class="section-label">Sites Configuration</label>
+                            </div>
+
+                            <div class="sites-table-container">
+                                <table class="sites-table" id="sites-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="site-header">Metrics</th>
+                                            <th class="country-header" data-country="PHL">
+                                                <div class="country-sites-header">
+                                                    <span>PHL</span>
+                                                    <select class="country-sites-select" data-country="PHL">
+                                                        <option value="1">1 Site</option>
+                                                        <option value="2">2 Sites</option>
+                                                        <option value="3" selected>3 Sites</option>
+                                                    </select>
+                                                </div>
+                                            </th>
+                                            <th class="country-header" data-country="USA">
+                                                <div class="country-sites-header">
+                                                    <span>USA</span>
+                                                    <select class="country-sites-select" data-country="USA">
+                                                        <option value="1">1 Site</option>
+                                                        <option value="2">2 Sites</option>
+                                                        <option value="3" selected>3 Sites</option>
+                                                    </select>
+                                                </div>
+                                            </th>
+                                            <th class="country-header" data-country="IND">
+                                                <div class="country-sites-header">
+                                                    <span>IND</span>
+                                                    <select class="country-sites-select" data-country="IND">
+                                                        <option value="1">1 Site</option>
+                                                        <option value="2">2 Sites</option>
+                                                        <option value="3" selected>3 Sites</option>
+                                                    </select>
+                                                </div>
+                                            </th>
+                                            <th class="country-header" data-country="COL">
+                                                <div class="country-sites-header">
+                                                    <span>COL</span>
+                                                    <select class="country-sites-select" data-country="COL">
+                                                        <option value="1">1 Site</option>
+                                                        <option value="2">2 Sites</option>
+                                                        <option value="3" selected>3 Sites</option>
+                                                    </select>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="sites-table-body">
+                                        <!-- Sites will be dynamically generated here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Calendar Modal -->
+    <div id="calendar-modal" class="calendar-modal">
+        <div class="calendar-content">
+            <div class="calendar-header">
+                <span class="close-calendar">&times;</span>
+                <h3 id="calendar-title">Select Date</h3>
+            </div>
+            <div class="calendar-nav">
+                <button id="prev-month">&lt;</button>
+                <span id="current-month-year"></span>
+                <button id="next-month">&gt;</button>
+            </div>
+            <div id="calendar-grid" class="calendar-grid">
+                <div class="calendar-weekdays">
+                    <div>Sun</div>
+                    <div>Mon</div>
+                    <div>Tue</div>
+                    <div>Wed</div>
+                    <div>Thu</div>
+                    <div>Fri</div>
+                    <div>Sat</div>
+                </div>
+                <div id="calendar-days" class="calendar-days"></div>
+            </div>
+            <div class="calendar-actions">
+                <button id="calendar-cancel" class="calendar-btn cancel">Cancel</button>
+                <button id="calendar-confirm" class="calendar-btn confirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+    <script>
+        // Initialize geo country functionality after DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            const geoSelect = document.getElementById('geo-country-select');
+            if (geoSelect) {
+                geoSelect.addEventListener('change', function() {
+                    console.log('Geo select changed to:', this.value);
+                    const geoSelect = document.getElementById('geo-country-select');
+                    const countryGrid = document.getElementById('country-grid');
+                    const countryCountDisplay = document.querySelector('.country-count-display');
+
+                    if (!geoSelect || !countryGrid) return;
+
+                    const selectedValue = geoSelect.value;
+                    const countryMappings = {
+                        '1': ['PHL'],
+                        '2': ['PHL', 'USA'],
+                        '3': ['PHL', 'USA', 'IND'],
+                        '4': ['PHL', 'USA', 'IND', 'COL']
+                    };
+
+                    const countries = countryMappings[selectedValue] || ['PHL', 'USA', 'IND', 'COL'];
+
+                    // Update country count display
+                    if (countryCountDisplay) {
+                        countryCountDisplay.textContent = `${countries.length} Countries Selected`;
+                    }
+
+                    // Clear existing country items
+                    countryGrid.innerHTML = '';
+
+                    // Add new country items only for selected countries
+                    countries.forEach(country => {
+                        const countryItem = document.createElement('div');
+                        countryItem.className = 'country-item';
+
+                        countryItem.innerHTML = `
+                            <label class="country-label">${country}</label>
+                            <input type="number" class="country-headcount" data-country="${country}" min="0" placeholder="0">
+                        `;
+
+                        countryGrid.appendChild(countryItem);
+                    });
+
+                    // Update grid template columns based on number of countries
+                    countryGrid.style.gridTemplateColumns = `repeat(${countries.length}, 1fr)`;
+
+                    // Re-setup event handlers for new country inputs
+                    const newHeadcountInputs = document.querySelectorAll('.country-headcount');
+                    newHeadcountInputs.forEach(input => {
+                        input.addEventListener('input', function() {
+                            updateSummaryValues();
+                            validateHeadcountDistribution();
+                        });
+                        input.addEventListener('change', function() {
+                            updateSummaryValues();
+                            validateHeadcountDistribution();
+                        });
+                    });
+
+                    // Initialize summary values
+                    updateSummaryValues();
+
+                    // Update sites table
+                    updateSitesTable(countries);
+                });
+
+                // Trigger initial display
+                geoSelect.dispatchEvent(new Event('change'));
+            }
+        });
+
+        // Function to update summary values
+        function updateSummaryValues() {
+            const requirementValueInput = document.getElementById('requirement-value-input');
+            const totalAllocated = document.getElementById('total-allocated');
+            const requiredTotal = document.getElementById('required-total');
+            const remainingTotal = document.getElementById('remaining-total');
+
+            if (!requirementValueInput || !totalAllocated || !requiredTotal || !remainingTotal) {
+                return;
+            }
+
+            const requiredValue = parseInt(requirementValueInput.value) || 0;
+
+            // Update required total
+            requiredTotal.textContent = requiredValue;
+
+            // Calculate allocated total from country inputs
+            const headcountInputs = document.querySelectorAll('.country-headcount');
+            let allocatedValue = 0;
+            headcountInputs.forEach(input => {
+                const value = parseInt(input.value) || 0;
+                allocatedValue += value;
+            });
+
+            // Update total allocated
+            totalAllocated.textContent = allocatedValue;
+
+            // Calculate remaining
+            const remaining = requiredValue - allocatedValue;
+            remainingTotal.textContent = remaining;
+
+            // Apply color styling based on remaining value
+            remainingTotal.classList.remove('zero', 'error', 'positive');
+            if (remaining === 0 && requiredValue > 0) {
+                remainingTotal.classList.add('zero');
+            } else if (remaining < 0) {
+                remainingTotal.classList.add('error');
+            } else if (remaining > 0) {
+                remainingTotal.classList.add('positive');
+            }
+        }
+
+        // Function to validate headcount distribution
+        function validateHeadcountDistribution() {
+            const requirementValueInput = document.getElementById('requirement-value-input');
+            const totalRequirement = parseInt(requirementValueInput.value) || 0;
+            const headcountInputs = document.querySelectorAll('.country-headcount');
+            let currentTotalHeadcount = 0;
+
+            headcountInputs.forEach(input => {
+                const value = parseInt(input.value) || 0;
+                currentTotalHeadcount += value;
+            });
+
+            // Show validation message
+            const validationMessage = document.getElementById('validation-message');
+            if (validationMessage) {
+                if (currentTotalHeadcount === totalRequirement && totalRequirement > 0) {
+                    validationMessage.textContent = '✓ Perfect! All headcount has been allocated.';
+                    validationMessage.className = 'validation-message success';
+                    validationMessage.style.display = 'block';
+                } else if (currentTotalHeadcount > totalRequirement) {
+                    const excess = currentTotalHeadcount - totalRequirement;
+                    validationMessage.textContent = `⚠ Over-allocated by ${excess}. Please reduce the numbers.`;
+                    validationMessage.className = 'validation-message error';
+                    validationMessage.style.display = 'block';
+                } else if (currentTotalHeadcount < totalRequirement && currentTotalHeadcount > 0) {
+                    const remaining = totalRequirement - currentTotalHeadcount;
+                    validationMessage.textContent = `⚠ ${remaining} more needed to meet requirement.`;
+                    validationMessage.className = 'validation-message error';
+                    validationMessage.style.display = 'block';
+                } else {
+                    validationMessage.style.display = 'none';
+                }
+            }
+        }
+
+        // Function to update sites table based on selected countries
+        function updateSitesTable(selectedCountries) {
+            const sitesTable = document.getElementById('sites-table');
+            const sitesTableBody = document.getElementById('sites-table-body');
+
+            if (!sitesTable || !sitesTableBody) return;
+
+            // Update column visibility
+            const allCountries = ['PHL', 'USA', 'IND', 'COL'];
+            const headers = sitesTable.querySelectorAll('th.country-header');
+
+            headers.forEach(header => {
+                const country = header.getAttribute('data-country');
+                if (selectedCountries.includes(country)) {
+                    header.classList.remove('hidden-country');
+                } else {
+                    header.classList.add('hidden-country');
+                }
+            });
+
+            // Generate initial sites rows
+            generateSitesRows(selectedCountries);
+
+            // Add event listeners to country site selectors
+            const countrySiteSelects = document.querySelectorAll('.country-sites-select');
+            countrySiteSelects.forEach(select => {
+                if (selectedCountries.includes(select.getAttribute('data-country'))) {
+                    select.addEventListener('change', function() {
+                        generateSitesRows(selectedCountries);
+                    });
+                }
+            });
+        }
+
+        // Function to generate sites table rows
+        function generateSitesRows(selectedCountries) {
+            const sitesTableBody = document.getElementById('sites-table-body');
+            if (!sitesTableBody) return;
+
+            sitesTableBody.innerHTML = '';
+
+            // Get the maximum number of sites across all countries
+            const allCountries = ['PHL', 'USA', 'IND', 'COL'];
+            let maxSites = 0;
+
+            // Collect site counts for each country
+            const countrySiteCounts = {};
+            selectedCountries.forEach(country => {
+                const select = document.querySelector(`.country-sites-select[data-country="${country}"]`);
+                const siteCount = select ? parseInt(select.value) : 3;
+                countrySiteCounts[country] = siteCount;
+                maxSites = Math.max(maxSites, siteCount);
+            });
+
+            // Define all metrics
+            const metrics = [
+                'Site Location',
+                'Agent Profile',
+                'Lead Time to Hire (Days)',
+                'Weekly Hiring Capacity',
+                'Monthly Hiring Capacity'
+            ];
+
+            // Generate rows grouped by site number
+            for (let siteIndex = 1; siteIndex <= maxSites; siteIndex++) {
+                // Create site header row
+                const siteHeaderRow = document.createElement('tr');
+                const siteHeaderCell = document.createElement('td');
+                siteHeaderCell.className = 'site-row-header';
+                siteHeaderCell.textContent = `Site ${siteIndex}`;
+                siteHeaderRow.appendChild(siteHeaderCell);
+
+                // Add empty cells for country columns in header
+                allCountries.forEach(country => {
+                    const cell = document.createElement('td');
+                    cell.className = selectedCountries.includes(country) ? 'site-row-header' : 'hidden-country site-row-header';
+                    siteHeaderRow.appendChild(cell);
+                });
+
+                sitesTableBody.appendChild(siteHeaderRow);
+
+                // Create rows for each metric for this site
+                metrics.forEach((metric, metricIndex) => {
+                    const metricRow = document.createElement('tr');
+
+                    // Metric name cell
+                    const metricCell = document.createElement('td');
+                    metricCell.className = 'site-metric-row';
+                    metricCell.innerHTML = `<span style="font-size: 10px; color: #666; margin-left: 10px;">${metric}</span>`;
+                    metricRow.appendChild(metricCell);
+
+                    // Country columns for metric
+                    allCountries.forEach(country => {
+                        const cell = document.createElement('td');
+                        const isCountryVisible = selectedCountries.includes(country);
+                        const isSiteAvailable = siteIndex <= (countrySiteCounts[country] || 0);
+
+                        cell.className = isCountryVisible ? '' : 'hidden-country';
+
+                        if (isCountryVisible && isSiteAvailable) {
+                            if (metric === 'Site Location') {
+                                const select = document.createElement('select');
+                                select.className = 'site-location-select';
+                                select.setAttribute('data-country', country);
+                                select.setAttribute('data-site', siteIndex);
+
+                                // Add country-specific location options
+                                if (country === 'PHL') {
+                                    select.innerHTML = `
+                                        <option value="" disabled selected>Select Location</option>
+                                        <option value="manila">Manila</option>
+                                        <option value="cebu">Cebu</option>
+                                        <option value="davao">Davao</option>
+                                        <option value="iloilo">Iloilo</option>
+                                        <option value="bacolod">Bacolod</option>
+                                    `;
+                                } else if (country === 'USA') {
+                                    select.innerHTML = `
+                                        <option value="" disabled selected>Select Location</option>
+                                        <option value="new-york">New York</option>
+                                        <option value="california">California</option>
+                                        <option value="texas">Texas</option>
+                                        <option value="florida">Florida</option>
+                                    `;
+                                } else if (country === 'IND') {
+                                    select.innerHTML = `
+                                        <option value="" disabled selected>Select Location</option>
+                                        <option value="bangalore">Bangalore</option>
+                                        <option value="mumbai">Mumbai</option>
+                                        <option value="delhi">Delhi</option>
+                                        <option value="hyderabad">Hyderabad</option>
+                                        <option value="chennai">Chennai</option>
+                                    `;
+                                } else if (country === 'COL') {
+                                    select.innerHTML = `
+                                        <option value="" disabled selected>Select Location</option>
+                                        <option value="bogota">Bogota</option>
+                                        <option value="medellin">Medellin</option>
+                                        <option value="cali">Cali</option>
+                                        <option value="barranquilla">Barranquilla</option>
+                                    `;
+                                }
+
+                                cell.appendChild(select);
+                            } else if (metric === 'Agent Profile') {
+                                const select = document.createElement('select');
+                                select.className = 'agent-profile-select';
+                                select.setAttribute('data-country', country);
+                                select.setAttribute('data-site', siteIndex);
+                                select.innerHTML = `
+                                    <option value="" disabled selected>Select</option>
+                                    <option value="junior">Junior</option>
+                                    <option value="senior">Senior</option>
+                                    <option value="expert">Expert</option>
+                                `;
+                                cell.appendChild(select);
+                            } else {
+                                const input = document.createElement('input');
+                                input.type = 'number';
+                                input.className = 'metric-input';
+                                input.setAttribute('data-country', country);
+                                input.setAttribute('data-site', siteIndex);
+                                input.placeholder = '0';
+                                input.min = '0';
+
+                                if (metric === 'Lead Time to Hire (Days)') {
+                                    input.max = '365';
+                                } else if (metric === 'Weekly Hiring Capacity') {
+                                    input.max = '100';
+                                } else if (metric === 'Monthly Hiring Capacity') {
+                                    input.max = '500';
+                                }
+
+                                cell.appendChild(input);
+                            }
+                        } else if (isCountryVisible && !isSiteAvailable) {
+                            // Show empty cell for sites that are not available for this country
+                            cell.style.backgroundColor = '#f9fafb';
+                        }
+
+                        metricRow.appendChild(cell);
+                    });
+
+                    sitesTableBody.appendChild(metricRow);
+                });
+            }
+        }
+
+
+    </script>
+</body>
+</html>
