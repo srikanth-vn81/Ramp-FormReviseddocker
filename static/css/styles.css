@@ -70,6 +70,8 @@ body {
     box-shadow: var(--box-shadow);
     border-radius: var(--border-radius);
     background: #fff;
+    z-index: 1050;
+    position: absolute;
 }
 
 .dropdown-item {
@@ -98,9 +100,11 @@ body {
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     transition: var(--transition);
-    overflow: hidden;
+    overflow: visible;
     margin-bottom: 0.5rem;
     height: 100%;
+    position: relative;
+    z-index: 1;
 }
 
 .card:hover {
@@ -143,18 +147,22 @@ body {
 
 .form-control,
 .form-select {
-    border: 2px solid #e2e8f0;
+    border: 1px solid #e2e8f0;
     border-radius: var(--border-radius);
-    padding: 0.75rem 1rem;
-    font-size: 0.95rem;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
     transition: var(--transition);
     background-color: #fff;
+    position: relative;
+    z-index: 1;
 }
 
 .form-control-sm,
 .form-select-sm {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.85rem;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.8rem;
+    position: relative;
+    z-index: 1;
 }
 
 .form-control:focus,
@@ -162,6 +170,8 @@ body {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.1);
     background-color: #fff;
+    z-index: 10;
+    position: relative;
 }
 
 .form-check-input {
