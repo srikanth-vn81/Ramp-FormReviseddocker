@@ -40,18 +40,13 @@ def generate_date_choices():
 def index():
     form = RampInputForm()
     
-    # Set date choices dynamically
-    date_choices = generate_date_choices()
-    form.ramp_start_date.choices = date_choices
-    form.ramp_end_date.choices = date_choices
-    
     if form.validate_on_submit():
         # Process form data
         form_data = {
             'ramp_start_availability': form.ramp_start_availability.data,
-            'ramp_start_date': form.ramp_start_date.data if form.ramp_start_date.data else None,
+            'ramp_start_date': form.ramp_start_date.data.isoformat() if form.ramp_start_date.data else None,
             'ramp_end_availability': form.ramp_end_availability.data,
-            'ramp_end_date': form.ramp_end_date.data if form.ramp_end_date.data else None,
+            'ramp_end_date': form.ramp_end_date.data.isoformat() if form.ramp_end_date.data else None,
             'client_trainer': form.client_trainer.data,
             'internal_trainer': form.internal_trainer.data,
             'total_trainers': form.total_trainers.data,

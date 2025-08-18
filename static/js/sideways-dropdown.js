@@ -1,5 +1,6 @@
 // Sideways dropdown implementation for select elements
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Sideways dropdown script loading...');
     // Add CSS for sideways dropdowns
     const style = document.createElement('style');
     style.textContent = `
@@ -55,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
             min-width: 200px;
             max-height: 250px;
             overflow-y: auto;
-            z-index: 9999;
+            z-index: 99999;
             display: none;
             animation: slideIn 0.15s ease-out;
         }
@@ -116,9 +117,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Convert all form-select elements to sideways dropdowns
     function convertAllSelects() {
         const selects = document.querySelectorAll('select.form-select');
+        console.log('Found', selects.length, 'select elements to convert');
         
-        selects.forEach(select => {
+        selects.forEach((select, index) => {
             if (!select.classList.contains('sideways-hidden')) {
+                console.log('Converting select', index + 1, ':', select);
                 convertToSidewaysDropdown(select);
             }
         });
