@@ -25,6 +25,9 @@ class RampFormController {
         // Trainer field handlers
         this.setupTrainerHandlers();
         
+        // Operational assumptions handlers
+        this.setupOperationalAssumptionsHandlers();
+        
         // Form submission handler
         if (this.form) {
             this.form.addEventListener('submit', this.handleFormSubmission.bind(this));
@@ -141,16 +144,12 @@ class RampFormController {
             const hasInternalTrainer = internalTrainer && internalTrainer.value !== '';
             const hasTotalTrainers = totalTrainers && parseInt(totalTrainers.value) > 0;
 
-            // Auto-calculate total trainers if both client and internal trainers are selected
-            if (hasClientTrainer && hasInternalTrainer && totalTrainers) {
-                const clientCount = parseInt(clientTrainer.value) || 0;
-                const internalCount = parseInt(internalTrainer.value) || 0;
+            // Auto-calculate total trainers whenever either field changes
+            if (totalTrainers) {
+                const clientCount = (hasClientTrainer) ? parseInt(clientTrainer.value) || 0 : 0;
+                const internalCount = (hasInternalTrainer) ? parseInt(internalTrainer.value) || 0 : 0;
                 const calculatedTotal = clientCount + internalCount;
-                
-                // Only auto-fill if the field is empty or zero
-                if (!totalTrainers.value || parseInt(totalTrainers.value) === 0) {
-                    totalTrainers.value = calculatedTotal;
-                }
+                totalTrainers.value = calculatedTotal;
             }
 
             // Show additional fields if any trainer field is filled (more flexible)
@@ -181,6 +180,57 @@ class RampFormController {
         if (totalTrainers) {
             totalTrainers.addEventListener('input', checkTrainerFields);
         }
+    }
+
+    /**
+     * Setup operational assumptions ratio handlers
+     */
+    setupOperationalAssumptionsHandlers() {
+        const ratioFields = [
+            'supervisor_ratio',
+            'qa_ratio', 
+            'trainer_ratio'
+        ];
+
+        ratioFields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                // Handle input to format with 1: prefix
+                field.addEventListener('input', (e) => {
+                    let value = e.target.value;
+                    
+                    // Remove any existing "1:" to avoid duplication
+                    if (value.startsWith('1:')) {
+                        value = value.substring(2);
+                    }
+                    
+                    // Remove non-numeric characters except for existing colons
+                    value = value.replace(/[^0-9]/g, '');
+                    
+                    // Add the "1:" prefix if there's a number
+                    if (value && value.trim() !== '') {
+                        e.target.value = '1:' + value;
+                    } else {
+                        e.target.value = '1:1'; // Default to 1:1 if empty
+                    }
+                });
+
+                // Handle focus to position cursor after "1:"
+                field.addEventListener('focus', (e) => {
+                    if (e.target.value === '1:1' || e.target.value === '1:') {
+                        // Position cursor after "1:"
+                        setTimeout(() => {
+                            e.target.setSelectionRange(2, e.target.value.length);
+                        }, 0);
+                    }
+                });
+
+                // Initialize with 1:1 if empty
+                if (!field.value || field.value.trim() === '') {
+                    field.value = '1:1';
+                }
+            }
+        });
     }
 
     /**
