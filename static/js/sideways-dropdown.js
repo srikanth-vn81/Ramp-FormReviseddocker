@@ -48,17 +48,17 @@ document.addEventListener('DOMContentLoaded', function() {
             position: absolute;
             top: 0;
             left: 100%;
-            margin-left: 0.5rem;
+            margin-left: 10px;
             background: white;
             border: 1px solid #e2e8f0;
             border-radius: 8px;
-            box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.15);
-            min-width: 200px;
-            max-height: 250px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 150px;
+            max-width: 200px;
+            max-height: 200px;
             overflow-y: auto;
-            z-index: 99999;
+            z-index: 999999;
             display: none;
-            animation: slideIn 0.15s ease-out;
         }
         
         @keyframes slideIn {
@@ -73,7 +73,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         .sideways-dropdown.open .sideways-dropdown-menu {
-            display: block;
+            display: block !important;
+            visibility: visible !important;
         }
         
         .sideways-dropdown-item {
@@ -257,27 +258,13 @@ document.addEventListener('DOMContentLoaded', function() {
             // Toggle current dropdown
             wrapper.classList.toggle('open');
             
-            // Smart positioning - always try to position to the right first
+            // Position the menu to the right
             if (wrapper.classList.contains('open')) {
-                setTimeout(() => {
-                    const rect = wrapper.getBoundingClientRect();
-                    const viewportWidth = window.innerWidth;
-                    
-                    // Always try right side first (sideways positioning)
-                    menu.style.left = '100%';
-                    menu.style.right = 'auto';
-                    menu.style.marginLeft = '0.5rem';
-                    menu.style.marginRight = '0';
-                    menu.style.top = '0';
-                    
-                    // Only if absolutely no space, fall back to left
-                    if (rect.right + 220 > viewportWidth) {
-                        menu.style.left = 'auto';
-                        menu.style.right = '100%';
-                        menu.style.marginLeft = '0';
-                        menu.style.marginRight = '0.5rem';
-                    }
-                }, 1);
+                menu.style.left = '100%';
+                menu.style.top = '0';
+                menu.style.marginLeft = '10px';
+                menu.style.display = 'block';
+                menu.style.visibility = 'visible';
             }
         }
         
