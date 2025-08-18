@@ -22,13 +22,6 @@ body {
     padding-top: 76px; /* Account for fixed navbar */
 }
 
-.navbar {
-    position: fixed !important;
-    top: 0;
-    width: 100%;
-    z-index: 1030;
-}
-
 .container-fluid {
     max-width: 1400px;
 }
@@ -890,33 +883,4 @@ body {
 
 .container-fluid .row:first-child {
     margin-top: 0 !important;
-}
-
-/* Header styling */
-header {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border-bottom: 3px solid #0d6efd;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    margin-bottom: 0;
-    padding: 1.5rem 0;
-}
-
-header img {
-    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15));
-}
-
-header h1 {
-    margin-top: 0.5rem;
-    font-size: 2rem;
-}
-
-@media (max-width: 768px) {
-    header img {
-        width: 60px !important;
-        height: 60px !important;
-    }
-    
-    header h1 {
-        font-size: 1.5rem;
-    }
 }
