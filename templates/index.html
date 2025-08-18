@@ -79,180 +79,174 @@
                 {{ form.hidden_tag() }}
                 
                 <div class="row g-4">
-                    <!-- Left Section - Compact Training & Configuration -->
-                    <div class="col-lg-8">
-                        <div class="row g-3">
-                            <!-- Training Details Card -->
-                            <div class="col-12">
-                                <div class="card shadow-sm compact-card">
-                                    <div class="card-header bg-primary text-white py-2">
-                                        <h5 class="card-title mb-0">
-                                            <i class="fas fa-graduation-cap me-2"></i>Training Details
-                                        </h5>
-                                    </div>
-                                    <div class="card-body py-3">
-                                        <div class="row g-2">
-                                            <!-- Dates Row -->
-                                            <div class="col-md-6">
-                                                <label class="form-label small fw-semibold required">Ramp Start Date</label>
-                                                <div class="row g-2">
-                                                    <div class="col-7">
-                                                        {{ form.ramp_start_availability(class="form-select form-select-sm") }}
-                                                    </div>
-                                                    <div class="col-5 date-input-container" id="ramp-start-date-container" style="display: none;">
-                                                        {{ form.ramp_start_date(class="form-control form-control-sm") }}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label small fw-semibold required">Ramp End Date</label>
-                                                <div class="row g-2">
-                                                    <div class="col-7">
-                                                        {{ form.ramp_end_availability(class="form-select form-select-sm") }}
-                                                    </div>
-                                                    <div class="col-5 date-input-container" id="ramp-end-date-container" style="display: none;">
-                                                        {{ form.ramp_end_date(class="form-control form-control-sm") }}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row g-2 mt-2">
-                                            <!-- Trainers Row -->
-                                            <div class="col-md-4">
-                                                <label class="form-label small fw-semibold required">Client Trainer</label>
-                                                {{ form.client_trainer(class="form-select form-select-sm") }}
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label class="form-label small fw-semibold required">Internal Trainer</label>
-                                                {{ form.internal_trainer(class="form-select form-select-sm") }}
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label class="form-label small fw-semibold required"># of Total Trainer</label>
-                                                {{ form.total_trainers(class="form-control form-control-sm", min="0") }}
-                                            </div>
-                                        </div>
-
-                                        <!-- Additional Fields (shown conditionally) -->
-                                        <div id="additional-fields" class="additional-fields mt-3" style="display: none;">
+                    <!-- Left Section - Training & Configuration -->
+                    <div class="col-lg-6">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-primary text-white py-2">
+                                <h4 class="card-title mb-0">
+                                    <i class="fas fa-graduation-cap me-2"></i>WFM Ramp Configuration
+                                </h4>
+                            </div>
+                            <div class="card-body py-3">
+                                <!-- Training Details Section -->
+                                <div class="mb-4">
+                                    <h6 class="section-title mb-3">
+                                        <i class="fas fa-calendar-alt me-2 text-primary"></i>Training Schedule
+                                    </h6>
+                                    <div class="row g-2 mb-3">
+                                        <!-- Dates Row -->
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-semibold required">Ramp Start Date</label>
                                             <div class="row g-2">
-                                                <div class="col-md-4">
-                                                    <label class="form-label small fw-semibold">Training Duration</label>
-                                                    <div class="row g-1">
-                                                        <div class="col-6">
-                                                            {{ form.training_duration(class="form-select form-select-sm") }}
-                                                        </div>
-                                                        <div class="col-6" id="training-duration-number-container" style="display: none;">
-                                                            {{ form.training_duration_number(class="form-select form-select-sm") }}
-                                                        </div>
-                                                    </div>
+                                                <div class="col-7">
+                                                    {{ form.ramp_start_availability(class="form-select form-select-sm") }}
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <label class="form-label small fw-semibold">Nesting Duration</label>
-                                                    <div class="row g-1">
-                                                        <div class="col-6">
-                                                            {{ form.nesting_duration(class="form-select form-select-sm") }}
-                                                        </div>
-                                                        <div class="col-6" id="nesting-duration-number-container" style="display: none;">
-                                                            {{ form.nesting_duration_number(class="form-select form-select-sm") }}
-                                                        </div>
-                                                    </div>
+                                                <div class="col-5 date-input-container" id="ramp-start-date-container" style="display: none;">
+                                                    {{ form.ramp_start_date(class="form-control form-control-sm") }}
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <label class="form-label small fw-semibold">Batch Size</label>
-                                                    {{ form.batch_size(class="form-select form-select-sm") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-semibold required">Ramp End Date</label>
+                                            <div class="row g-2">
+                                                <div class="col-7">
+                                                    {{ form.ramp_end_availability(class="form-select form-select-sm") }}
+                                                </div>
+                                                <div class="col-5 date-input-container" id="ramp-end-date-container" style="display: none;">
+                                                    {{ form.ramp_end_date(class="form-control form-control-sm") }}
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-
-                            <!-- Operational Assumptions Card -->
-                            <div class="col-md-6">
-                                <div class="card shadow-sm compact-card">
-                                    <div class="card-header bg-success text-white py-2">
-                                        <h6 class="card-title mb-0">
-                                            <i class="fas fa-cogs me-2"></i>Operational Assumptions
-                                        </h6>
+                                    <div class="row g-2">
+                                        <!-- Trainers Row -->
+                                        <div class="col-md-4">
+                                            <label class="form-label small fw-semibold required">Client Trainer</label>
+                                            {{ form.client_trainer(class="form-select form-select-sm") }}
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small fw-semibold required">Internal Trainer</label>
+                                            {{ form.internal_trainer(class="form-select form-select-sm") }}
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small fw-semibold required"># of Total Trainer</label>
+                                            {{ form.total_trainers(class="form-control form-control-sm", min="0") }}
+                                        </div>
                                     </div>
-                                    <div class="card-body py-3">
+
+                                    <!-- Additional Fields (shown conditionally) -->
+                                    <div id="additional-fields" class="additional-fields mt-3" style="display: none;">
                                         <div class="row g-2">
-                                            <div class="col-12">
-                                                <label class="form-label small fw-semibold">Supervisor Ratio</label>
-                                                {{ form.supervisor_ratio(class="form-control form-control-sm", value="1:1") }}
+                                            <div class="col-md-4">
+                                                <label class="form-label small fw-semibold">Training Duration</label>
+                                                <div class="row g-1">
+                                                    <div class="col-6">
+                                                        {{ form.training_duration(class="form-select form-select-sm") }}
+                                                    </div>
+                                                    <div class="col-6" id="training-duration-number-container" style="display: none;">
+                                                        {{ form.training_duration_number(class="form-select form-select-sm") }}
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-12">
-                                                <label class="form-label small fw-semibold">QA Ratio</label>
-                                                {{ form.qa_ratio(class="form-control form-control-sm", value="1:1") }}
+                                            <div class="col-md-4">
+                                                <label class="form-label small fw-semibold">Nesting Duration</label>
+                                                <div class="row g-1">
+                                                    <div class="col-6">
+                                                        {{ form.nesting_duration(class="form-select form-select-sm") }}
+                                                    </div>
+                                                    <div class="col-6" id="nesting-duration-number-container" style="display: none;">
+                                                        {{ form.nesting_duration_number(class="form-select form-select-sm") }}
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-12">
-                                                <label class="form-label small fw-semibold">Trainer Ratio</label>
-                                                {{ form.trainer_ratio(class="form-control form-control-sm", value="1:1") }}
+                                            <div class="col-md-4">
+                                                <label class="form-label small fw-semibold">Batch Size</label>
+                                                {{ form.batch_size(class="form-select form-select-sm") }}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Language & Channel Support Card -->
-                            <div class="col-md-6">
-                                <div class="card shadow-sm compact-card">
-                                    <div class="card-header bg-info text-white py-2">
-                                        <h6 class="card-title mb-0">
-                                            <i class="fas fa-language me-2"></i>Language & Channel Support
-                                        </h6>
+                                <hr class="section-divider">
+
+                                <!-- Operational Assumptions Section -->
+                                <div class="mb-4">
+                                    <h6 class="section-title mb-3">
+                                        <i class="fas fa-cogs me-2 text-success"></i>Operational Assumptions
+                                    </h6>
+                                    <div class="row g-2">
+                                        <div class="col-md-4">
+                                            <label class="form-label small fw-semibold">Supervisor Ratio</label>
+                                            {{ form.supervisor_ratio(class="form-control form-control-sm", value="1:1") }}
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small fw-semibold">QA Ratio</label>
+                                            {{ form.qa_ratio(class="form-control form-control-sm", value="1:1") }}
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small fw-semibold">Trainer Ratio</label>
+                                            {{ form.trainer_ratio(class="form-control form-control-sm", value="1:1") }}
+                                        </div>
                                     </div>
-                                    <div class="card-body py-3">
-                                        <div class="mb-3">
+                                </div>
+
+                                <hr class="section-divider">
+
+                                <!-- Language & Channel Support Section -->
+                                <div class="mb-0">
+                                    <h6 class="section-title mb-3">
+                                        <i class="fas fa-language me-2 text-info"></i>Language & Channel Support
+                                    </h6>
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-md-6">
                                             <label class="form-label small fw-semibold">Languages Supported</label>
                                             {{ form.languages_supported(class="form-select form-select-sm") }}
                                         </div>
-                                        
-                                        <div class="channel-support">
-                                            <label class="form-label small fw-semibold mb-2">Channels</label>
-                                            <div class="row g-1">
-                                                <div class="col-6">
-                                                    <div class="form-check form-check-sm">
-                                                        {{ form.voice_inbound(class="form-check-input form-check-input-sm") }}
-                                                        <label class="form-check-label small" for="{{ form.voice_inbound.id }}">Voice In</label>
-                                                    </div>
+                                    </div>
+                                    
+                                    <div class="channel-support">
+                                        <label class="form-label small fw-semibold mb-2">Channel Support</label>
+                                        <div class="row g-1">
+                                            <div class="col-6">
+                                                <div class="form-check form-check-sm">
+                                                    {{ form.voice_inbound(class="form-check-input form-check-input-sm") }}
+                                                    <label class="form-check-label small" for="{{ form.voice_inbound.id }}">Voice - Inbound</label>
                                                 </div>
-                                                <div class="col-6">
-                                                    <div class="form-check form-check-sm">
-                                                        {{ form.voice_outbound(class="form-check-input form-check-input-sm") }}
-                                                        <label class="form-check-label small" for="{{ form.voice_outbound.id }}">Voice Out</label>
-                                                    </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-check form-check-sm">
+                                                    {{ form.voice_outbound(class="form-check-input form-check-input-sm") }}
+                                                    <label class="form-check-label small" for="{{ form.voice_outbound.id }}">Voice - Outbound</label>
                                                 </div>
-                                                <div class="col-6">
-                                                    <div class="form-check form-check-sm">
-                                                        {{ form.chat(class="form-check-input form-check-input-sm") }}
-                                                        <label class="form-check-label small" for="{{ form.chat.id }}">Chat</label>
-                                                    </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-check form-check-sm">
+                                                    {{ form.chat(class="form-check-input form-check-input-sm") }}
+                                                    <label class="form-check-label small" for="{{ form.chat.id }}">Chat</label>
                                                 </div>
-                                                <div class="col-6">
-                                                    <div class="form-check form-check-sm">
-                                                        {{ form.email(class="form-check-input form-check-input-sm") }}
-                                                        <label class="form-check-label small" for="{{ form.email.id }}">Email</label>
-                                                    </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-check form-check-sm">
+                                                    {{ form.email(class="form-check-input form-check-input-sm") }}
+                                                    <label class="form-check-label small" for="{{ form.email.id }}">Email</label>
                                                 </div>
-                                                <div class="col-6">
-                                                    <div class="form-check form-check-sm">
-                                                        {{ form.back_office(class="form-check-input form-check-input-sm") }}
-                                                        <label class="form-check-label small" for="{{ form.back_office.id }}">Back Office</label>
-                                                    </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-check form-check-sm">
+                                                    {{ form.back_office(class="form-check-input form-check-input-sm") }}
+                                                    <label class="form-check-label small" for="{{ form.back_office.id }}">Back Office</label>
                                                 </div>
-                                                <div class="col-6">
-                                                    <div class="form-check form-check-sm">
-                                                        {{ form.social_sms(class="form-check-input form-check-input-sm") }}
-                                                        <label class="form-check-label small" for="{{ form.social_sms.id }}">Social/SMS</label>
-                                                    </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-check form-check-sm">
+                                                    {{ form.social_sms(class="form-check-input form-check-input-sm") }}
+                                                    <label class="form-check-label small" for="{{ form.social_sms.id }}">Social/SMS</label>
                                                 </div>
-                                                <div class="col-12">
-                                                    <div class="form-check form-check-sm">
-                                                        {{ form.others(class="form-check-input form-check-input-sm") }}
-                                                        <label class="form-check-label small" for="{{ form.others.id }}">Others</label>
-                                                    </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-check form-check-sm">
+                                                    {{ form.others(class="form-check-input form-check-input-sm") }}
+                                                    <label class="form-check-label small" for="{{ form.others.id }}">Others</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -263,12 +257,12 @@
                     </div>
 
                     <!-- Right Section - Location Details -->
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <div class="card shadow-sm sticky-top">
-                            <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
-                                <h5 class="card-title mb-0">
-                                    <i class="fas fa-map-marker-alt me-2"></i>Location Details
-                                </h5>
+                            <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center py-2">
+                                <h4 class="card-title mb-0">
+                                    <i class="fas fa-map-marker-alt me-2"></i>Location & Resource Planning
+                                </h4>
                                 <div class="location-actions">
                                     <button type="button" class="btn btn-sm btn-outline-dark me-2" onclick="resetLocationForm()">
                                         <i class="fas fa-undo me-1"></i>Reset
