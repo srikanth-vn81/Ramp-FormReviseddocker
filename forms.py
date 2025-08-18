@@ -15,14 +15,14 @@ class RampInputForm(FlaskForm):
         choices=[('', 'Select'), ('available', 'Available'), ('not-available', 'Not Available')],
         validators=[DataRequired()]
     )
-    ramp_start_date = DateField('Ramp Start Date', validators=[Optional()])
+    ramp_start_date = SelectField('Ramp Start Date', choices=[], validators=[Optional()])
     
     ramp_end_availability = SelectField(
         'Ramp End Date Availability',
         choices=[('', 'Select'), ('available', 'Available'), ('not-available', 'Not Available')],
         validators=[DataRequired()]
     )
-    ramp_end_date = DateField('Ramp End Date', validators=[Optional()])
+    ramp_end_date = SelectField('Ramp End Date', choices=[], validators=[Optional()])
     
     # Trainers
     client_trainer = SelectField(

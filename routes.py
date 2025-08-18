@@ -1,6 +1,6 @@
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import render_template, request, flash, redirect, url_for, jsonify
 from app import app
 from forms import RampInputForm
@@ -23,17 +23,35 @@ def save_submission(data):
     with open(DATA_FILE, 'w') as f:
         json.dump(submissions, f, indent=2)
 
+def generate_date_choices():
+    """Generate date choices for the next 60 days"""
+    choices = [('', 'Select Date')]
+    today = datetime.now().date()
+    
+    for i in range(60):  # Next 60 days
+        date = today + timedelta(days=i)
+        date_str = date.strftime('%Y-%m-%d')
+        display_str = date.strftime('%m/%d/%Y')
+        choices.append((date_str, display_str))
+    
+    return choices
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     form = RampInputForm()
+    
+    # Set date choices dynamically
+    date_choices = generate_date_choices()
+    form.ramp_start_date.choices = date_choices
+    form.ramp_end_date.choices = date_choices
     
     if form.validate_on_submit():
         # Process form data
         form_data = {
             'ramp_start_availability': form.ramp_start_availability.data,
-            'ramp_start_date': form.ramp_start_date.data.isoformat() if form.ramp_start_date.data else None,
+            'ramp_start_date': form.ramp_start_date.data if form.ramp_start_date.data else None,
             'ramp_end_availability': form.ramp_end_availability.data,
-            'ramp_end_date': form.ramp_end_date.data.isoformat() if form.ramp_end_date.data else None,
+            'ramp_end_date': form.ramp_end_date.data if form.ramp_end_date.data else None,
             'client_trainer': form.client_trainer.data,
             'internal_trainer': form.internal_trainer.data,
             'total_trainers': form.total_trainers.data,
