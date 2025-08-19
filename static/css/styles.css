@@ -1200,3 +1200,174 @@ header h1 {
     max-height: 400px;
     overflow-y: auto;
 }
+
+/* Professional Sites Configuration Styling */
+.sites-configuration-section h6 {
+    color: #1f2937;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.sites-table-container {
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #d1d5db;
+    background: #fff;
+}
+
+.sites-table {
+    margin-bottom: 0;
+    font-size: 0.85rem;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.sites-table thead th {
+    background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-align: center;
+    vertical-align: middle;
+    padding: 1rem 0.75rem;
+    border: none;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.sites-table thead th:first-child {
+    border-top-left-radius: 8px;
+    min-width: 80px;
+}
+
+.sites-table thead th:last-child {
+    border-top-right-radius: 8px;
+}
+
+.sites-table tbody td {
+    padding: 0.75rem 0.5rem;
+    vertical-align: middle;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    transition: background-color 0.2s ease;
+}
+
+.sites-table tbody tr:hover td {
+    background: #f9fafb;
+}
+
+.sites-table tbody td:first-child {
+    background: #f8fafc;
+    font-weight: 600;
+    color: #374151;
+    text-align: center;
+    font-size: 0.8rem;
+    border-left: 3px solid #3b82f6;
+}
+
+/* Enhanced field styling */
+.sites-table .input-group-sm {
+    margin-bottom: 0.5rem;
+}
+
+.sites-table .input-group-sm small {
+    margin-bottom: 3px;
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: block;
+    text-align: center;
+}
+
+.sites-table .form-select-sm,
+.sites-table .form-control-sm {
+    border-radius: 6px;
+    border: 1.5px solid #d1d5db;
+    font-size: 0.8rem;
+    padding: 0.4rem 0.6rem;
+    transition: all 0.2s ease;
+    background-color: #fff;
+}
+
+.sites-table .form-select-sm:focus,
+.sites-table .form-control-sm:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 0.15rem rgba(59, 130, 246, 0.15);
+    outline: none;
+}
+
+.sites-table .form-select-sm:hover,
+.sites-table .form-control-sm:hover {
+    border-color: #9ca3af;
+}
+
+.sites-table .site-selector {
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    font-weight: 600;
+    color: #1f2937;
+    border: 1.5px solid #9ca3af;
+}
+
+.sites-table .site-selector:focus {
+    background: #fff;
+    border-color: #3b82f6;
+}
+
+/* Country header enhancements */
+.sites-table .country-sites-select {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    color: #1f2937;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-top: 0.25rem;
+}
+
+.sites-table .country-sites-select:focus {
+    background: #fff;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 0.1rem rgba(59, 130, 246, 0.25);
+}
+
+/* Site field labels */
+.site-field-label {
+    color: #374151;
+    font-weight: 600;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 3px;
+    display: block;
+    text-align: center;
+}
+
+/* Professional input styling */
+.agent-profile-input,
+.lead-time-input,
+.weekly-capacity-input,
+.monthly-capacity-input {
+    text-align: center;
+    font-weight: 500;
+}
+
+.sites-table tbody tr:nth-child(even) td {
+    background: #fafbfc;
+}
+
+.sites-table tbody tr:nth-child(even):hover td {
+    background: #f3f4f6;
+}
+
+/* Site metrics cell */
+.site-metrics-cell {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+    border-left: 3px solid #3b82f6 !important;
+    font-weight: 700;
+    color: #1e293b;
+}
