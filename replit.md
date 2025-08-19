@@ -14,15 +14,13 @@ Preferred communication style: Simple, everyday language.
 - Updated Geo(Country) from single dropdown to multiselect checkboxes for individual country selection
 - Enhanced Sites Configuration with comprehensive fields for each site:
   - Site selector dropdown (Select Site, Site A, Site B, etc.)
-  - Agent Profile number input (removed dropdown)
+  - Headcount number input
+  - Agent Profile dropdown (Junior, Mid-level, Senior, Specialist)
   - Lead Time to Hire (Days) number input
   - Weekly Hiring Capacity number input  
   - Monthly Hiring Capacity number input
 - All countries selected by default for immediate table generation
 - Removed placeholder text in favor of proper number input fields with "0" placeholder
-- **MAJOR LAYOUT CHANGE**: Moved Sites Configuration to separate full-width section below main form for better space utilization and readability
-- Adjusted main layout: Equal split (col-lg-6 each) for Training Schedule and Location & Resource Planning sections for balanced, compact design
-- Applied professional corporate styling with gradient headers, hover effects, and improved typography
 
 ## System Architecture
 
