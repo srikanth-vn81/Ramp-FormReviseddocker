@@ -1165,3 +1165,38 @@ header h1 {
     display: flex;
     align-items: center;
 }
+
+/* Enhanced sites table styling for additional fields */
+.sites-table td .d-flex.flex-column {
+    min-width: 130px;
+    max-width: 130px;
+}
+
+.sites-table .agent-profile,
+.sites-table .lead-time,
+.sites-table .weekly-capacity,
+.sites-table .monthly-capacity {
+    font-size: 0.75rem;
+    border-width: 1px;
+    border-color: #ced4da;
+}
+
+.sites-table .agent-profile:focus,
+.sites-table .lead-time:focus,
+.sites-table .weekly-capacity:focus,
+.sites-table .monthly-capacity:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.1rem rgba(37, 99, 235, 0.25);
+}
+
+/* Tooltip styling for field labels */
+.sites-table input[title],
+.sites-table select[title] {
+    position: relative;
+}
+
+/* Sites table scrollable container */
+.sites-table-container {
+    max-height: 400px;
+    overflow-y: auto;
+}
