@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, IntegerField, DateField, BooleanField, TextAreaField
+from wtforms import StringField, SelectField, RadioField, IntegerField, DateField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, NumberRange, Optional
 from wtforms.widgets import CheckboxInput, ListWidget
 
@@ -101,16 +101,18 @@ class RampInputForm(FlaskForm):
         validators=[DataRequired(), NumberRange(min=1)],
         default=100
     )
-    geo_country = MultiCheckboxField(
+    geo_country = RadioField(
         'Geo (Country)',
         choices=[
             ('PHL', 'Philippines'),
             ('USA', 'United States'), 
             ('IND', 'India'),
-            ('COL', 'Colombia')
+            ('COL', 'Colombia'),
+            ('PHL,USA', 'Philippines + USA'),
+            ('PHL,USA,IND', 'Philippines + USA + India'),
+            ('ALL', 'All Countries')
         ],
-        coerce=str,
-        default=['PHL', 'USA', 'IND', 'COL']
+        default='ALL'
     )
     
     # Country headcount distribution

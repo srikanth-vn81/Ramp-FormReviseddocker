@@ -634,25 +634,23 @@ document.addEventListener('DOMContentLoaded', function() {
  * Initialize location details functionality
  */
 function initializeLocationDetails() {
-    // Initialize geo country functionality - handle checkbox changes
+    // Initialize geo country functionality - handle radio button changes
     const geoSelect = document.getElementById('geo-country-select');
     if (geoSelect) {
-        const checkboxes = geoSelect.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
+        const radioButtons = geoSelect.querySelectorAll('input[type="radio"]');
+        radioButtons.forEach(radio => {
+            radio.addEventListener('change', function() {
                 updateCountryConfiguration();
                 updateSummaryValues();
                 updateSitesTable();
             });
         });
         
-        // Set default selection (all countries) always on page load
-        if (checkboxes.length > 0) {
-            checkboxes.forEach(checkbox => {
-                if (!checkbox.checked) {
-                    checkbox.checked = true;
-                }
-            });
+        // Set default selection to ALL if none selected
+        const checkedRadio = geoSelect.querySelector('input[type="radio"]:checked');
+        if (!checkedRadio) {
+            const allRadio = geoSelect.querySelector('input[value="ALL"]');
+            if (allRadio) allRadio.checked = true;
         }
         
         // Trigger initial display
@@ -696,9 +694,21 @@ function updateCountryConfiguration() {
 
     if (!geoSelect || !countryGrid) return;
 
-    // Get selected countries from checkboxes
-    const selectedCheckboxes = geoSelect.querySelectorAll('input[type="checkbox"]:checked');
-    const countries = Array.from(selectedCheckboxes).map(cb => cb.value);
+    // Get selected countries from radio buttons
+    const selectedRadio = geoSelect.querySelector('input[type="radio"]:checked');
+    const selectedValue = selectedRadio ? selectedRadio.value : 'ALL';
+    
+    const countryMappings = {
+        'PHL': ['PHL'],
+        'USA': ['USA'],
+        'IND': ['IND'],
+        'COL': ['COL'],
+        'PHL,USA': ['PHL', 'USA'],
+        'PHL,USA,IND': ['PHL', 'USA', 'IND'],
+        'ALL': ['PHL', 'USA', 'IND', 'COL']
+    };
+    
+    const countries = countryMappings[selectedValue] || ['PHL', 'USA', 'IND', 'COL'];
 
     // Update country count display
     if (countryCountDisplay) {
@@ -820,9 +830,21 @@ function updateSitesTable() {
 
     if (!geoSelect || !sitesTable || !sitesTableBody) return;
 
-    // Get selected countries from checkboxes
-    const selectedCheckboxes = geoSelect.querySelectorAll('input[type="checkbox"]:checked');
-    const selectedCountries = Array.from(selectedCheckboxes).map(cb => cb.value);
+    // Get selected countries from radio buttons
+    const selectedRadio = geoSelect.querySelector('input[type="radio"]:checked');
+    const selectedValue = selectedRadio ? selectedRadio.value : 'ALL';
+    
+    const countryMappings = {
+        'PHL': ['PHL'],
+        'USA': ['USA'],
+        'IND': ['IND'],
+        'COL': ['COL'],
+        'PHL,USA': ['PHL', 'USA'],
+        'PHL,USA,IND': ['PHL', 'USA', 'IND'],
+        'ALL': ['PHL', 'USA', 'IND', 'COL']
+    };
+    
+    const selectedCountries = countryMappings[selectedValue] || ['PHL', 'USA', 'IND', 'COL'];
 
     // Update column visibility
     const headers = sitesTable.querySelectorAll('th.country-header');
