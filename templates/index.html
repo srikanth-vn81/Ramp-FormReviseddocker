@@ -216,6 +216,10 @@
                                                 <label class="form-label small fw-semibold">Languages Supported</label>
                                                 {{ form.languages_supported(class="form-select form-select-sm") }}
                                             </div>
+                                            <div class="col-md-6" id="specify-languages-container" style="display: none;">
+                                                <label class="form-label small fw-semibold">Specify the Languages</label>
+                                                {{ form.specify_languages(class="form-control form-control-sm", placeholder="Enter languages") }}
+                                            </div>
                                         </div>
                                         
                                         <div class="channel-support">

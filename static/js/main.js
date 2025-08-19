@@ -28,6 +28,9 @@ class RampFormController {
         // Operational assumptions handlers
         this.setupOperationalAssumptionsHandlers();
         
+        // Language support handlers
+        this.setupLanguageHandlers();
+        
         // Form submission handler
         if (this.form) {
             this.form.addEventListener('submit', this.handleFormSubmission.bind(this));
@@ -237,6 +240,29 @@ class RampFormController {
                 }
             }
         });
+    }
+
+    /**
+     * Setup language support handlers
+     */
+    setupLanguageHandlers() {
+        const languagesSupported = document.getElementById('languages_supported');
+        const specifyLanguagesContainer = document.getElementById('specify-languages-container');
+        const specifyLanguagesInput = document.getElementById('specify_languages');
+
+        if (languagesSupported && specifyLanguagesContainer && specifyLanguagesInput) {
+            languagesSupported.addEventListener('change', (e) => {
+                if (e.target.value === 'multilingual') {
+                    specifyLanguagesContainer.style.display = 'block';
+                    specifyLanguagesInput.required = true;
+                } else {
+                    specifyLanguagesContainer.style.display = 'none';
+                    specifyLanguagesInput.required = false;
+                    specifyLanguagesInput.value = '';
+                }
+                this.updateFormProgress();
+            });
+        }
     }
 
     /**

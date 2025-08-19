@@ -77,8 +77,9 @@ class RampInputForm(FlaskForm):
     # Language support
     languages_supported = SelectField(
         'Languages Supported',
-        choices=[('', 'Select'), ('single', 'Single'), ('bilingual', 'Bilingual')]
+        choices=[('', 'Select'), ('single', 'Single'), ('multilingual', 'Multilingual')]
     )
+    specify_languages = StringField('Specify the Languages', validators=[Optional()])
     
     # Channel support
     voice_inbound = BooleanField('Voice - Inbound')
