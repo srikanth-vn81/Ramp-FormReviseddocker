@@ -1200,3 +1200,10 @@ header h1 {
     max-height: 400px;
     overflow-y: auto;
 }
+
+/* Sites table field labels */
+.sites-table .input-group-sm small {
+    margin-bottom: 2px;
+    font-weight: 500;
+    color: #495057;
+}
