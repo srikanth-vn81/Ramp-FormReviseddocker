@@ -876,8 +876,13 @@ function generateSitesRows(selectedCountries) {
         
         // Metrics column
         const metricsCell = document.createElement('td');
-        metricsCell.className = 'fw-bold text-muted';
-        metricsCell.textContent = `Site ${siteIndex}`;
+        metricsCell.className = 'site-metrics-cell';
+        metricsCell.innerHTML = `
+            <div class="d-flex align-items-center justify-content-center">
+                <i class="fas fa-building me-1" style="color: #3b82f6; font-size: 0.7rem;"></i>
+                <span>Site ${siteIndex}</span>
+            </div>
+        `;
         row.appendChild(metricsCell);
         
         // Country columns
@@ -904,23 +909,26 @@ function generateSitesRows(selectedCountries) {
                     });
                     
                     cell.innerHTML = `
-                        <div class="d-flex flex-column gap-1" style="align-items: center;">
-                            <select class="form-select form-select-sm site-selector" data-country="${country}" data-site="${siteIndex}" style="max-width: 120px;">${selectOptions}</select>
-                            <div class="input-group-sm" style="width: 120px;">
-                                <small class="text-muted d-block text-center" style="font-size: 0.7rem;">Agent Profile</small>
-                                <input type="number" class="form-control form-control-sm" min="0" placeholder="0" style="max-width: 120px;">
+                        <div class="d-flex flex-column gap-1" style="align-items: center; padding: 0.5rem;">
+                            <div class="input-group-sm" style="width: 130px;">
+                                <small class="site-field-label">Site Location</small>
+                                <select class="form-select form-select-sm site-selector" data-country="${country}" data-site="${siteIndex}" style="width: 100%;">${selectOptions}</select>
                             </div>
-                            <div class="input-group-sm" style="width: 120px;">
-                                <small class="text-muted d-block text-center" style="font-size: 0.7rem;">Lead Time to Hire (Days)</small>
-                                <input type="number" class="form-control form-control-sm" min="0" placeholder="0" style="max-width: 120px;">
+                            <div class="input-group-sm" style="width: 130px;">
+                                <small class="site-field-label">Agent Profile</small>
+                                <input type="number" class="form-control form-control-sm agent-profile-input" min="0" placeholder="0" style="width: 100%;" data-field="agent-profile">
                             </div>
-                            <div class="input-group-sm" style="width: 120px;">
-                                <small class="text-muted d-block text-center" style="font-size: 0.7rem;">Weekly Hiring Capacity</small>
-                                <input type="number" class="form-control form-control-sm" min="0" placeholder="0" style="max-width: 120px;">
+                            <div class="input-group-sm" style="width: 130px;">
+                                <small class="site-field-label">Lead Time (Days)</small>
+                                <input type="number" class="form-control form-control-sm lead-time-input" min="0" placeholder="0" style="width: 100%;" data-field="lead-time">
                             </div>
-                            <div class="input-group-sm" style="width: 120px;">
-                                <small class="text-muted d-block text-center" style="font-size: 0.7rem;">Monthly Hiring Capacity</small>
-                                <input type="number" class="form-control form-control-sm" min="0" placeholder="0" style="max-width: 120px;">
+                            <div class="input-group-sm" style="width: 130px;">
+                                <small class="site-field-label">Weekly Capacity</small>
+                                <input type="number" class="form-control form-control-sm weekly-capacity-input" min="0" placeholder="0" style="width: 100%;" data-field="weekly-capacity">
+                            </div>
+                            <div class="input-group-sm" style="width: 130px;">
+                                <small class="site-field-label">Monthly Capacity</small>
+                                <input type="number" class="form-control form-control-sm monthly-capacity-input" min="0" placeholder="0" style="width: 100%;" data-field="monthly-capacity">
                             </div>
                         </div>
                     `;
