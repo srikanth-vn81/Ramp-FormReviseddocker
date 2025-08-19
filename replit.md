@@ -21,7 +21,7 @@ Preferred communication style: Simple, everyday language.
 - All countries selected by default for immediate table generation
 - Removed placeholder text in favor of proper number input fields with "0" placeholder
 - **MAJOR LAYOUT CHANGE**: Moved Sites Configuration to separate full-width section below main form for better space utilization and readability
-- Adjusted main layout: Left section (col-lg-8) for training details, center section (col-lg-4) for location details
+- Adjusted main layout: Equal split (col-lg-6 each) for Training Schedule and Location & Resource Planning sections for balanced, compact design
 - Applied professional corporate styling with gradient headers, hover effects, and improved typography
 
 ## System Architecture
