@@ -31,6 +31,9 @@ class RampFormController {
         // Language support handlers
         this.setupLanguageHandlers();
         
+        // Channel support handlers (for Others checkbox)
+        this.setupChannelSupportHandlers();
+        
         // Form submission handler
         if (this.form) {
             this.form.addEventListener('submit', this.handleFormSubmission.bind(this));
@@ -281,6 +284,30 @@ class RampFormController {
                 field.required = required;
             }
         });
+    }
+
+    /**
+     * Setup channel support handlers
+     */
+    setupChannelSupportHandlers() {
+        // Handle Others checkbox and text input
+        const othersCheckbox = document.getElementById('others-checkbox');
+        const othersTextContainer = document.getElementById('others-text-container');
+        
+        if (othersCheckbox && othersTextContainer) {
+            othersCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    othersTextContainer.style.display = 'block';
+                } else {
+                    othersTextContainer.style.display = 'none';
+                    // Clear the text input when hiding
+                    const textInput = othersTextContainer.querySelector('input');
+                    if (textInput) {
+                        textInput.value = '';
+                    }
+                }
+            });
+        }
     }
 
     /**

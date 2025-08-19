@@ -89,6 +89,7 @@ class RampInputForm(FlaskForm):
     social_sms = BooleanField('Social Media/SMS')
     back_office = BooleanField('Back Office')
     others = BooleanField('Others')
+    others_text = StringField('Others Text', validators=[Optional()])
     
     # Location Details
     requirement_type = SelectField(

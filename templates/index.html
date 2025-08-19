@@ -263,8 +263,12 @@
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="form-check form-check-sm">
-                                                        {{ form.others(class="form-check-input form-check-input-sm") }}
+                                                        {{ form.others(class="form-check-input form-check-input-sm", id="others-checkbox") }}
                                                         <label class="form-check-label small" for="{{ form.others.id }}">Others</label>
+                                                    </div>
+                                                    <!-- Others text input - hidden by default -->
+                                                    <div class="mt-2" id="others-text-container" style="display: none;">
+                                                        {{ form.others_text(class="form-control form-control-sm", placeholder="Please specify...") }}
                                                     </div>
                                                 </div>
                                             </div>
