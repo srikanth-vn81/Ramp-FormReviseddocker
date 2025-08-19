@@ -101,18 +101,16 @@ class RampInputForm(FlaskForm):
         validators=[DataRequired(), NumberRange(min=1)],
         default=100
     )
-    geo_country = RadioField(
+    geo_country = MultiCheckboxField(
         'Geo (Country)',
         choices=[
             ('PHL', 'Philippines'),
             ('USA', 'United States'), 
             ('IND', 'India'),
-            ('COL', 'Colombia'),
-            ('PHL,USA', 'Philippines + USA'),
-            ('PHL,USA,IND', 'Philippines + USA + India'),
-            ('ALL', 'All Countries')
+            ('COL', 'Colombia')
         ],
-        default='ALL'
+        coerce=str,
+        default=['PHL', 'USA', 'IND', 'COL']
     )
     
     # Country headcount distribution
