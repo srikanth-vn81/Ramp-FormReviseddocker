@@ -893,15 +893,86 @@ function generateSitesRows(selectedCountries) {
             if (selectedCountries.includes(country)) {
                 cell.style.display = 'table-cell';
                 if (siteIndex <= countrySiteCounts[country]) {
-                    // Create both a dropdown for site selection and a number input for headcount
-                    const siteOptions = [
-                        { value: '', text: 'Select Site' },
-                        { value: 'site-a', text: 'Site A' },
-                        { value: 'site-b', text: 'Site B' },
-                        { value: 'site-c', text: 'Site C' },
-                        { value: 'site-d', text: 'Site D' },
-                        { value: 'site-e', text: 'Site E' }
-                    ];
+                    // Get country-specific sites
+                    const countrySites = {
+                        'CAN': [
+                            { value: '', text: 'Select Site' },
+                            { value: 'montreal', text: 'Montreal' },
+                            { value: 'toronto-02', text: 'Toronto 02' }
+                        ],
+                        'COL': [
+                            { value: '', text: 'Select Site' },
+                            { value: 'medellin', text: 'Medellin' }
+                        ],
+                        'HKG': [
+                            { value: '', text: 'Select Site' },
+                            { value: 'hong-kong', text: 'Hong Kong' }
+                        ],
+                        'IND': [
+                            { value: '', text: 'Select Site' },
+                            { value: 'noida', text: 'Noida' },
+                            { value: 'noida-02', text: 'Noida 02' }
+                        ],
+                        'MEX': [
+                            { value: '', text: 'Select Site' },
+                            { value: 'mexico-city-02', text: 'Mexico City 02' },
+                            { value: 'mexico-city-03', text: 'Mexico City 03' }
+                        ],
+                        'PAN': [
+                            { value: '', text: 'Select Site' },
+                            { value: 'panama-city', text: 'Panama City' }
+                        ],
+                        'PHL': [
+                            { value: '', text: 'Select Site' },
+                            { value: 'bacolod-city', text: 'Bacolod City' },
+                            { value: 'clark-01', text: 'Clark 01' },
+                            { value: 'clark-02', text: 'Clark 02' },
+                            { value: 'clark-03', text: 'Clark 03' },
+                            { value: 'clark-05', text: 'Clark 05' },
+                            { value: 'dasmarinas-01', text: 'Dasmarinas 01' },
+                            { value: 'dasmarinas-02', text: 'Dasmarinas 02' },
+                            { value: 'davao', text: 'Davao' },
+                            { value: 'davao-02', text: 'Davao 02' },
+                            { value: 'fairview', text: 'Fairview' },
+                            { value: 'fairview-02', text: 'Fairview 02' },
+                            { value: 'iloilo', text: 'Iloilo' },
+                            { value: 'iloilo-02', text: 'Iloilo 02' },
+                            { value: 'iloilo-03', text: 'Iloilo 03' },
+                            { value: 'iloilo-03b', text: 'Iloilo 03B' },
+                            { value: 'iloilo-04', text: 'Iloilo 04' },
+                            { value: 'santa-rosa', text: 'Santa Rosa' },
+                            { value: 'santa-rosa-02', text: 'Santa Rosa 02' },
+                            { value: 'talisay-city', text: 'Talisay City' }
+                        ],
+                        'POL': [
+                            { value: '', text: 'Select Site' },
+                            { value: 'warsaw', text: 'Warsaw' }
+                        ],
+                        'TTO': [
+                            { value: '', text: 'Select Site' },
+                            { value: 'barataria', text: 'Barataria' },
+                            { value: 'chaguanas', text: 'Chaguanas' },
+                            { value: 'waterfield', text: 'Waterfield' }
+                        ],
+                        'USA': [
+                            { value: '', text: 'Select Site' },
+                            { value: 'allentown', text: 'Allentown' },
+                            { value: 'atlanta', text: 'Atlanta' },
+                            { value: 'buffalo', text: 'Buffalo' },
+                            { value: 'charlotte', text: 'Charlotte' },
+                            { value: 'east-hartford', text: 'East Hartford' },
+                            { value: 'fort-lauderdale-02', text: 'Fort Lauderdale 02' },
+                            { value: 'houston-01', text: 'Houston 01' },
+                            { value: 'meridian', text: 'Meridian' },
+                            { value: 'naperville', text: 'Naperville' },
+                            { value: 'phoenix', text: 'Phoenix' },
+                            { value: 'richfield', text: 'Richfield' },
+                            { value: 'tempe', text: 'Tempe' },
+                            { value: 'west-des-moines', text: 'West Des Moines' }
+                        ]
+                    };
+                    
+                    const siteOptions = countrySites[country] || [{ value: '', text: 'Select Site' }];
                     
                     let selectOptions = '';
                     siteOptions.forEach(option => {

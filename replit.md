@@ -11,16 +11,20 @@ Preferred communication style: Simple, everyday language.
 ## Recent Changes
 
 ### August 19, 2025
-- Updated Geo(Country) from single dropdown to multiselect checkboxes for individual country selection
-- Enhanced Sites Configuration with comprehensive fields for each site:
-  - Site selector dropdown (Select Site, Site A, Site B, etc.)
-  - Headcount number input
-  - Agent Profile dropdown (Junior, Mid-level, Senior, Specialist)
-  - Lead Time to Hire (Days) number input
-  - Weekly Hiring Capacity number input  
-  - Monthly Hiring Capacity number input
+- Updated country selection to include 10 countries: Canada, Colombia, Hong Kong, India, Mexico, Panama, Philippines, Poland, Trinidad and Tobago, USA
+- Enhanced Sites Configuration with country-specific site dropdowns based on actual site locations:
+  - Philippines: 19 sites (Bacolod City, Clark locations, Dasmarinas, Davao, Fairview, Iloilo locations, Santa Rosa, Talisay City)
+  - USA: 13 sites (Allentown, Atlanta, Buffalo, Charlotte, East Hartford, Fort Lauderdale, Houston, Meridian, Naperville, Phoenix, Richfield, Tempe, West Des Moines)
+  - Trinidad and Tobago: 3 sites (Barataria, Chaguanas, Waterfield)
+  - Mexico: 2 sites (Mexico City 02, Mexico City 03)
+  - Canada: 2 sites (Montreal, Toronto 02)
+  - India: 2 sites (Noida, Noida 02)
+  - Colombia, Hong Kong, Panama, Poland: 1 site each
+- Replaced Agent Profile dropdown with number input field with proper labels
+- Added Lead Time to Hire (Days), Weekly Hiring Capacity, Monthly Hiring Capacity as labeled number inputs
+- Enhanced corporate professional styling with gradients, shadows, and hover effects
+- Updated Country-Wise Head Count Distribution to support all 10 countries
 - All countries selected by default for immediate table generation
-- Removed placeholder text in favor of proper number input fields with "0" placeholder
 
 ## System Architecture
 
