@@ -86,13 +86,10 @@
                 </div>
                 {{ form.hidden_tag() }}
                 
-                <div class="row g-3">
-                    <!-- Left Section - Training & Configuration -->
+                <div class="row g-2">
+                    <!-- Left Section - Training Schedule -->
                     <div class="col-lg-6">
-                        <div class="row g-2">
-                            <!-- Training Schedule Card -->
-                            <div class="col-12">
-                                <div class="card shadow-sm">
+                        <div class="card shadow-sm h-100">
                                     <div class="card-header bg-primary text-white">
                                         <h6 class="card-title mb-0">
                                             <i class="fas fa-calendar-alt me-2"></i>Training Schedule
@@ -271,13 +268,112 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                         </div>
                     </div>
 
-                    <!-- Right Section - Sites Configuration -->
+                    <!-- Right Section - Location Details -->
                     <div class="col-lg-6">
                         <div class="card shadow-sm h-100">
+                            <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
+                                <h6 class="card-title mb-0">
+                                    <i class="fas fa-map-marker-alt me-2"></i>Location & Resource Planning
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <!-- Requirement Section -->
+                                <div class="row mb-3">
+                                    <label class="col-sm-4 col-form-label fw-semibold required">Requirement</label>
+                                    <div class="col-sm-8">
+                                        <div class="row g-2">
+                                            <div class="col-6">
+                                                {{ form.requirement_type(class="form-select form-select-sm") }}
+                                            </div>
+                                            <div class="col-6">
+                                                {{ form.requirement_value(class="form-control form-control-sm", id="requirement-value-input") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Geo Country Section -->
+                                <div class="row mb-3">
+                                    <label class="col-sm-4 col-form-label fw-semibold required">Geo (Country)</label>
+                                    <div class="col-sm-8">
+                                        <div class="row g-2">
+                                            <div class="col-12">
+                                                <div class="country-multiselect" id="geo-country-select">
+                                                    {{ form.geo_country(class="country-checkbox-group") }}
+                                                </div>
+                                                <div class="mt-1">
+                                                    <span class="badge bg-info country-count-display">0 Countries Selected</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Country Headcount Distribution -->
+                                <div class="mb-4">
+                                    <label class="form-label fw-semibold required">Country-wise Headcount Distribution</label>
+                                    <div class="country-grid" id="country-grid">
+                                        <div class="country-item">
+                                            <label class="form-label small">PHL</label>
+                                            {{ form.phl_headcount(class="form-control form-control-sm country-headcount", **{"data-country": "PHL"}) }}
+                                        </div>
+                                        <div class="country-item">
+                                            <label class="form-label small">USA</label>
+                                            {{ form.usa_headcount(class="form-control form-control-sm country-headcount", **{"data-country": "USA"}) }}
+                                        </div>
+                                        <div class="country-item">
+                                            <label class="form-label small">IND</label>
+                                            {{ form.ind_headcount(class="form-control form-control-sm country-headcount", **{"data-country": "IND"}) }}
+                                        </div>
+                                        <div class="country-item">
+                                            <label class="form-label small">COL</label>
+                                            {{ form.col_headcount(class="form-control form-control-sm country-headcount", **{"data-country": "COL"}) }}
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Headcount Summary -->
+                                    <div class="headcount-summary mt-3 p-2 bg-light rounded">
+                                        <div class="row text-center">
+                                            <div class="col-4">
+                                                <div class="small text-muted">Total Allocated</div>
+                                                <div class="fw-bold" id="total-allocated">0</div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="small text-muted">Required</div>
+                                                <div class="fw-bold" id="required-total">100</div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="small text-muted">Remaining</div>
+                                                <div class="fw-bold" id="remaining-total">100</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Validation Message -->
+                                    <div class="alert alert-info mt-2" id="validation-message" style="display: none;"></div>
+                                </div>
+
+                                <!-- Form Actions -->
+                                <div class="location-actions text-end mt-3">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary me-2" onclick="resetLocationForm()">
+                                        <i class="fas fa-undo me-1"></i>Reset
+                                    </button>
+                                    <button type="submit" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-save me-1"></i>Save Form
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- New Right Section - Sites Configuration -->
+                <div class="row g-1 mt-2">
+                    <div class="col-12">
+                        <div class="card shadow-sm">
                             <div class="card-header bg-info text-white">
                                 <h6 class="card-title mb-0">
                                     <i class="fas fa-building me-2"></i>Sites Configuration
@@ -338,112 +434,6 @@
                                         </table>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Bottom Section - Location Details -->
-                <div class="row g-2 mt-2">
-                    <div class="col-12">
-                        <div class="card shadow-sm">
-                            <div class="card-header bg-warning text-dark">
-                                <h6 class="card-title mb-0">
-                                    <i class="fas fa-map-marker-alt me-2"></i>Location & Resource Planning
-                                </h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="row g-3">
-                                    <!-- Requirement Section -->
-                                    <div class="col-md-3">
-                                        <label class="form-label fw-semibold required">Requirement</label>
-                                        <div class="row g-1">
-                                            <div class="col-6">
-                                                {{ form.requirement_type(class="form-select form-select-sm") }}
-                                            </div>
-                                            <div class="col-6">
-                                                {{ form.requirement_value(class="form-control form-control-sm", id="requirement-value-input") }}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Geo Country Section -->
-                                    <div class="col-md-5">
-                                        <label class="form-label fw-semibold required">Geo (Country)</label>
-                                        <div class="country-checkboxes mb-2">
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input country-checkbox" type="checkbox" id="phl-checkbox" value="PHL" checked>
-                                                <label class="form-check-label" for="phl-checkbox">Philippines</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input country-checkbox" type="checkbox" id="usa-checkbox" value="USA" checked>
-                                                <label class="form-check-label" for="usa-checkbox">USA</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input country-checkbox" type="checkbox" id="ind-checkbox" value="IND" checked>
-                                                <label class="form-check-label" for="ind-checkbox">India</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input country-checkbox" type="checkbox" id="col-checkbox" value="COL" checked>
-                                                <label class="form-check-label" for="col-checkbox">Colombia</label>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Headcount Allocation -->
-                                        <div class="row g-1">
-                                            <div class="col-3 text-center">
-                                                <label class="form-label small fw-semibold">PHL</label>
-                                                {{ form.phl_headcount(class="form-control form-control-sm country-headcount", **{"data-country": "PHL"}) }}
-                                            </div>
-                                            <div class="col-3 text-center">
-                                                <label class="form-label small fw-semibold">USA</label>
-                                                {{ form.usa_headcount(class="form-control form-control-sm country-headcount", **{"data-country": "USA"}) }}
-                                            </div>
-                                            <div class="col-3 text-center">
-                                                <label class="form-label small fw-semibold">IND</label>
-                                                {{ form.ind_headcount(class="form-control form-control-sm country-headcount", **{"data-country": "IND"}) }}
-                                            </div>
-                                            <div class="col-3 text-center">
-                                                <label class="form-label small fw-semibold">COL</label>
-                                                {{ form.col_headcount(class="form-control form-control-sm country-headcount", **{"data-country": "COL"}) }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Headcount Summary -->
-                                    <div class="col-md-4">
-                                        <label class="form-label fw-semibold">Summary</label>
-                                        <div class="headcount-summary p-2 bg-light rounded">
-                                            <div class="row text-center">
-                                                <div class="col-4">
-                                                    <div class="small text-muted">Total Allocated</div>
-                                                    <div class="fw-bold" id="total-allocated">0</div>
-                                                </div>
-                                                <div class="col-4">
-                                                    <div class="small text-muted">Required</div>
-                                                    <div class="fw-bold" id="required-total">100</div>
-                                                </div>
-                                                <div class="col-4">
-                                                    <div class="small text-muted">Remaining</div>
-                                                    <div class="fw-bold" id="remaining-total">100</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Form Actions -->
-                                        <div class="mt-2 text-end">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary me-2" onclick="resetLocationForm()">
-                                                <i class="fas fa-undo me-1"></i>Reset
-                                            </button>
-                                            <button type="submit" class="btn btn-sm btn-primary">
-                                                <i class="fas fa-save me-1"></i>Save Form
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Validation Message -->
-                                <div class="alert alert-info mt-3" id="validation-message" style="display: none;"></div>
                             </div>
                         </div>
                     </div>

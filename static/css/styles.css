@@ -1197,7 +1197,7 @@ header h1 {
 
 /* Sites table scrollable container */
 .sites-table-container {
-    max-height: 350px;
+    max-height: 300px;
     overflow-y: auto;
     overflow-x: auto;
 }
@@ -1230,10 +1230,10 @@ header h1 {
     background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
     color: #fff;
     font-weight: 600;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     text-align: center;
     vertical-align: middle;
-    padding: 1rem 0.75rem;
+    padding: 0.8rem 0.5rem;
     border: none;
     position: sticky;
     top: 0;
@@ -1250,12 +1250,12 @@ header h1 {
 }
 
 .sites-table tbody td {
-    padding: 0.5rem 0.25rem;
+    padding: 0.4rem 0.2rem;
     vertical-align: middle;
     border: 1px solid #e5e7eb;
     background: #fff;
     transition: background-color 0.2s ease;
-    min-width: 140px;
+    min-width: 130px;
 }
 
 .sites-table tbody tr:hover td {
