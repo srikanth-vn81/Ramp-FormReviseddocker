@@ -708,8 +708,8 @@ function updateCountryConfiguration() {
     // Show/hide country items based on selection
     const allCountryItems = countryGrid.querySelectorAll('.country-item');
     allCountryItems.forEach(item => {
-        const label = item.querySelector('label').textContent.trim();
-        if (countries.includes(label)) {
+        const countryCode = item.querySelector('input').getAttribute('data-country');
+        if (countries.includes(countryCode)) {
             item.style.display = 'block';
         } else {
             item.style.display = 'none';

@@ -120,7 +120,13 @@ class RampInputForm(FlaskForm):
     )
     
     # Country headcount distribution
-    phl_headcount = IntegerField('Philippines Headcount', validators=[Optional(), NumberRange(min=0)], default=0)
-    usa_headcount = IntegerField('USA Headcount', validators=[Optional(), NumberRange(min=0)], default=0)
-    ind_headcount = IntegerField('India Headcount', validators=[Optional(), NumberRange(min=0)], default=0)
+    can_headcount = IntegerField('Canada Headcount', validators=[Optional(), NumberRange(min=0)], default=0)
     col_headcount = IntegerField('Colombia Headcount', validators=[Optional(), NumberRange(min=0)], default=0)
+    hkg_headcount = IntegerField('Hong Kong Headcount', validators=[Optional(), NumberRange(min=0)], default=0)
+    ind_headcount = IntegerField('India Headcount', validators=[Optional(), NumberRange(min=0)], default=0)
+    mex_headcount = IntegerField('Mexico Headcount', validators=[Optional(), NumberRange(min=0)], default=0)
+    pan_headcount = IntegerField('Panama Headcount', validators=[Optional(), NumberRange(min=0)], default=0)
+    phl_headcount = IntegerField('Philippines Headcount', validators=[Optional(), NumberRange(min=0)], default=0)
+    pol_headcount = IntegerField('Poland Headcount', validators=[Optional(), NumberRange(min=0)], default=0)
+    tto_headcount = IntegerField('Trinidad and Tobago Headcount', validators=[Optional(), NumberRange(min=0)], default=0)
+    usa_headcount = IntegerField('USA Headcount', validators=[Optional(), NumberRange(min=0)], default=0)
