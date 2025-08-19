@@ -109,7 +109,8 @@ class RampInputForm(FlaskForm):
             ('IND', 'India'),
             ('COL', 'Colombia')
         ],
-        coerce=str
+        coerce=str,
+        default=['PHL', 'USA', 'IND', 'COL']
     )
     
     # Country headcount distribution

@@ -646,9 +646,13 @@ function initializeLocationDetails() {
             });
         });
         
-        // Set default selection (all countries) if none selected
-        if (checkboxes.length > 0 && !geoSelect.querySelector('input[type="checkbox"]:checked')) {
-            checkboxes.forEach(checkbox => checkbox.checked = true);
+        // Set default selection (all countries) always on page load
+        if (checkboxes.length > 0) {
+            checkboxes.forEach(checkbox => {
+                if (!checkbox.checked) {
+                    checkbox.checked = true;
+                }
+            });
         }
         
         // Trigger initial display
