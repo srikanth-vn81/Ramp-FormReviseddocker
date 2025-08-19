@@ -888,7 +888,7 @@ function generateSitesRows(selectedCountries) {
             if (selectedCountries.includes(country)) {
                 cell.style.display = 'table-cell';
                 if (siteIndex <= countrySiteCounts[country]) {
-                    // Create a dropdown for site selection
+                    // Create both a dropdown for site selection and a number input for headcount
                     const siteOptions = [
                         { value: '', text: 'Select Site' },
                         { value: 'site-a', text: 'Site A' },
@@ -903,7 +903,12 @@ function generateSitesRows(selectedCountries) {
                         selectOptions += `<option value="${option.value}">${option.text}</option>`;
                     });
                     
-                    cell.innerHTML = `<select class="form-select form-select-sm site-selector" data-country="${country}" data-site="${siteIndex}" style="max-width: 120px;">${selectOptions}</select>`;
+                    cell.innerHTML = `
+                        <div class="d-flex flex-column gap-1" style="align-items: center;">
+                            <select class="form-select form-select-sm site-selector" data-country="${country}" data-site="${siteIndex}" style="max-width: 120px;">${selectOptions}</select>
+                            <input type="number" class="form-control form-control-sm" min="0" placeholder="0" style="max-width: 80px;">
+                        </div>
+                    `;
                 } else {
                     cell.textContent = '-';
                     cell.classList.add('text-muted');
