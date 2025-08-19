@@ -634,14 +634,22 @@ document.addEventListener('DOMContentLoaded', function() {
  * Initialize location details functionality
  */
 function initializeLocationDetails() {
-    // Initialize geo country functionality
+    // Initialize geo country functionality - handle checkbox changes
     const geoSelect = document.getElementById('geo-country-select');
     if (geoSelect) {
-        geoSelect.addEventListener('change', function() {
-            updateCountryConfiguration();
-            updateSummaryValues();
-            updateSitesTable();
+        const checkboxes = geoSelect.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                updateCountryConfiguration();
+                updateSummaryValues();
+                updateSitesTable();
+            });
         });
+        
+        // Set default selection (all countries) if none selected
+        if (checkboxes.length > 0 && !geoSelect.querySelector('input[type="checkbox"]:checked')) {
+            checkboxes.forEach(checkbox => checkbox.checked = true);
+        }
         
         // Trigger initial display
         updateCountryConfiguration();
@@ -684,8 +692,9 @@ function updateCountryConfiguration() {
 
     if (!geoSelect || !countryGrid) return;
 
-    const selectedValue = geoSelect.value;
-    const countries = selectedValue ? selectedValue.split(',') : ['PHL', 'USA', 'IND', 'COL'];
+    // Get selected countries from checkboxes
+    const selectedCheckboxes = geoSelect.querySelectorAll('input[type="checkbox"]:checked');
+    const countries = Array.from(selectedCheckboxes).map(cb => cb.value);
 
     // Update country count display
     if (countryCountDisplay) {
@@ -807,8 +816,9 @@ function updateSitesTable() {
 
     if (!geoSelect || !sitesTable || !sitesTableBody) return;
 
-    const selectedValue = geoSelect.value;
-    const selectedCountries = selectedValue ? selectedValue.split(',') : ['PHL', 'USA', 'IND', 'COL'];
+    // Get selected countries from checkboxes
+    const selectedCheckboxes = geoSelect.querySelectorAll('input[type="checkbox"]:checked');
+    const selectedCountries = Array.from(selectedCheckboxes).map(cb => cb.value);
 
     // Update column visibility
     const headers = sitesTable.querySelectorAll('th.country-header');

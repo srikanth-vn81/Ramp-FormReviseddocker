@@ -312,11 +312,13 @@
                                     <label class="col-sm-4 col-form-label fw-semibold required">Geo (Country)</label>
                                     <div class="col-sm-8">
                                         <div class="row g-2">
-                                            <div class="col-6">
-                                                {{ form.geo_country(class="form-select form-select-sm", id="geo-country-select") }}
-                                            </div>
-                                            <div class="col-6">
-                                                <span class="badge bg-info country-count-display">4 Countries Selected</span>
+                                            <div class="col-12">
+                                                <div class="country-multiselect" id="geo-country-select">
+                                                    {{ form.geo_country(class="country-checkbox-group") }}
+                                                </div>
+                                                <div class="mt-1">
+                                                    <span class="badge bg-info country-count-display">0 Countries Selected</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
