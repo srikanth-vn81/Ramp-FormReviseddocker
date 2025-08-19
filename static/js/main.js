@@ -1014,7 +1014,12 @@ function generateSitesRows(selectedCountries) {
                             </div>
                             <div class="input-group-sm" style="width: 130px;">
                                 <small class="site-field-label">Agent Profile</small>
-                                <input type="number" class="form-control form-control-sm agent-profile-input" min="0" placeholder="0" style="width: 100%;" data-field="agent-profile">
+                                <select class="form-select form-select-sm agent-profile-input" style="width: 100%;" data-field="agent-profile">
+                                    <option value="">Select Tier</option>
+                                    <option value="tier1">Tier 1</option>
+                                    <option value="tier2">Tier 2</option>
+                                    <option value="tier3">Tier 3</option>
+                                </select>
                             </div>
                             <div class="input-group-sm" style="width: 130px;">
                                 <small class="site-field-label">Lead Time (Days)</small>
