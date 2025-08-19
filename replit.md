@@ -8,6 +8,20 @@ This is a Flask-based WFM (Workforce Management) Analytics web application that 
 
 Preferred communication style: Simple, everyday language.
 
+## Recent Changes
+
+### August 19, 2025
+- Updated Geo(Country) from single dropdown to multiselect checkboxes for individual country selection
+- Enhanced Sites Configuration with comprehensive fields for each site:
+  - Site selector dropdown (Select Site, Site A, Site B, etc.)
+  - Headcount number input
+  - Agent Profile dropdown (Junior, Mid-level, Senior, Specialist)
+  - Lead Time to Hire (Days) number input
+  - Weekly Hiring Capacity number input  
+  - Monthly Hiring Capacity number input
+- All countries selected by default for immediate table generation
+- Removed placeholder text in favor of proper number input fields with "0" placeholder
+
 ## System Architecture
 
 ### Frontend Architecture
