@@ -886,7 +886,7 @@ function generateSitesRows(selectedCountries) {
         row.appendChild(metricsCell);
         
         // Country columns
-        ['PHL', 'USA', 'IND', 'COL'].forEach(country => {
+        ['CAN', 'COL', 'HKG', 'IND', 'MEX', 'PAN', 'PHL', 'POL', 'TTO', 'USA'].forEach(country => {
             const cell = document.createElement('td');
             cell.className = 'text-center';
             

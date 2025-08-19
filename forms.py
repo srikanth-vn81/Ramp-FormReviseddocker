@@ -104,13 +104,19 @@ class RampInputForm(FlaskForm):
     geo_country = MultiCheckboxField(
         'Geo (Country)',
         choices=[
-            ('PHL', 'Philippines'),
-            ('USA', 'United States'), 
+            ('CAN', 'Canada'),
+            ('COL', 'Colombia'),
+            ('HKG', 'Hong Kong'),
             ('IND', 'India'),
-            ('COL', 'Colombia')
+            ('MEX', 'Mexico'),
+            ('PAN', 'Panama'),
+            ('PHL', 'Philippines'),
+            ('POL', 'Poland'),
+            ('TTO', 'Trinidad and Tobago'),
+            ('USA', 'USA')
         ],
         coerce=str,
-        default=['PHL', 'USA', 'IND', 'COL']
+        default=['CAN', 'COL', 'HKG', 'IND', 'MEX', 'PAN', 'PHL', 'POL', 'TTO', 'USA']
     )
     
     # Country headcount distribution
