@@ -685,14 +685,7 @@ function updateCountryConfiguration() {
     if (!geoSelect || !countryGrid) return;
 
     const selectedValue = geoSelect.value;
-    const countryMappings = {
-        '1': ['PHL'],
-        '2': ['PHL', 'USA'],
-        '3': ['PHL', 'USA', 'IND'],
-        '4': ['PHL', 'USA', 'IND', 'COL']
-    };
-
-    const countries = countryMappings[selectedValue] || ['PHL', 'USA', 'IND', 'COL'];
+    const countries = selectedValue ? selectedValue.split(',') : ['PHL', 'USA', 'IND', 'COL'];
 
     // Update country count display
     if (countryCountDisplay) {
@@ -815,14 +808,7 @@ function updateSitesTable() {
     if (!geoSelect || !sitesTable || !sitesTableBody) return;
 
     const selectedValue = geoSelect.value;
-    const countryMappings = {
-        '1': ['PHL'],
-        '2': ['PHL', 'USA'],
-        '3': ['PHL', 'USA', 'IND'],
-        '4': ['PHL', 'USA', 'IND', 'COL']
-    };
-
-    const selectedCountries = countryMappings[selectedValue] || ['PHL', 'USA', 'IND', 'COL'];
+    const selectedCountries = selectedValue ? selectedValue.split(',') : ['PHL', 'USA', 'IND', 'COL'];
 
     // Update column visibility
     const headers = sitesTable.querySelectorAll('th.country-header');

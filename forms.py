@@ -103,8 +103,16 @@ class RampInputForm(FlaskForm):
     )
     geo_country = SelectField(
         'Geo (Country)',
-        choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')],
-        default='4'
+        choices=[
+            ('PHL', 'Philippines'),
+            ('USA', 'United States'),
+            ('IND', 'India'), 
+            ('COL', 'Colombia'),
+            ('PHL,USA', 'Philippines + USA'),
+            ('PHL,USA,IND', 'Philippines + USA + India'),
+            ('PHL,USA,IND,COL', 'All Countries')
+        ],
+        default='PHL,USA,IND,COL'
     )
     
     # Country headcount distribution
