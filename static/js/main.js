@@ -888,7 +888,22 @@ function generateSitesRows(selectedCountries) {
             if (selectedCountries.includes(country)) {
                 cell.style.display = 'table-cell';
                 if (siteIndex <= countrySiteCounts[country]) {
-                    cell.innerHTML = `<input type="number" class="form-control form-control-sm" min="0" placeholder="0" style="max-width: 80px;">`;
+                    // Create a dropdown for site selection
+                    const siteOptions = [
+                        { value: '', text: 'Select Site' },
+                        { value: 'site-a', text: 'Site A' },
+                        { value: 'site-b', text: 'Site B' },
+                        { value: 'site-c', text: 'Site C' },
+                        { value: 'site-d', text: 'Site D' },
+                        { value: 'site-e', text: 'Site E' }
+                    ];
+                    
+                    let selectOptions = '';
+                    siteOptions.forEach(option => {
+                        selectOptions += `<option value="${option.value}">${option.text}</option>`;
+                    });
+                    
+                    cell.innerHTML = `<select class="form-select form-select-sm site-selector" data-country="${country}" data-site="${siteIndex}" style="max-width: 120px;">${selectOptions}</select>`;
                 } else {
                     cell.textContent = '-';
                     cell.classList.add('text-muted');
