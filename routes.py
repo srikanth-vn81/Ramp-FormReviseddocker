@@ -1,7 +1,7 @@
 import json
 import os
 from datetime import datetime, timedelta
-from flask import render_template, request, flash, redirect, url_for, jsonify
+from flask import render_template, request, flash, redirect, url_for, jsonify, send_file
 from werkzeug.utils import secure_filename
 from app import app
 from forms import RampInputForm
@@ -195,3 +195,77 @@ def sizing_form():
         return redirect(url_for('sizing_form'))
     
     return render_template('sizing_form.html', form=form)
+
+@app.route('/download-template/<template_type>')
+def download_template(template_type):
+    """Download Excel templates for Monthly, Weekly, or Intraday data"""
+    import io
+    import xlsxwriter
+    
+    # Create an in-memory Excel file
+    output = io.BytesIO()
+    workbook = xlsxwriter.Workbook(output)
+    
+    if template_type == 'monthly':
+        worksheet = workbook.add_worksheet('Monthly Volume and AHT')
+        
+        # Add headers
+        headers = ['Month', 'Inbound Calls', 'Outbound Calls', 'Back-Office Tasks', 
+                  'Social Media', 'Chat', 'Email', 'Inbound AHT', 'Outbound AHT', 
+                  'Back-Office AHT', 'Social Media AHT', 'Chat AHT', 'Email AHT']
+        
+        # Write headers
+        for col, header in enumerate(headers):
+            worksheet.write(0, col, header)
+            
+        # Add sample months
+        months = ['January', 'February', 'March', 'April', 'May', 'June',
+                 'July', 'August', 'September', 'October', 'November', 'December']
+        
+        for row, month in enumerate(months, 1):
+            worksheet.write(row, 0, month)
+    
+    elif template_type == 'weekly':
+        worksheet = workbook.add_worksheet('Weekly Volume and AHT')
+        
+        # Add headers
+        headers = ['Week', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 
+                  'Saturday', 'Sunday', 'Total Volume', 'Average AHT']
+        
+        # Write headers
+        for col, header in enumerate(headers):
+            worksheet.write(0, col, header)
+            
+        # Add sample weeks
+        for week in range(1, 53):
+            worksheet.write(week, 0, f'Week {week}')
+    
+    elif template_type == 'intraday':
+        worksheet = workbook.add_worksheet('Intraday Volume and AHT')
+        
+        # Add headers
+        headers = ['Time Interval', 'Volume', 'AHT (minutes)', 'Service Level %', 
+                  'Abandonment %', 'Calls Answered', 'Calls Offered']
+        
+        # Write headers
+        for col, header in enumerate(headers):
+            worksheet.write(0, col, header)
+            
+        # Add hourly intervals
+        for hour in range(24):
+            for interval in ['00', '30']:
+                time_str = f'{hour:02d}:{interval}'
+                row = hour * 2 + (1 if interval == '30' else 0) + 1
+                worksheet.write(row, 0, time_str)
+    
+    workbook.close()
+    output.seek(0)
+    
+    # Return the file
+    filename = f'{template_type}_template.xlsx'
+    return send_file(
+        output,
+        as_attachment=True,
+        download_name=filename,
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
