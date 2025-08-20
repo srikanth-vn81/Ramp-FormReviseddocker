@@ -10,6 +10,13 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+### August 20, 2025
+- Added navigation dropdown menu for "Forms" with Ramp Input Form and Sizing Form submenus
+- Created new Sizing Form page with plain layout ready for custom form content
+- Updated navigation icon from fa-wpforms to fa-file-alt
+- Added conditional text input for "Others" option in Channel Support section
+- Updated Agent Profile in Sites Configuration from number input to dropdown with Tier 1, Tier 2, Tier 3 options
+
 ### August 19, 2025
 - Updated country selection to include 10 countries: Canada, Colombia, Hong Kong, India, Mexico, Panama, Philippines, Poland, Trinidad and Tobago, USA
 - Enhanced Sites Configuration with country-specific site dropdowns based on actual site locations:
