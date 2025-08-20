@@ -50,11 +50,11 @@
     <main class="main-content">
         <div class="container-fluid">
             <!-- Page Header -->
-            <div class="row mt-3 mb-4">
+            <div class="row mt-2 mb-3">
                 <div class="col-12">
                     <div class="card shadow-sm">
-                        <div class="card-header text-center" style="background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%); color: white;">
-                            <h2 class="card-title mb-0 fw-bold">SIZING REQUISITION FORM</h2>
+                        <div class="card-header text-center py-2" style="background: linear-gradient(135deg, #2c5aa0 0%, #1e3a5f 100%); color: white; border-bottom: 3px solid #1a4480;">
+                            <h3 class="card-title mb-0 fw-bold text-uppercase letter-spacing-1">Sizing Requisition Form</h3>
                         </div>
                     </div>
                 </div>
@@ -63,35 +63,35 @@
             <!-- Program Information Section -->
             <div class="row">
                 <div class="col-12">
-                    <div class="card shadow-sm">
-                        <div class="card-header" style="background-color: #4a90e2; color: white;">
-                            <h5 class="mb-0">Program Information</h5>
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header py-2" style="background: linear-gradient(135deg, #2c5aa0 0%, #1e3a5f 100%); color: white; border-bottom: 2px solid #1a4480;">
+                            <h6 class="mb-0 fw-semibold text-uppercase">Program Information</h6>
                         </div>
                         <div class="card-body p-0">
                             <form method="POST">
                                 {{ form.hidden_tag() }}
                                 <div class="table-responsive">
-                                    <table class="table table-bordered mb-0">
+                                    <table class="table table-bordered mb-0 table-sm">
                                         <thead>
-                                            <tr style="background-color: #f8f9fa;">
-                                                <th class="text-center" style="width: 150px; vertical-align: middle;">Channels</th>
-                                                <th class="text-center" style="width: 120px;">Inbound</th>
-                                                <th class="text-center" style="width: 120px;">Outbound</th>
-                                                <th class="text-center" style="width: 120px;">Back-Office</th>
-                                                <th class="text-center" style="width: 120px;">Social Media</th>
-                                                <th class="text-center" style="width: 120px;">Chat</th>
-                                                <th class="text-center" style="width: 120px;">Email</th>
+                                            <tr style="background: linear-gradient(135deg, #e8f1ff 0%, #d4e8ff 100%); border-bottom: 2px solid #2c5aa0;">
+                                                <th class="text-center fw-bold py-2" style="width: 140px; vertical-align: middle; color: #1e3a5f; font-size: 0.85rem;">Channels</th>
+                                                <th class="text-center fw-semibold py-2" style="width: 110px; color: #1e3a5f; font-size: 0.8rem;">Inbound</th>
+                                                <th class="text-center fw-semibold py-2" style="width: 110px; color: #1e3a5f; font-size: 0.8rem;">Outbound</th>
+                                                <th class="text-center fw-semibold py-2" style="width: 110px; color: #1e3a5f; font-size: 0.8rem;">Back-Office</th>
+                                                <th class="text-center fw-semibold py-2" style="width: 110px; color: #1e3a5f; font-size: 0.8rem;">Social Media</th>
+                                                <th class="text-center fw-semibold py-2" style="width: 110px; color: #1e3a5f; font-size: 0.8rem;">Chat</th>
+                                                <th class="text-center fw-semibold py-2" style="width: 110px; color: #1e3a5f; font-size: 0.8rem;">Email</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td class="fw-semibold bg-light">Annual Calls</td>
-                                                <td>{{ form.inbound_annual_calls(class="form-control form-control-sm text-center", placeholder="0") }}</td>
-                                                <td>{{ form.outbound_annual_calls(class="form-control form-control-sm text-center", placeholder="0") }}</td>
-                                                <td>{{ form.backoffice_annual_calls(class="form-control form-control-sm text-center", placeholder="0") }}</td>
-                                                <td>{{ form.social_annual_calls(class="form-control form-control-sm text-center", placeholder="0") }}</td>
-                                                <td>{{ form.chat_annual_calls(class="form-control form-control-sm text-center", placeholder="0") }}</td>
-                                                <td>{{ form.email_annual_calls(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                            <tr style="border-bottom: 1px solid #dee2e6;">
+                                                <td class="fw-semibold py-1 px-2" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); font-size: 0.8rem; color: #495057;">Annual Calls</td>
+                                                <td class="p-1">{{ form.inbound_annual_calls(class="form-control form-control-sm text-center border-0 bg-transparent", placeholder="0", style="font-size: 0.8rem; height: 28px;") }}</td>
+                                                <td class="p-1">{{ form.outbound_annual_calls(class="form-control form-control-sm text-center border-0 bg-transparent", placeholder="0", style="font-size: 0.8rem; height: 28px;") }}</td>
+                                                <td class="p-1">{{ form.backoffice_annual_calls(class="form-control form-control-sm text-center border-0 bg-transparent", placeholder="0", style="font-size: 0.8rem; height: 28px;") }}</td>
+                                                <td class="p-1">{{ form.social_annual_calls(class="form-control form-control-sm text-center border-0 bg-transparent", placeholder="0", style="font-size: 0.8rem; height: 28px;") }}</td>
+                                                <td class="p-1">{{ form.chat_annual_calls(class="form-control form-control-sm text-center border-0 bg-transparent", placeholder="0", style="font-size: 0.8rem; height: 28px;") }}</td>
+                                                <td class="p-1">{{ form.email_annual_calls(class="form-control form-control-sm text-center border-0 bg-transparent", placeholder="0", style="font-size: 0.8rem; height: 28px;") }}</td>
                                             </tr>
                                             <tr>
                                                 <td class="fw-semibold bg-light">Weekly Calls</td>
@@ -176,32 +176,32 @@
             </div>
 
             <!-- Hours of Operation Section -->
-            <div class="row mt-4">
+            <div class="row mt-3">
                 <div class="col-12">
-                    <div class="card shadow-sm">
-                        <div class="card-header" style="background-color: #4a90e2; color: white;">
-                            <h5 class="mb-0">Hours of Operation</h5>
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header py-2" style="background: linear-gradient(135deg, #2c5aa0 0%, #1e3a5f 100%); color: white; border-bottom: 2px solid #1a4480;">
+                            <h6 class="mb-0 fw-semibold text-uppercase">Hours of Operation</h6>
                         </div>
                         <div class="card-body p-0">
                             <div class="table-responsive">
-                                <table class="table table-bordered mb-0">
+                                <table class="table table-bordered mb-0 table-sm">
                                     <thead>
-                                        <tr style="background-color: #f8f9fa;">
-                                            <th class="text-center" style="width: 150px; vertical-align: middle;">Days</th>
-                                            <th class="text-center" style="width: 120px;">Channel 1</th>
-                                            <th class="text-center" style="width: 120px;">Channel 2</th>
-                                            <th class="text-center" style="width: 120px;">Channel 3</th>
-                                            <th class="text-center" style="width: 120px;">Channel 4</th>
-                                            <th class="text-center" style="width: 120px;">Channel 5</th>
-                                            <th class="text-center" style="width: 120px;">Channel 6</th>
+                                        <tr style="background: linear-gradient(135deg, #e8f1ff 0%, #d4e8ff 100%); border-bottom: 2px solid #2c5aa0;">
+                                            <th class="text-center fw-bold py-2" style="width: 140px; vertical-align: middle; color: #1e3a5f; font-size: 0.85rem;">Days</th>
+                                            <th class="text-center fw-semibold py-2" style="width: 110px; color: #1e3a5f; font-size: 0.8rem;">Channel 1</th>
+                                            <th class="text-center fw-semibold py-2" style="width: 110px; color: #1e3a5f; font-size: 0.8rem;">Channel 2</th>
+                                            <th class="text-center fw-semibold py-2" style="width: 110px; color: #1e3a5f; font-size: 0.8rem;">Channel 3</th>
+                                            <th class="text-center fw-semibold py-2" style="width: 110px; color: #1e3a5f; font-size: 0.8rem;">Channel 4</th>
+                                            <th class="text-center fw-semibold py-2" style="width: 110px; color: #1e3a5f; font-size: 0.8rem;">Channel 5</th>
+                                            <th class="text-center fw-semibold py-2" style="width: 110px; color: #1e3a5f; font-size: 0.8rem;">Channel 6</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td class="fw-semibold bg-light" rowspan="2" style="vertical-align: middle;">Monday to Friday</td>
-                                            <td>
-                                                <label class="form-label small">Start Time</label>
-                                                <select class="form-select form-select-sm" name="mon_fri_ch1_start">
+                                        <tr style="border-bottom: 1px solid #dee2e6;">
+                                            <td class="fw-semibold py-1 px-2" rowspan="2" style="vertical-align: middle; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); font-size: 0.8rem; color: #495057;">Monday to Friday</td>
+                                            <td class="p-1">
+                                                <label class="form-label mb-1" style="font-size: 0.7rem; color: #6c757d;">Start Time</label>
+                                                <select class="form-select form-select-sm border-0 bg-transparent" name="mon_fri_ch1_start" style="font-size: 0.75rem; height: 28px;">
                                                     <option value="">Select Time</option>
                                                     <option value="OFF">OFF</option>
                                                     {% for hour in range(24) %}
@@ -649,16 +649,16 @@
                             </div>
                             
                             <!-- Form Actions -->
-                            <div class="card-footer bg-light">
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-outline-secondary">
+                            <div class="card-footer py-2" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-top: 2px solid #dee2e6;">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm px-3" style="font-size: 0.8rem;">
                                         <i class="fas fa-undo me-1"></i>Reset Form
                                     </button>
-                                    <div>
-                                        <button type="button" class="btn btn-outline-primary me-2">
+                                    <div class="d-flex gap-2">
+                                        <button type="button" class="btn btn-outline-primary btn-sm px-3" style="font-size: 0.8rem;">
                                             <i class="fas fa-save me-1"></i>Save Draft
                                         </button>
-                                        <button type="submit" class="btn btn-primary">
+                                        <button type="submit" class="btn btn-sm px-4" style="background: linear-gradient(135deg, #2c5aa0 0%, #1e3a5f 100%); border: none; color: white; font-size: 0.8rem; font-weight: 600;">
                                             <i class="fas fa-calculator me-1"></i>Calculate Sizing
                                         </button>
                                     </div>
