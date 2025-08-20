@@ -34,11 +34,11 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle active" href="#" id="formsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-wpforms me-1"></i>Forms
+                            <i class="fas fa-file-alt me-1"></i>Forms
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="formsDropdown">
-                            <li><a class="dropdown-item active" href="#"><i class="fas fa-chart-line me-2"></i>Ramp Input Form</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-calculator me-2"></i>Sizing Form</a></li>
+                            <li><a class="dropdown-item active" href="{{ url_for('index') }}"><i class="fas fa-chart-line me-2"></i>Ramp Input Form</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('sizing_form') }}"><i class="fas fa-calculator me-2"></i>Sizing Form</a></li>
                         </ul>
                     </li>
                 </ul>

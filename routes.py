@@ -86,3 +86,8 @@ def view_submissions():
     """View all form submissions (for admin purposes)"""
     submissions = load_submissions()
     return jsonify(submissions)
+
+@app.route('/sizing-form')
+def sizing_form():
+    """Sizing Form page"""
+    return render_template('sizing_form.html')
