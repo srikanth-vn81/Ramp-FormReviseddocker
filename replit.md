@@ -11,8 +11,14 @@ Preferred communication style: Simple, everyday language.
 ## Recent Changes
 
 ### August 20, 2025
+- Created comprehensive Sizing Requisition Form with compact, corporate professional design
+- Built Program Information table with 6 channels (Inbound, Outbound, Back-Office, Social Media, Chat, Email)
+- Added all metrics: Annual Calls, Weekly Calls, AHT, SL%, ASA, Abandon%, CCR, TAT, Cross Skilling
+- Implemented Hours of Operation section with time dropdowns (0:00-23:30 plus OFF option)
+- Added Additional Info section with Monthly, Weekly, Intraday "Update Here" links
+- Created Client Provided Datasheet section with file upload functionality for Volume and AHT attachments
+- Applied compact professional styling with gradient headers, reduced spacing, and corporate blue color scheme
 - Added navigation dropdown menu for "Forms" with Ramp Input Form and Sizing Form submenus
-- Created new Sizing Form page with plain layout ready for custom form content
 - Updated navigation icon from fa-wpforms to fa-file-alt
 - Added conditional text input for "Others" option in Channel Support section
 - Updated Agent Profile in Sites Configuration from number input to dropdown with Tier 1, Tier 2, Tier 3 options
