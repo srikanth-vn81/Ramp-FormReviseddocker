@@ -87,7 +87,88 @@ def view_submissions():
     submissions = load_submissions()
     return jsonify(submissions)
 
-@app.route('/sizing-form')
+@app.route('/sizing-form', methods=['GET', 'POST'])
 def sizing_form():
     """Sizing Form page"""
-    return render_template('sizing_form.html')
+    from forms_sizing import SizingForm
+    
+    form = SizingForm()
+    
+    if form.validate_on_submit():
+        # Process sizing form data
+        sizing_data = {
+            'timestamp': datetime.now().isoformat(),
+            'inbound': {
+                'annual_calls': form.inbound_annual_calls.data,
+                'weekly_calls': form.inbound_weekly_calls.data,
+                'aht': form.inbound_aht.data,
+                'sl': form.inbound_sl.data,
+                'asa': form.inbound_asa.data,
+                'abandon': form.inbound_abandon.data,
+                'ccr': form.inbound_ccr.data,
+                'tat': form.inbound_tat.data,
+                'cross_skill': form.inbound_cross_skill.data
+            },
+            'outbound': {
+                'annual_calls': form.outbound_annual_calls.data,
+                'weekly_calls': form.outbound_weekly_calls.data,
+                'aht': form.outbound_aht.data,
+                'sl': form.outbound_sl.data,
+                'asa': form.outbound_asa.data,
+                'abandon': form.outbound_abandon.data,
+                'ccr': form.outbound_ccr.data,
+                'tat': form.outbound_tat.data,
+                'cross_skill': form.outbound_cross_skill.data
+            },
+            'backoffice': {
+                'annual_calls': form.backoffice_annual_calls.data,
+                'weekly_calls': form.backoffice_weekly_calls.data,
+                'aht': form.backoffice_aht.data,
+                'sl': form.backoffice_sl.data,
+                'asa': form.backoffice_asa.data,
+                'abandon': form.backoffice_abandon.data,
+                'ccr': form.backoffice_ccr.data,
+                'tat': form.backoffice_tat.data,
+                'cross_skill': form.backoffice_cross_skill.data
+            },
+            'social': {
+                'annual_calls': form.social_annual_calls.data,
+                'weekly_calls': form.social_weekly_calls.data,
+                'aht': form.social_aht.data,
+                'sl': form.social_sl.data,
+                'asa': form.social_asa.data,
+                'abandon': form.social_abandon.data,
+                'ccr': form.social_ccr.data,
+                'tat': form.social_tat.data,
+                'cross_skill': form.social_cross_skill.data
+            },
+            'chat': {
+                'annual_calls': form.chat_annual_calls.data,
+                'weekly_calls': form.chat_weekly_calls.data,
+                'aht': form.chat_aht.data,
+                'sl': form.chat_sl.data,
+                'asa': form.chat_asa.data,
+                'abandon': form.chat_abandon.data,
+                'ccr': form.chat_ccr.data,
+                'tat': form.chat_tat.data,
+                'cross_skill': form.chat_cross_skill.data
+            },
+            'email': {
+                'annual_calls': form.email_annual_calls.data,
+                'weekly_calls': form.email_weekly_calls.data,
+                'aht': form.email_aht.data,
+                'sl': form.email_sl.data,
+                'asa': form.email_asa.data,
+                'abandon': form.email_abandon.data,
+                'ccr': form.email_ccr.data,
+                'tat': form.email_tat.data,
+                'cross_skill': form.email_cross_skill.data
+            }
+        }
+        
+        # Save sizing data
+        save_submission(sizing_data)
+        flash('Sizing form submitted successfully!', 'success')
+        return redirect(url_for('sizing_form'))
+    
+    return render_template('sizing_form.html', form=form)

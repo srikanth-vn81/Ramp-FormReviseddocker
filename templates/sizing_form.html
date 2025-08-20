@@ -49,12 +49,145 @@
     <!-- Main Content -->
     <main class="main-content">
         <div class="container-fluid">
-            <div class="row mt-3">
+            <!-- Page Header -->
+            <div class="row mt-3 mb-4">
                 <div class="col-12">
-                    <h1>Sizing Form</h1>
-                    
-                    <!-- Add your form content here -->
-                    
+                    <div class="card shadow-sm">
+                        <div class="card-header text-center" style="background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%); color: white;">
+                            <h2 class="card-title mb-0 fw-bold">SIZING REQUISITION FORM</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Program Information Section -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card shadow-sm">
+                        <div class="card-header" style="background-color: #4a90e2; color: white;">
+                            <h5 class="mb-0">Program Information</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <form method="POST">
+                                {{ csrf_token() }}
+                                <div class="table-responsive">
+                                    <table class="table table-bordered mb-0">
+                                        <thead>
+                                            <tr style="background-color: #f8f9fa;">
+                                                <th class="text-center" style="width: 150px; vertical-align: middle;">Channels</th>
+                                                <th class="text-center" style="width: 120px;">Inbound</th>
+                                                <th class="text-center" style="width: 120px;">Outbound</th>
+                                                <th class="text-center" style="width: 120px;">Back-Office</th>
+                                                <th class="text-center" style="width: 120px;">Social Media</th>
+                                                <th class="text-center" style="width: 120px;">Chat</th>
+                                                <th class="text-center" style="width: 120px;">Email</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="fw-semibold bg-light">Annual Calls</td>
+                                                <td>{{ form.inbound_annual_calls(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                                <td>{{ form.outbound_annual_calls(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                                <td>{{ form.backoffice_annual_calls(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                                <td>{{ form.social_annual_calls(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                                <td>{{ form.chat_annual_calls(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                                <td>{{ form.email_annual_calls(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold bg-light">Weekly Calls</td>
+                                                <td>{{ form.inbound_weekly_calls(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                                <td>{{ form.outbound_weekly_calls(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                                <td>{{ form.backoffice_weekly_calls(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                                <td>{{ form.social_weekly_calls(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                                <td>{{ form.chat_weekly_calls(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                                <td>{{ form.email_weekly_calls(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold bg-light">AHT (Min / Sec)</td>
+                                                <td>{{ form.inbound_aht(class="form-control form-control-sm text-center", placeholder="00:00") }}</td>
+                                                <td>{{ form.outbound_aht(class="form-control form-control-sm text-center", placeholder="00:00") }}</td>
+                                                <td>{{ form.backoffice_aht(class="form-control form-control-sm text-center", placeholder="00:00") }}</td>
+                                                <td>{{ form.social_aht(class="form-control form-control-sm text-center", placeholder="00:00") }}</td>
+                                                <td>{{ form.chat_aht(class="form-control form-control-sm text-center", placeholder="00:00") }}</td>
+                                                <td>{{ form.email_aht(class="form-control form-control-sm text-center", placeholder="00:00") }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold bg-light">SL %</td>
+                                                <td>{{ form.inbound_sl(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                                <td>{{ form.outbound_sl(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                                <td>{{ form.backoffice_sl(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                                <td>{{ form.social_sl(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                                <td>{{ form.chat_sl(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                                <td>{{ form.email_sl(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold bg-light">ASA (Min / Sec)</td>
+                                                <td>{{ form.inbound_asa(class="form-control form-control-sm text-center", placeholder="00:00") }}</td>
+                                                <td>{{ form.outbound_asa(class="form-control form-control-sm text-center", placeholder="00:00") }}</td>
+                                                <td>{{ form.backoffice_asa(class="form-control form-control-sm text-center", placeholder="00:00") }}</td>
+                                                <td>{{ form.social_asa(class="form-control form-control-sm text-center", placeholder="00:00") }}</td>
+                                                <td>{{ form.chat_asa(class="form-control form-control-sm text-center", placeholder="00:00") }}</td>
+                                                <td>{{ form.email_asa(class="form-control form-control-sm text-center", placeholder="00:00") }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold bg-light">Abandon %</td>
+                                                <td>{{ form.inbound_abandon(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                                <td>{{ form.outbound_abandon(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                                <td>{{ form.backoffice_abandon(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                                <td>{{ form.social_abandon(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                                <td>{{ form.chat_abandon(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                                <td>{{ form.email_abandon(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold bg-light">CCR</td>
+                                                <td>{{ form.inbound_ccr(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                                <td>{{ form.outbound_ccr(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                                <td>{{ form.backoffice_ccr(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                                <td>{{ form.social_ccr(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                                <td>{{ form.chat_ccr(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                                <td>{{ form.email_ccr(class="form-control form-control-sm text-center", placeholder="0") }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold bg-light">TAT (Min/Sec/Hrs/Days)</td>
+                                                <td>{{ form.inbound_tat(class="form-control form-control-sm text-center", placeholder="00:00") }}</td>
+                                                <td>{{ form.outbound_tat(class="form-control form-control-sm text-center", placeholder="00:00") }}</td>
+                                                <td>{{ form.backoffice_tat(class="form-control form-control-sm text-center", placeholder="00:00") }}</td>
+                                                <td>{{ form.social_tat(class="form-control form-control-sm text-center", placeholder="00:00") }}</td>
+                                                <td>{{ form.chat_tat(class="form-control form-control-sm text-center", placeholder="00:00") }}</td>
+                                                <td>{{ form.email_tat(class="form-control form-control-sm text-center", placeholder="00:00") }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-semibold bg-light">Cross Skilling</td>
+                                                <td class="text-center">{{ form.inbound_cross_skill(class="form-check-input") }}</td>
+                                                <td class="text-center">{{ form.outbound_cross_skill(class="form-check-input") }}</td>
+                                                <td class="text-center">{{ form.backoffice_cross_skill(class="form-check-input") }}</td>
+                                                <td class="text-center">{{ form.social_cross_skill(class="form-check-input") }}</td>
+                                                <td class="text-center">{{ form.chat_cross_skill(class="form-check-input") }}</td>
+                                                <td class="text-center">{{ form.email_cross_skill(class="form-check-input") }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <!-- Form Actions -->
+                                <div class="card-footer bg-light">
+                                    <div class="d-flex justify-content-between">
+                                        <button type="button" class="btn btn-outline-secondary">
+                                            <i class="fas fa-undo me-1"></i>Reset Form
+                                        </button>
+                                        <div>
+                                            <button type="button" class="btn btn-outline-primary me-2">
+                                                <i class="fas fa-save me-1"></i>Save Draft
+                                            </button>
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="fas fa-calculator me-1"></i>Calculate Sizing
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
