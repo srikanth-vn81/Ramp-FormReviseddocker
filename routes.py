@@ -2,6 +2,7 @@ import json
 import os
 from datetime import datetime, timedelta
 from flask import render_template, request, flash, redirect, url_for, jsonify
+from werkzeug.utils import secure_filename
 from app import app
 from forms import RampInputForm
 
@@ -165,6 +166,28 @@ def sizing_form():
                 'cross_skill': form.email_cross_skill.data
             }
         }
+        
+        # Handle file uploads
+        attach_volume = request.files.get('attach_volume')
+        attach_aht = request.files.get('attach_aht')
+        
+        if attach_volume and attach_volume.filename:
+            # Create uploads directory if it doesn't exist
+            if not os.path.exists('uploads'):
+                os.makedirs('uploads')
+            # Save volume file
+            volume_filename = secure_filename(attach_volume.filename)
+            attach_volume.save(os.path.join('uploads', volume_filename))
+            sizing_data['attach_volume'] = volume_filename
+            
+        if attach_aht and attach_aht.filename:
+            # Create uploads directory if it doesn't exist
+            if not os.path.exists('uploads'):
+                os.makedirs('uploads')
+            # Save AHT file
+            aht_filename = secure_filename(attach_aht.filename)
+            attach_aht.save(os.path.join('uploads', aht_filename))
+            sizing_data['attach_aht'] = aht_filename
         
         # Save sizing data
         save_submission(sizing_data)
