@@ -68,7 +68,7 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-semibold required"># of Total Trainer</label>
-                        {{ form.total_trainers(class="form-control", readonly=true, style="background-color: #f8f9fa; color: #495057;") }}
+                        {{ form.total_trainers(class="form-control", readonly=true, style="background-color: #f8f9fa; color: #495057;", value="0") }}
                     </div>
                 </div>
 
@@ -89,7 +89,7 @@
                     </div>
                     <div class="col-md-4">
                         <label class="form-label fw-semibold required"># of Total Trainer</label>
-                        {{ form.total_trainers(class="form-control", readonly=true, style="background-color: #f8f9fa; color: #495057;") }}
+                        {{ form.total_trainers(class="form-control", readonly=true, style="background-color: #f8f9fa; color: #495057;", value="0") }}
                     </div>
                 </div>
 
@@ -106,7 +106,7 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-semibold required"># of Total Trainer</label>
-                        {{ form.total_trainers(class="form-control", readonly=true, style="background-color: #f8f9fa; color: #495057;") }}
+                        {{ form.total_trainers(class="form-control", readonly=true, style="background-color: #f8f9fa; color: #495057;", value="0") }}
                     </div>
                 </div>
 
@@ -178,10 +178,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Show appropriate section based on selection
             if (this.value === 'client') {
                 clientTrainerDetails.style.display = 'block';
-                showAdditionalFields();
             } else if (this.value === 'both') {
                 bothTrainerDetails.style.display = 'block';
-                showAdditionalFields();
             } else if (this.value === 'internal') {
                 internalAvailabilitySection.style.display = 'block';
             }
@@ -193,7 +191,6 @@ document.addEventListener('DOMContentLoaded', function() {
         radio.addEventListener('change', function() {
             if (this.value === 'yes') {
                 internalTrainerDetails.style.display = 'block';
-                showAdditionalFields();
             } else if (this.value === 'no') {
                 internalTrainerDetails.style.display = 'none';
                 hideAdditionalFields();
@@ -215,17 +212,14 @@ document.addEventListener('DOMContentLoaded', function() {
     if (selectedTrainingSupport) {
         if (selectedTrainingSupport.value === 'client') {
             clientTrainerDetails.style.display = 'block';
-            showAdditionalFields();
         } else if (selectedTrainingSupport.value === 'both') {
             bothTrainerDetails.style.display = 'block';
-            showAdditionalFields();
         } else if (selectedTrainingSupport.value === 'internal') {
             internalAvailabilitySection.style.display = 'block';
             
             const selectedAvailability = document.querySelector('input[name="internal_trainer_available"]:checked');
             if (selectedAvailability && selectedAvailability.value === 'yes') {
                 internalTrainerDetails.style.display = 'block';
-                showAdditionalFields();
             }
         }
     }
@@ -241,6 +235,13 @@ document.addEventListener('DOMContentLoaded', function() {
         totalFields.forEach(field => {
             field.value = total;
         });
+        
+        // Show additional fields only if trainers are actually selected
+        if (total > 0) {
+            showAdditionalFields();
+        } else {
+            hideAdditionalFields();
+        }
     }
     
     document.getElementById('client_trainer').addEventListener('change', calculateTotalTrainers);
@@ -268,8 +269,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupDurationHandlers('training_duration', 'training-duration-number-container');
     setupDurationHandlers('nesting_duration', 'nesting-duration-number-container');
     
-    // Initial calculations
-    calculateTotalTrainers();
+    // Initial setup - don't calculate automatically
 });
 </script>
 {% endblock %}
