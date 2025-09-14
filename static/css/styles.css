@@ -990,6 +990,116 @@ html, body {
     height: 0.9rem;
 }
 
+/* Professional Multi-Step Navigation Styles */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #1e40af 0%, #2563eb 50%, #3b82f6 100%) !important;
+}
+
+.bg-gradient-light {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
+}
+
+.navigation-card {
+    border: 2px solid #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+.navigation-card:hover {
+    border-color: #3b82f6;
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15) !important;
+}
+
+.step-indicator .badge {
+    font-size: 0.95rem !important;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+.breadcrumb-item a {
+    transition: all 0.2s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.breadcrumb-item a:hover {
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+.breadcrumb-item.active {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: white !important;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.breadcrumb-item.active i {
+    color: white !important;
+}
+
+/* Enhanced Button Styling */
+.btn-lg {
+    border-radius: 25px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.btn-lg:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary.btn-lg {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    border: none;
+}
+
+.btn-primary.btn-lg:hover {
+    background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+}
+
+.btn-success.btn-lg {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border: none;
+}
+
+.btn-success.btn-lg:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+}
+
+.btn-outline-primary.btn-lg {
+    border: 2px solid #2563eb;
+    color: #2563eb;
+    background: transparent;
+}
+
+.btn-outline-primary.btn-lg:hover {
+    background: #2563eb;
+    color: white;
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+}
+
+/* Professional Card Enhancements */
+.card.shadow-lg {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12) !important;
+    border: none;
+    border-radius: 15px;
+}
+
+.card-header {
+    border-radius: 15px 15px 0 0 !important;
+}
+
 /* Enhanced section balance */
 @media (min-width: 992px) {
     .col-lg-8 .row.g-3 > .col-12 {
