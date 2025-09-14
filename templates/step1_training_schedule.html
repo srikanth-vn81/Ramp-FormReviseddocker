@@ -1,0 +1,170 @@
+{% extends "base_step.html" %}
+
+{% block title %}Training Schedule - WFM Analytics{% endblock %}
+
+{% block form_content %}
+<!-- Training Schedule Card -->
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h6 class="card-title mb-0">
+                    <i class="fas fa-calendar-alt me-2"></i>Training Schedule
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row g-3 mb-4">
+                    <!-- Dates Row -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold required">Ramp Start Date</label>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="flex-shrink-0">
+                                {{ form.ramp_start_availability(class="form-select") }}
+                            </div>
+                            <div class="flex-grow-1 date-input-container" id="ramp-start-date-container" style="display: none;">
+                                {{ form.ramp_start_date(class="form-control") }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold required">Ramp End Date</label>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="flex-shrink-0">
+                                {{ form.ramp_end_availability(class="form-select") }}
+                            </div>
+                            <div class="flex-grow-1 date-input-container" id="ramp-end-date-container" style="display: none;">
+                                {{ form.ramp_end_date(class="form-control") }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row g-3 mb-4">
+                    <!-- Trainers Row -->
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold required">Client Trainer</label>
+                        {{ form.client_trainer(class="form-select") }}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold required">Internal Trainer</label>
+                        {{ form.internal_trainer(class="form-select") }}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold required"># of Total Trainer</label>
+                        {{ form.total_trainers(class="form-control", readonly=true, style="background-color: #f8f9fa; color: #495057;") }}
+                    </div>
+                </div>
+
+                <!-- Additional Fields (shown conditionally) -->
+                <div id="additional-fields" class="additional-fields" style="display: none;">
+                    <hr class="my-4">
+                    <h6 class="text-muted mb-3">
+                        <i class="fas fa-info-circle me-2"></i>Additional Training Details
+                    </h6>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Training Duration</label>
+                            <div class="d-flex gap-2 align-items-center">
+                                <div class="flex-shrink-0" style="min-width: 100px;">
+                                    {{ form.training_duration(class="form-select") }}
+                                </div>
+                                <div id="training-duration-number-container" style="display: none; min-width: 80px;">
+                                    {{ form.training_duration_number(class="form-select") }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Nesting Duration</label>
+                            <div class="d-flex gap-2 align-items-center">
+                                <div class="flex-shrink-0" style="min-width: 100px;">
+                                    {{ form.nesting_duration(class="form-select") }}
+                                </div>
+                                <div id="nesting-duration-number-container" style="display: none; min-width: 80px;">
+                                    {{ form.nesting_duration_number(class="form-select") }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Batch Size</label>
+                            {{ form.batch_size(class="form-select") }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Show/hide date containers based on availability selection
+    function setupDateAvailability(availabilityId, containerId) {
+        const availability = document.getElementById(availabilityId);
+        const container = document.getElementById(containerId);
+        
+        if (availability && container) {
+            function toggleDateContainer() {
+                if (availability.value === 'available') {
+                    container.style.display = 'block';
+                } else {
+                    container.style.display = 'none';
+                }
+            }
+            
+            availability.addEventListener('change', toggleDateContainer);
+            toggleDateContainer(); // Initial call
+        }
+    }
+    
+    setupDateAvailability('ramp_start_availability', 'ramp-start-date-container');
+    setupDateAvailability('ramp_end_availability', 'ramp-end-date-container');
+    
+    // Calculate total trainers
+    function calculateTotalTrainers() {
+        const client = parseInt(document.getElementById('client_trainer').value) || 0;
+        const internal = parseInt(document.getElementById('internal_trainer').value) || 0;
+        const totalField = document.getElementById('total_trainers');
+        
+        if (totalField) {
+            totalField.value = client + internal;
+        }
+        
+        // Show additional fields if trainers are selected
+        const additionalFields = document.getElementById('additional-fields');
+        if (additionalFields && (client > 0 || internal > 0)) {
+            additionalFields.style.display = 'block';
+        }
+    }
+    
+    document.getElementById('client_trainer').addEventListener('change', calculateTotalTrainers);
+    document.getElementById('internal_trainer').addEventListener('change', calculateTotalTrainers);
+    
+    // Show/hide duration number containers
+    function setupDurationHandlers(durationId, containerId) {
+        const duration = document.getElementById(durationId);
+        const container = document.getElementById(containerId);
+        
+        if (duration && container) {
+            function toggleDurationNumber() {
+                if (duration.value && duration.value !== '') {
+                    container.style.display = 'block';
+                } else {
+                    container.style.display = 'none';
+                }
+            }
+            
+            duration.addEventListener('change', toggleDurationNumber);
+            toggleDurationNumber(); // Initial call
+        }
+    }
+    
+    setupDurationHandlers('training_duration', 'training-duration-number-container');
+    setupDurationHandlers('nesting_duration', 'nesting-duration-number-container');
+    
+    // Initial calculations
+    calculateTotalTrainers();
+});
+</script>
+{% endblock %}

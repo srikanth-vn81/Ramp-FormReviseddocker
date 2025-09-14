@@ -1,0 +1,244 @@
+{% extends "base_step.html" %}
+
+{% block title %}Location & Resource Planning - WFM Analytics{% endblock %}
+
+{% block form_content %}
+<!-- Location & Resource Planning Card -->
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <div class="card shadow-sm">
+            <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
+                <h6 class="card-title mb-0">
+                    <i class="fas fa-map-marker-alt me-2"></i>Location & Resource Planning
+                </h6>
+                <div class="location-actions">
+                    <button type="button" class="btn btn-sm btn-outline-dark" onclick="resetLocationForm()">
+                        <i class="fas fa-undo me-1"></i>Reset
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Requirement Section -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold required">
+                            <i class="fas fa-calculator me-1"></i>Requirement
+                        </label>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="row g-2">
+                            <div class="col-6">
+                                {{ form.requirement_type(class="form-select") }}
+                            </div>
+                            <div class="col-6">
+                                {{ form.requirement_value(class="form-control", id="requirement-value-input", placeholder="Enter value") }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Geo Country Section -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold required">
+                            <i class="fas fa-globe me-1"></i>Geo (Country)
+                        </label>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="country-multiselect" id="geo-country-select">
+                            {{ form.geo_country(class="country-checkbox-group") }}
+                        </div>
+                        <div class="mt-2">
+                            <span class="badge bg-info country-count-display">0 Countries Selected</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Country Headcount Distribution -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold mb-3">
+                        <i class="fas fa-users me-1"></i>Country-wise Headcount Distribution
+                    </label>
+                    <div class="country-grid" id="country-grid">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-flag-usa mb-2 text-primary" style="font-size: 1.5rem;"></i>
+                                        <label class="form-label fw-semibold small">CAN</label>
+                                        {{ form.can_headcount(class="form-control country-headcount", **{"data-country": "CAN"}) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-flag mb-2 text-success" style="font-size: 1.5rem;"></i>
+                                        <label class="form-label fw-semibold small">COL</label>
+                                        {{ form.col_headcount(class="form-control country-headcount", **{"data-country": "COL"}) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-flag mb-2 text-danger" style="font-size: 1.5rem;"></i>
+                                        <label class="form-label fw-semibold small">HKG</label>
+                                        {{ form.hkg_headcount(class="form-control country-headcount", **{"data-country": "HKG"}) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-flag mb-2 text-warning" style="font-size: 1.5rem;"></i>
+                                        <label class="form-label fw-semibold small">IND</label>
+                                        {{ form.ind_headcount(class="form-control country-headcount", **{"data-country": "IND"}) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-flag mb-2 text-info" style="font-size: 1.5rem;"></i>
+                                        <label class="form-label fw-semibold small">MEX</label>
+                                        {{ form.mex_headcount(class="form-control country-headcount", **{"data-country": "MEX"}) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-flag mb-2 text-secondary" style="font-size: 1.5rem;"></i>
+                                        <label class="form-label fw-semibold small">PHL</label>
+                                        {{ form.phl_headcount(class="form-control country-headcount", **{"data-country": "PHL"}) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-flag-usa mb-2 text-primary" style="font-size: 1.5rem;"></i>
+                                        <label class="form-label fw-semibold small">USA</label>
+                                        {{ form.usa_headcount(class="form-control country-headcount", **{"data-country": "USA"}) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Section -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card bg-light">
+                            <div class="card-header">
+                                <h6 class="card-title mb-0">
+                                    <i class="fas fa-chart-pie me-2"></i>Resource Summary
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="d-flex justify-content-between">
+                                            <span><strong>Total Requirement:</strong></span>
+                                            <span id="total-requirement">0</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="d-flex justify-content-between">
+                                            <span><strong>Total Allocated:</strong></span>
+                                            <span id="total-allocated">0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-12">
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar" style="width: 0%" id="allocation-progress">
+                                                0%
+                                            </div>
+                                        </div>
+                                        <small class="text-muted">Allocation Progress</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Update country selection count
+    function updateCountryCount() {
+        const checkboxes = document.querySelectorAll('input[name="geo_country"]:checked');
+        const countDisplay = document.querySelector('.country-count-display');
+        if (countDisplay) {
+            countDisplay.textContent = `${checkboxes.length} Countries Selected`;
+        }
+    }
+    
+    // Add event listeners to country checkboxes
+    document.querySelectorAll('input[name="geo_country"]').forEach(function(checkbox) {
+        checkbox.addEventListener('change', updateCountryCount);
+    });
+    
+    // Update resource summary
+    function updateResourceSummary() {
+        const requirementValue = parseInt(document.getElementById('requirement-value-input').value) || 0;
+        
+        let totalAllocated = 0;
+        document.querySelectorAll('.country-headcount').forEach(function(input) {
+            totalAllocated += parseInt(input.value) || 0;
+        });
+        
+        document.getElementById('total-requirement').textContent = requirementValue;
+        document.getElementById('total-allocated').textContent = totalAllocated;
+        
+        const percentage = requirementValue > 0 ? Math.min((totalAllocated / requirementValue) * 100, 100) : 0;
+        const progressBar = document.getElementById('allocation-progress');
+        progressBar.style.width = `${percentage}%`;
+        progressBar.textContent = `${Math.round(percentage)}%`;
+        
+        // Change color based on allocation status
+        progressBar.className = 'progress-bar';
+        if (percentage >= 100) {
+            progressBar.classList.add('bg-success');
+        } else if (percentage >= 80) {
+            progressBar.classList.add('bg-warning');
+        } else {
+            progressBar.classList.add('bg-info');
+        }
+    }
+    
+    // Add event listeners to requirement and headcount inputs
+    document.getElementById('requirement-value-input').addEventListener('input', updateResourceSummary);
+    document.querySelectorAll('.country-headcount').forEach(function(input) {
+        input.addEventListener('input', updateResourceSummary);
+    });
+    
+    // Reset function
+    window.resetLocationForm = function() {
+        document.getElementById('requirement-value-input').value = '';
+        document.querySelectorAll('.country-headcount').forEach(function(input) {
+            input.value = '0';
+        });
+        document.querySelectorAll('input[name="geo_country"]').forEach(function(checkbox) {
+            checkbox.checked = false;
+        });
+        updateCountryCount();
+        updateResourceSummary();
+    };
+    
+    // Initial updates
+    updateCountryCount();
+    updateResourceSummary();
+});
+</script>
+{% endblock %}

@@ -1,0 +1,241 @@
+{% extends "base_step.html" %}
+
+{% block title %}Language & Channel Support - WFM Analytics{% endblock %}
+
+{% block form_content %}
+<!-- Language & Channel Support Card -->
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h6 class="card-title mb-0">
+                    <i class="fas fa-language me-2"></i>Language & Channel Support
+                </h6>
+            </div>
+            <div class="card-body">
+                <!-- Language Support Section -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">
+                            <i class="fas fa-globe me-1"></i>Languages Supported
+                        </label>
+                        {{ form.languages_supported(class="form-select") }}
+                    </div>
+                    <div class="col-md-6" id="specify-languages-container" style="display: none;">
+                        <label class="form-label fw-semibold">Specify the Languages</label>
+                        {{ form.specify_languages(class="form-control", placeholder="Enter languages (e.g., English, Spanish, French)") }}
+                    </div>
+                </div>
+                
+                <hr class="my-4">
+                
+                <!-- Channel Support Section -->
+                <div class="channel-support">
+                    <label class="form-label fw-semibold mb-3">
+                        <i class="fas fa-headset me-1"></i>Channel Support
+                    </label>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-light">
+                                    <h6 class="card-title mb-0">
+                                        <i class="fas fa-phone me-2"></i>Voice Channels
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-check mb-2">
+                                        {{ form.voice_inbound(class="form-check-input") }}
+                                        <label class="form-check-label" for="{{ form.voice_inbound.id }}">
+                                            <i class="fas fa-phone-incoming me-1"></i>Voice - Inbound
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        {{ form.voice_outbound(class="form-check-input") }}
+                                        <label class="form-check-label" for="{{ form.voice_outbound.id }}">
+                                            <i class="fas fa-phone-outgoing me-1"></i>Voice - Outbound
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-light">
+                                    <h6 class="card-title mb-0">
+                                        <i class="fas fa-comments me-2"></i>Digital Channels
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-check mb-2">
+                                        {{ form.chat(class="form-check-input") }}
+                                        <label class="form-check-label" for="{{ form.chat.id }}">
+                                            <i class="fas fa-comment me-1"></i>Chat
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        {{ form.email(class="form-check-input") }}
+                                        <label class="form-check-label" for="{{ form.email.id }}">
+                                            <i class="fas fa-envelope me-1"></i>Email
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        {{ form.social_sms(class="form-check-input") }}
+                                        <label class="form-check-label" for="{{ form.social_sms.id }}">
+                                            <i class="fas fa-sms me-1"></i>Social/SMS
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-light">
+                                    <h6 class="card-title mb-0">
+                                        <i class="fas fa-briefcase me-2"></i>Back Office
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-check">
+                                        {{ form.back_office(class="form-check-input") }}
+                                        <label class="form-check-label" for="{{ form.back_office.id }}">
+                                            <i class="fas fa-file-alt me-1"></i>Back Office
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-light">
+                                    <h6 class="card-title mb-0">
+                                        <i class="fas fa-plus me-2"></i>Other Channels
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-check mb-2">
+                                        {{ form.others(class="form-check-input", id="others-checkbox") }}
+                                        <label class="form-check-label" for="{{ form.others.id }}">
+                                            <i class="fas fa-ellipsis-h me-1"></i>Others
+                                        </label>
+                                    </div>
+                                    <!-- Others text input - hidden by default -->
+                                    <div id="others-text-container" style="display: none;">
+                                        {{ form.others_text(class="form-control form-control-sm", placeholder="Please specify other channels...") }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Channel Selection Summary -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="alert alert-light" role="alert">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Selected Channels Summary:</strong>
+                            <span id="channel-summary">No channels selected</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Show/hide language specification field
+    const languagesSupported = document.getElementById('languages_supported');
+    const specifyContainer = document.getElementById('specify-languages-container');
+    
+    function toggleLanguageSpecify() {
+        if (languagesSupported.value === 'multilingual') {
+            specifyContainer.style.display = 'block';
+        } else {
+            specifyContainer.style.display = 'none';
+        }
+    }
+    
+    if (languagesSupported) {
+        languagesSupported.addEventListener('change', toggleLanguageSpecify);
+        toggleLanguageSpecify(); // Initial call
+    }
+    
+    // Show/hide others text field
+    const othersCheckbox = document.getElementById('others-checkbox');
+    const othersContainer = document.getElementById('others-text-container');
+    
+    function toggleOthersText() {
+        if (othersCheckbox.checked) {
+            othersContainer.style.display = 'block';
+        } else {
+            othersContainer.style.display = 'none';
+        }
+    }
+    
+    if (othersCheckbox) {
+        othersCheckbox.addEventListener('change', toggleOthersText);
+        toggleOthersText(); // Initial call
+    }
+    
+    // Update channel summary
+    function updateChannelSummary() {
+        const channels = [];
+        const checkboxes = [
+            { id: 'voice_inbound', label: 'Voice Inbound' },
+            { id: 'voice_outbound', label: 'Voice Outbound' },
+            { id: 'chat', label: 'Chat' },
+            { id: 'email', label: 'Email' },
+            { id: 'back_office', label: 'Back Office' },
+            { id: 'social_sms', label: 'Social/SMS' }
+        ];
+        
+        checkboxes.forEach(function(channel) {
+            const checkbox = document.getElementById(channel.id);
+            if (checkbox && checkbox.checked) {
+                channels.push(channel.label);
+            }
+        });
+        
+        // Check others
+        if (othersCheckbox && othersCheckbox.checked) {
+            const othersText = document.getElementById('others_text');
+            if (othersText && othersText.value.trim()) {
+                channels.push('Others: ' + othersText.value.trim());
+            } else {
+                channels.push('Others');
+            }
+        }
+        
+        const summaryElement = document.getElementById('channel-summary');
+        if (summaryElement) {
+            if (channels.length > 0) {
+                summaryElement.textContent = channels.join(', ');
+            } else {
+                summaryElement.textContent = 'No channels selected';
+            }
+        }
+    }
+    
+    // Add event listeners to all channel checkboxes
+    document.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox) {
+        checkbox.addEventListener('change', updateChannelSummary);
+    });
+    
+    // Add event listener to others text field
+    const othersText = document.getElementById('others_text');
+    if (othersText) {
+        othersText.addEventListener('input', updateChannelSummary);
+    }
+    
+    // Initial summary update
+    updateChannelSummary();
+});
+</script>
+{% endblock %}

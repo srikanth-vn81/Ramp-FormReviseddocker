@@ -1,0 +1,218 @@
+{% extends "base_step.html" %}
+
+{% block title %}Form Summary - WFM Analytics{% endblock %}
+
+{% block form_content %}
+<!-- Form Summary -->
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-clipboard-check me-2"></i>Form Summary - Review Before Submission
+                </h5>
+            </div>
+            <div class="card-body">
+                
+                <!-- Training Schedule Summary -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-calendar-alt me-2"></i>Training Schedule
+                                    <a href="{{ url_for('ramp_form_step', step=1) }}" class="btn btn-sm btn-outline-primary float-end">
+                                        <i class="fas fa-edit me-1"></i>Edit
+                                    </a>
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <strong>Ramp Start:</strong> {{ form_data.get('ramp_start_availability', 'Not specified') }}
+                                        {% if form_data.get('ramp_start_date') %}
+                                            ({{ form_data.get('ramp_start_date') }})
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>Ramp End:</strong> {{ form_data.get('ramp_end_availability', 'Not specified') }}
+                                        {% if form_data.get('ramp_end_date') %}
+                                            ({{ form_data.get('ramp_end_date') }})
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4">
+                                        <strong>Client Trainers:</strong> {{ form_data.get('client_trainer', 'Not specified') }}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <strong>Internal Trainers:</strong> {{ form_data.get('internal_trainer', 'Not specified') }}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <strong>Total Trainers:</strong> {{ form_data.get('total_trainers', 'Not specified') }}
+                                    </div>
+                                </div>
+                                {% if form_data.get('training_duration') or form_data.get('batch_size') %}
+                                <div class="row mt-2">
+                                    <div class="col-md-4">
+                                        <strong>Training Duration:</strong> 
+                                        {{ form_data.get('training_duration_number', '') }} {{ form_data.get('training_duration', '') }}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <strong>Nesting Duration:</strong> 
+                                        {{ form_data.get('nesting_duration_number', '') }} {{ form_data.get('nesting_duration', '') }}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <strong>Batch Size:</strong> {{ form_data.get('batch_size', 'Not specified') }}
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Operational Assumptions Summary -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-cogs me-2"></i>Operational Assumptions
+                                    <a href="{{ url_for('ramp_form_step', step=2) }}" class="btn btn-sm btn-outline-primary float-end">
+                                        <i class="fas fa-edit me-1"></i>Edit
+                                    </a>
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <strong>Supervisor Ratio:</strong> {{ form_data.get('supervisor_ratio', 'Not specified') }}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <strong>QA Ratio:</strong> {{ form_data.get('qa_ratio', 'Not specified') }}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <strong>Trainer Ratio:</strong> {{ form_data.get('trainer_ratio', 'Not specified') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Language & Channel Support Summary -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-language me-2"></i>Language & Channel Support
+                                    <a href="{{ url_for('ramp_form_step', step=3) }}" class="btn btn-sm btn-outline-primary float-end">
+                                        <i class="fas fa-edit me-1"></i>Edit
+                                    </a>
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <strong>Language Support:</strong> {{ form_data.get('languages_supported', 'Not specified') }}
+                                        {% if form_data.get('specify_languages') %}
+                                            <br><small class="text-muted">Languages: {{ form_data.get('specify_languages') }}</small>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>Channels:</strong>
+                                        <ul class="list-unstyled mb-0">
+                                            {% if form_data.get('voice_inbound') %}<li><i class="fas fa-check text-success me-1"></i>Voice Inbound</li>{% endif %}
+                                            {% if form_data.get('voice_outbound') %}<li><i class="fas fa-check text-success me-1"></i>Voice Outbound</li>{% endif %}
+                                            {% if form_data.get('chat') %}<li><i class="fas fa-check text-success me-1"></i>Chat</li>{% endif %}
+                                            {% if form_data.get('email') %}<li><i class="fas fa-check text-success me-1"></i>Email</li>{% endif %}
+                                            {% if form_data.get('back_office') %}<li><i class="fas fa-check text-success me-1"></i>Back Office</li>{% endif %}
+                                            {% if form_data.get('social_sms') %}<li><i class="fas fa-check text-success me-1"></i>Social/SMS</li>{% endif %}
+                                            {% if form_data.get('others') %}<li><i class="fas fa-check text-success me-1"></i>Others{% if form_data.get('others_text') %}: {{ form_data.get('others_text') }}{% endif %}</li>{% endif %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Location & Resource Planning Summary -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-map-marker-alt me-2"></i>Location & Resource Planning
+                                    <a href="{{ url_for('ramp_form_step', step=4) }}" class="btn btn-sm btn-outline-primary float-end">
+                                        <i class="fas fa-edit me-1"></i>Edit
+                                    </a>
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <strong>Requirement:</strong> {{ form_data.get('requirement_value', 'Not specified') }} {{ form_data.get('requirement_type', '') }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <strong>Country Distribution:</strong>
+                                        <div class="row mt-2">
+                                            {% if form_data.get('can_headcount') and form_data.get('can_headcount') > 0 %}
+                                            <div class="col-md-3"><span class="badge bg-secondary">CAN: {{ form_data.get('can_headcount') }}</span></div>
+                                            {% endif %}
+                                            {% if form_data.get('col_headcount') and form_data.get('col_headcount') > 0 %}
+                                            <div class="col-md-3"><span class="badge bg-secondary">COL: {{ form_data.get('col_headcount') }}</span></div>
+                                            {% endif %}
+                                            {% if form_data.get('hkg_headcount') and form_data.get('hkg_headcount') > 0 %}
+                                            <div class="col-md-3"><span class="badge bg-secondary">HKG: {{ form_data.get('hkg_headcount') }}</span></div>
+                                            {% endif %}
+                                            {% if form_data.get('ind_headcount') and form_data.get('ind_headcount') > 0 %}
+                                            <div class="col-md-3"><span class="badge bg-secondary">IND: {{ form_data.get('ind_headcount') }}</span></div>
+                                            {% endif %}
+                                            {% if form_data.get('mex_headcount') and form_data.get('mex_headcount') > 0 %}
+                                            <div class="col-md-3"><span class="badge bg-secondary">MEX: {{ form_data.get('mex_headcount') }}</span></div>
+                                            {% endif %}
+                                            {% if form_data.get('phl_headcount') and form_data.get('phl_headcount') > 0 %}
+                                            <div class="col-md-3"><span class="badge bg-secondary">PHL: {{ form_data.get('phl_headcount') }}</span></div>
+                                            {% endif %}
+                                            {% if form_data.get('usa_headcount') and form_data.get('usa_headcount') > 0 %}
+                                            <div class="col-md-3"><span class="badge bg-secondary">USA: {{ form_data.get('usa_headcount') }}</span></div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Actions -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card bg-light">
+                            <div class="card-body text-center">
+                                <h5 class="mb-3">Ready to Submit?</h5>
+                                <p class="text-muted mb-3">Please review all the information above and make any necessary changes before submitting.</p>
+                                <div class="d-flex justify-content-center gap-3">
+                                    <a href="{{ url_for('ramp_form_step', step=4) }}" class="btn btn-outline-secondary">
+                                        <i class="fas fa-chevron-left me-1"></i>Back to Edit
+                                    </a>
+                                    <form method="POST" class="d-inline">
+                                        <button type="submit" class="btn btn-success btn-lg">
+                                            <i class="fas fa-paper-plane me-2"></i>Submit Form
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

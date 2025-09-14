@@ -1,0 +1,151 @@
+{% extends "base_step.html" %}
+
+{% block title %}Operational Assumptions - WFM Analytics{% endblock %}
+
+{% block form_content %}
+<!-- Operational Assumptions Card -->
+<div class="row">
+    <div class="col-lg-6 mx-auto">
+        <div class="card shadow-sm">
+            <div class="card-header bg-success text-white">
+                <h6 class="card-title mb-0">
+                    <i class="fas fa-cogs me-2"></i>Operational Assumptions
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row g-4">
+                    <div class="col-12">
+                        <div class="alert alert-info" role="alert">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Instructions:</strong> Define the operational ratios for your team structure. 
+                            Use format like "1:10" to indicate 1 supervisor for every 10 agents.
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">
+                            <i class="fas fa-user-tie me-1"></i>Supervisor Ratio
+                        </label>
+                        <div class="input-group">
+                            {{ form.supervisor_ratio(class="form-control", value="1:10") }}
+                            <span class="input-group-text">
+                                <i class="fas fa-users"></i>
+                            </span>
+                        </div>
+                        <small class="form-text text-muted">Supervisor to Agent ratio</small>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">
+                            <i class="fas fa-check-circle me-1"></i>QA Ratio
+                        </label>
+                        <div class="input-group">
+                            {{ form.qa_ratio(class="form-control", value="1:15") }}
+                            <span class="input-group-text">
+                                <i class="fas fa-clipboard-check"></i>
+                            </span>
+                        </div>
+                        <small class="form-text text-muted">QA to Agent ratio</small>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">
+                            <i class="fas fa-chalkboard-teacher me-1"></i>Trainer Ratio
+                        </label>
+                        <div class="input-group">
+                            {{ form.trainer_ratio(class="form-control", value="1:8") }}
+                            <span class="input-group-text">
+                                <i class="fas fa-graduation-cap"></i>
+                            </span>
+                        </div>
+                        <small class="form-text text-muted">Trainer to Trainee ratio</small>
+                    </div>
+                </div>
+                
+                <!-- Ratio Examples -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="card bg-light">
+                            <div class="card-header">
+                                <h6 class="card-title mb-0">
+                                    <i class="fas fa-lightbulb me-2"></i>Common Ratio Examples
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <strong>Supervisor:</strong>
+                                        <ul class="list-unstyled">
+                                            <li><code>1:8</code> - Small teams</li>
+                                            <li><code>1:10</code> - Standard</li>
+                                            <li><code>1:12</code> - Large teams</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <strong>QA:</strong>
+                                        <ul class="list-unstyled">
+                                            <li><code>1:15</code> - High quality focus</li>
+                                            <li><code>1:20</code> - Standard</li>
+                                            <li><code>1:25</code> - Cost efficient</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <strong>Trainer:</strong>
+                                        <ul class="list-unstyled">
+                                            <li><code>1:6</code> - Complex training</li>
+                                            <li><code>1:8</code> - Standard</li>
+                                            <li><code>1:12</code> - Basic training</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Validate ratio format
+    function validateRatio(input) {
+        const ratioPattern = /^\d+:\d+$/;
+        
+        input.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value && !ratioPattern.test(value)) {
+                this.classList.add('is-invalid');
+                
+                // Add/update error message
+                let errorMsg = this.parentNode.parentNode.querySelector('.invalid-feedback');
+                if (!errorMsg) {
+                    errorMsg = document.createElement('div');
+                    errorMsg.className = 'invalid-feedback';
+                    this.parentNode.parentNode.appendChild(errorMsg);
+                }
+                errorMsg.textContent = 'Please use format like "1:10" (number:number)';
+            } else {
+                this.classList.remove('is-invalid');
+                const errorMsg = this.parentNode.parentNode.querySelector('.invalid-feedback');
+                if (errorMsg) {
+                    errorMsg.remove();
+                }
+            }
+        });
+        
+        input.addEventListener('input', function() {
+            this.classList.remove('is-invalid');
+        });
+    }
+    
+    // Apply validation to all ratio inputs
+    validateRatio(document.getElementById('supervisor_ratio'));
+    validateRatio(document.getElementById('qa_ratio'));
+    validateRatio(document.getElementById('trainer_ratio'));
+});
+</script>
+{% endblock %}
