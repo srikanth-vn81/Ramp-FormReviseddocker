@@ -19,9 +19,8 @@ body {
     background-color: #f1f5f9;
     color: #334155;
     line-height: 1.4;
-    padding-top: 55px;
     margin: 0;
-    padding-bottom: 0;
+    padding: 20px 0;
     overflow-x: hidden;
 }
 
