@@ -95,35 +95,41 @@
                             <!-- Step Navigator -->
                             <nav aria-label="Form steps">
                                 <ol class="breadcrumb mb-0">
-                                    <li class="breadcrumb-item {{ 'active' if current_step == 1 else ('text-success' if current_step > 1 else 'text-muted') }}">
-                                        {% if current_step > 1 %}
-                                            <a href="{{ url_for('ramp_form_step', step=1) }}" class="text-decoration-none">
+                                    <li class="breadcrumb-item {{ 'active fw-bold' if current_step == 1 else 'text-primary' }}">
+                                        {% if current_step != 1 %}
+                                            <a href="{{ url_for('ramp_form_step', step=1) }}" class="text-decoration-none text-primary">
                                                 <i class="fas fa-calendar-alt me-1"></i>Training Schedule
                                             </a>
                                         {% else %}
                                             <i class="fas fa-calendar-alt me-1"></i>Training Schedule
                                         {% endif %}
                                     </li>
-                                    <li class="breadcrumb-item {{ 'active' if current_step == 2 else ('text-success' if current_step > 2 else 'text-muted') }}">
-                                        {% if current_step > 2 %}
-                                            <a href="{{ url_for('ramp_form_step', step=2) }}" class="text-decoration-none">
+                                    <li class="breadcrumb-item {{ 'active fw-bold' if current_step == 2 else 'text-primary' }}">
+                                        {% if current_step != 2 %}
+                                            <a href="{{ url_for('ramp_form_step', step=2) }}" class="text-decoration-none text-primary">
                                                 <i class="fas fa-cogs me-1"></i>Operational Assumptions
                                             </a>
                                         {% else %}
                                             <i class="fas fa-cogs me-1"></i>Operational Assumptions
                                         {% endif %}
                                     </li>
-                                    <li class="breadcrumb-item {{ 'active' if current_step == 3 else ('text-success' if current_step > 3 else 'text-muted') }}">
-                                        {% if current_step > 3 %}
-                                            <a href="{{ url_for('ramp_form_step', step=3) }}" class="text-decoration-none">
+                                    <li class="breadcrumb-item {{ 'active fw-bold' if current_step == 3 else 'text-primary' }}">
+                                        {% if current_step != 3 %}
+                                            <a href="{{ url_for('ramp_form_step', step=3) }}" class="text-decoration-none text-primary">
                                                 <i class="fas fa-language me-1"></i>Language & Channel
                                             </a>
                                         {% else %}
                                             <i class="fas fa-language me-1"></i>Language & Channel
                                         {% endif %}
                                     </li>
-                                    <li class="breadcrumb-item {{ 'active' if current_step == 4 else ('text-success' if current_step > 4 else 'text-muted') }}">
-                                        <i class="fas fa-map-marker-alt me-1"></i>Location Planning
+                                    <li class="breadcrumb-item {{ 'active fw-bold' if current_step == 4 else 'text-primary' }}">
+                                        {% if current_step != 4 %}
+                                            <a href="{{ url_for('ramp_form_step', step=4) }}" class="text-decoration-none text-primary">
+                                                <i class="fas fa-map-marker-alt me-1"></i>Location Planning
+                                            </a>
+                                        {% else %}
+                                            <i class="fas fa-map-marker-alt me-1"></i>Location Planning
+                                        {% endif %}
                                     </li>
                                 </ol>
                             </nav>
