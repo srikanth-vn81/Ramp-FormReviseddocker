@@ -100,15 +100,11 @@
                             <h6><i class="fas fa-user-tie me-2"></i>Internal Trainer Details</h6>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <label class="form-label fw-semibold required">Client Trainer</label>
-                        {{ form.client_trainer(class="form-select") }}
-                    </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <label class="form-label fw-semibold required">Internal Trainer</label>
                         {{ form.internal_trainer(class="form-select") }}
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <label class="form-label fw-semibold required"># of Total Trainer</label>
                         {{ form.total_trainers(class="form-control", readonly=true, style="background-color: #f8f9fa; color: #495057;") }}
                     </div>
