@@ -236,16 +236,23 @@ document.addEventListener('DOMContentLoaded', function() {
         const internal = parseInt(document.getElementById('internal_trainer').value) || 0;
         let total = 0;
         
-        // Determine which section is visible and calculate accordingly
-        if (clientTrainerDetails.style.display === 'block') {
-            // Client section: only client trainer
-            total = client;
-        } else if (bothTrainerDetails.style.display === 'block') {
-            // Both section: client + internal
-            total = client + internal;
-        } else if (internalTrainerDetails.style.display === 'block') {
-            // Internal section: only internal trainer
-            total = internal;
+        // Get current training support selection
+        const selectedTrainingSupport = document.querySelector('input[name="training_support_type"]:checked');
+        
+        if (selectedTrainingSupport) {
+            if (selectedTrainingSupport.value === 'client') {
+                // Client section: only client trainer
+                total = client;
+            } else if (selectedTrainingSupport.value === 'both') {
+                // Both section: client + internal
+                total = client + internal;
+            } else if (selectedTrainingSupport.value === 'internal') {
+                // Internal section: only internal trainer (if trainer is available)
+                const selectedAvailability = document.querySelector('input[name="internal_trainer_available"]:checked');
+                if (selectedAvailability && selectedAvailability.value === 'yes') {
+                    total = internal;
+                }
+            }
         }
         
         // Update all total trainer fields
