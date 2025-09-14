@@ -170,6 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
             clientTrainerDetails.style.display = 'none';
             bothTrainerDetails.style.display = 'none';
             internalTrainerDetails.style.display = 'none';
+            hideAdditionalFields();
             
             // Reset internal availability selection
             internalTrainerAvailableRadios.forEach(r => r.checked = false);
@@ -177,8 +178,10 @@ document.addEventListener('DOMContentLoaded', function() {
             // Show appropriate section based on selection
             if (this.value === 'client') {
                 clientTrainerDetails.style.display = 'block';
+                showAdditionalFields();
             } else if (this.value === 'both') {
                 bothTrainerDetails.style.display = 'block';
+                showAdditionalFields();
             } else if (this.value === 'internal') {
                 internalAvailabilitySection.style.display = 'block';
             }
@@ -190,25 +193,39 @@ document.addEventListener('DOMContentLoaded', function() {
         radio.addEventListener('change', function() {
             if (this.value === 'yes') {
                 internalTrainerDetails.style.display = 'block';
+                showAdditionalFields();
             } else if (this.value === 'no') {
                 internalTrainerDetails.style.display = 'none';
+                hideAdditionalFields();
             }
         });
     });
+    
+    // Show/hide additional fields functions
+    function showAdditionalFields() {
+        document.getElementById('additional-fields').style.display = 'block';
+    }
+    
+    function hideAdditionalFields() {
+        document.getElementById('additional-fields').style.display = 'none';
+    }
     
     // Initialize visibility based on current selection
     const selectedTrainingSupport = document.querySelector('input[name="training_support_type"]:checked');
     if (selectedTrainingSupport) {
         if (selectedTrainingSupport.value === 'client') {
             clientTrainerDetails.style.display = 'block';
+            showAdditionalFields();
         } else if (selectedTrainingSupport.value === 'both') {
             bothTrainerDetails.style.display = 'block';
+            showAdditionalFields();
         } else if (selectedTrainingSupport.value === 'internal') {
             internalAvailabilitySection.style.display = 'block';
             
             const selectedAvailability = document.querySelector('input[name="internal_trainer_available"]:checked');
             if (selectedAvailability && selectedAvailability.value === 'yes') {
                 internalTrainerDetails.style.display = 'block';
+                showAdditionalFields();
             }
         }
     }
@@ -217,17 +234,13 @@ document.addEventListener('DOMContentLoaded', function() {
     function calculateTotalTrainers() {
         const client = parseInt(document.getElementById('client_trainer').value) || 0;
         const internal = parseInt(document.getElementById('internal_trainer').value) || 0;
-        const totalField = document.getElementById('total_trainers');
+        const total = client + internal;
         
-        if (totalField) {
-            totalField.value = client + internal;
-        }
-        
-        // Show additional fields if trainers are selected
-        const additionalFields = document.getElementById('additional-fields');
-        if (additionalFields && (client > 0 || internal > 0)) {
-            additionalFields.style.display = 'block';
-        }
+        // Update all total trainer fields
+        const totalFields = document.querySelectorAll('input[name="total_trainers"]');
+        totalFields.forEach(field => {
+            field.value = total;
+        });
     }
     
     document.getElementById('client_trainer').addEventListener('change', calculateTotalTrainers);
