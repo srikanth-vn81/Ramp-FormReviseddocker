@@ -109,9 +109,36 @@
                             <div class="col-md-3">
                                 <div class="card">
                                     <div class="card-body text-center">
+                                        <i class="fas fa-flag mb-2 text-primary" style="font-size: 1.5rem;"></i>
+                                        <label class="form-label fw-semibold small">PAN</label>
+                                        {{ form.pan_headcount(class="form-control country-headcount", **{"data-country": "PAN"}) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
                                         <i class="fas fa-flag mb-2 text-secondary" style="font-size: 1.5rem;"></i>
                                         <label class="form-label fw-semibold small">PHL</label>
                                         {{ form.phl_headcount(class="form-control country-headcount", **{"data-country": "PHL"}) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-flag mb-2 text-danger" style="font-size: 1.5rem;"></i>
+                                        <label class="form-label fw-semibold small">POL</label>
+                                        {{ form.pol_headcount(class="form-control country-headcount", **{"data-country": "POL"}) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-flag mb-2 text-success" style="font-size: 1.5rem;"></i>
+                                        <label class="form-label fw-semibold small">TTO</label>
+                                        {{ form.tto_headcount(class="form-control country-headcount", **{"data-country": "TTO"}) }}
                                     </div>
                                 </div>
                             </div>

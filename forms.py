@@ -1,9 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, RadioField, IntegerField, DateField, BooleanField, TextAreaField
+from wtforms import StringField, SelectField, SelectMultipleField, RadioField, IntegerField, DateField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, NumberRange, Optional
 from wtforms.widgets import CheckboxInput, ListWidget
 
-class MultiCheckboxField(SelectField):
+class MultiCheckboxField(SelectMultipleField):
     """Custom field for multiple checkboxes"""
     widget = ListWidget(prefix_label=False)
     option_widget = CheckboxInput()

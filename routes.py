@@ -1,6 +1,6 @@
 import json
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from flask import render_template, request, flash, redirect, url_for, jsonify, send_file, session
 from werkzeug.utils import secure_filename
 from app import app
@@ -55,7 +55,8 @@ def get_form_fields_for_step(step):
         3: ['languages_supported', 'specify_languages', 'voice_inbound', 'voice_outbound', 
             'chat', 'email', 'back_office', 'social_sms', 'others', 'others_text'],
         4: ['requirement_type', 'requirement_value', 'geo_country', 'can_headcount', 'col_headcount',
-            'hkg_headcount', 'ind_headcount', 'mex_headcount', 'phl_headcount', 'usa_headcount']
+            'hkg_headcount', 'ind_headcount', 'mex_headcount', 'pan_headcount', 'phl_headcount', 
+            'pol_headcount', 'tto_headcount', 'usa_headcount']
     }
     return step_fields.get(step, [])
 
@@ -85,7 +86,18 @@ def load_step_data(step, form):
         if field_name in session['form_data'] and hasattr(form, field_name):
             field_value = session['form_data'][field_name]
             if field_value is not None:
-                getattr(form, field_name).data = field_value
+                field = getattr(form, field_name)
+                
+                # Handle date fields - parse ISO strings back to date objects
+                if hasattr(field, 'data') and 'date' in field_name and isinstance(field_value, str):
+                    try:
+                        # Try to parse ISO date string
+                        field.data = date.fromisoformat(field_value)
+                    except (ValueError, TypeError):
+                        # If parsing fails, assign the raw value
+                        field.data = field_value
+                else:
+                    field.data = field_value
 
 @app.route('/', methods=['GET'])
 def index():
