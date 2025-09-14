@@ -105,27 +105,14 @@ def ramp_form_step(step):
         action = request.form.get('action')
         
         if action == 'next':
-            # Validate current step fields
-            step_fields = get_form_fields_for_step(step)
-            step_valid = True
+            # Save current step data without validation
+            save_step_data(step, form)
+            session.modified = True
             
-            for field_name in step_fields:
-                if hasattr(form, field_name):
-                    field = getattr(form, field_name)
-                    if not field.validate(form):
-                        step_valid = False
-            
-            if step_valid:
-                # Save current step data
-                save_step_data(step, form)
-                session.modified = True
-                
-                if step < len(FORM_STEPS):
-                    return redirect(url_for('ramp_form_step', step=step + 1))
-                else:
-                    return redirect(url_for('ramp_form_submit'))
+            if step < len(FORM_STEPS):
+                return redirect(url_for('ramp_form_step', step=step + 1))
             else:
-                flash('Please correct the errors before proceeding', 'error')
+                return redirect(url_for('ramp_form_submit'))
         
         elif action == 'previous':
             # Save current step data (without validation)
