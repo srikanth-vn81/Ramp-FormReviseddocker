@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
         radio.addEventListener('change', function() {
             if (this.value === 'yes') {
                 internalTrainerDetails.style.display = 'block';
-            } else {
+            } else if (this.value === 'no') {
                 internalTrainerDetails.style.display = 'none';
             }
         });
