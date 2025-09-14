@@ -1,7 +1,7 @@
 import json
 import os
 from datetime import datetime, timedelta
-from flask import render_template, request, flash, redirect, url_for, jsonify, send_file
+from flask import render_template, request, flash, redirect, url_for, jsonify, send_file, session
 from werkzeug.utils import secure_filename
 from app import app
 from forms import RampInputForm
@@ -37,50 +37,143 @@ def generate_date_choices():
     
     return choices
 
-@app.route('/', methods=['GET', 'POST'])
+# Multi-step form configuration
+FORM_STEPS = {
+    1: {'name': 'Training Schedule', 'template': 'step1_training_schedule.html'},
+    2: {'name': 'Operational Assumptions', 'template': 'step2_operational_assumptions.html'},
+    3: {'name': 'Language & Channel Support', 'template': 'step3_language_channel.html'},
+    4: {'name': 'Location & Resource Planning', 'template': 'step4_location_planning.html'}
+}
+
+def get_form_fields_for_step(step):
+    """Get the list of form fields for a specific step"""
+    step_fields = {
+        1: ['ramp_start_availability', 'ramp_start_date', 'ramp_end_availability', 'ramp_end_date',
+            'client_trainer', 'internal_trainer', 'total_trainers', 'training_duration',
+            'training_duration_number', 'nesting_duration', 'nesting_duration_number', 'batch_size'],
+        2: ['supervisor_ratio', 'qa_ratio', 'trainer_ratio'],
+        3: ['languages_supported', 'specify_languages', 'voice_inbound', 'voice_outbound', 
+            'chat', 'email', 'back_office', 'social_sms', 'others', 'others_text'],
+        4: ['requirement_type', 'requirement_value', 'geo_country', 'can_headcount', 'col_headcount',
+            'hkg_headcount', 'ind_headcount', 'mex_headcount', 'phl_headcount', 'usa_headcount']
+    }
+    return step_fields.get(step, [])
+
+def save_step_data(step, form):
+    """Save current step data to session"""
+    if 'form_data' not in session:
+        session['form_data'] = {}
+    
+    step_fields = get_form_fields_for_step(step)
+    for field_name in step_fields:
+        if hasattr(form, field_name):
+            field_data = getattr(form, field_name).data
+            if field_data is not None:
+                # Handle date fields
+                if hasattr(getattr(form, field_name), 'data') and hasattr(field_data, 'isoformat'):
+                    session['form_data'][field_name] = field_data.isoformat()
+                else:
+                    session['form_data'][field_name] = field_data
+
+def load_step_data(step, form):
+    """Load step data from session into form"""
+    if 'form_data' not in session:
+        return
+    
+    step_fields = get_form_fields_for_step(step)
+    for field_name in step_fields:
+        if field_name in session['form_data'] and hasattr(form, field_name):
+            field_value = session['form_data'][field_name]
+            if field_value is not None:
+                getattr(form, field_name).data = field_value
+
+@app.route('/', methods=['GET'])
 def index():
+    """Redirect to step 1 of the form"""
+    return redirect(url_for('ramp_form_step', step=1))
+
+@app.route('/ramp-form/step/<int:step>', methods=['GET', 'POST'])
+def ramp_form_step(step):
+    """Handle individual form steps"""
+    if step not in FORM_STEPS:
+        flash('Invalid form step', 'error')
+        return redirect(url_for('ramp_form_step', step=1))
+    
     form = RampInputForm()
     
-    if form.validate_on_submit():
-        # Process form data
-        form_data = {
-            'ramp_start_availability': form.ramp_start_availability.data,
-            'ramp_start_date': form.ramp_start_date.data.isoformat() if form.ramp_start_date.data else None,
-            'ramp_end_availability': form.ramp_end_availability.data,
-            'ramp_end_date': form.ramp_end_date.data.isoformat() if form.ramp_end_date.data else None,
-            'client_trainer': form.client_trainer.data,
-            'internal_trainer': form.internal_trainer.data,
-            'total_trainers': form.total_trainers.data,
-            'training_duration': form.training_duration.data,
-            'training_duration_number': form.training_duration_number.data,
-            'nesting_duration': form.nesting_duration.data,
-            'nesting_duration_number': form.nesting_duration_number.data,
-            'batch_size': form.batch_size.data,
-            'supervisor_ratio': form.supervisor_ratio.data,
-            'qa_ratio': form.qa_ratio.data,
-            'trainer_ratio': form.trainer_ratio.data,
-            'languages_supported': form.languages_supported.data,
-            'channels': {
-                'voice_inbound': form.voice_inbound.data,
-                'voice_outbound': form.voice_outbound.data,
-                'chat': form.chat.data,
-                'email': form.email.data,
-                'back_office': form.back_office.data,
-            }
-        }
+    if request.method == 'POST':
+        action = request.form.get('action')
         
-        # Save submission
-        save_submission(form_data)
-        flash('Form submitted successfully!', 'success')
-        return redirect(url_for('index'))
+        if action == 'next':
+            # Validate current step fields
+            step_fields = get_form_fields_for_step(step)
+            step_valid = True
+            
+            for field_name in step_fields:
+                if hasattr(form, field_name):
+                    field = getattr(form, field_name)
+                    if not field.validate(form):
+                        step_valid = False
+            
+            if step_valid:
+                # Save current step data
+                save_step_data(step, form)
+                session.modified = True
+                
+                if step < len(FORM_STEPS):
+                    return redirect(url_for('ramp_form_step', step=step + 1))
+                else:
+                    return redirect(url_for('ramp_form_submit'))
+            else:
+                flash('Please correct the errors before proceeding', 'error')
+        
+        elif action == 'previous':
+            # Save current step data (without validation)
+            save_step_data(step, form)
+            session.modified = True
+            
+            if step > 1:
+                return redirect(url_for('ramp_form_step', step=step - 1))
     
-    # Handle form errors
-    if form.errors:
-        for field, errors in form.errors.items():
-            for error in errors:
-                flash(f'{field}: {error}', 'error')
+    # Load existing data for this step
+    load_step_data(step, form)
     
-    return render_template('index.html', form=form)
+    # Prepare template context
+    context = {
+        'form': form,
+        'current_step': step,
+        'total_steps': len(FORM_STEPS),
+        'step_name': FORM_STEPS[step]['name'],
+        'is_first_step': step == 1,
+        'is_last_step': step == len(FORM_STEPS)
+    }
+    
+    return render_template(FORM_STEPS[step]['template'], **context)
+
+@app.route('/ramp-form/submit', methods=['GET', 'POST'])
+def ramp_form_submit():
+    """Handle final form submission"""
+    if request.method == 'POST':
+        if 'form_data' in session:
+            # Add timestamp and save
+            form_data = session['form_data'].copy()
+            form_data['timestamp'] = datetime.now().isoformat()
+            
+            save_submission(form_data)
+            
+            # Clear session data
+            session.pop('form_data', None)
+            session.modified = True
+            
+            flash('Form submitted successfully!', 'success')
+            return redirect(url_for('ramp_form_step', step=1))
+        else:
+            flash('No form data found', 'error')
+            return redirect(url_for('ramp_form_step', step=1))
+    
+    # Show summary page
+    form_data = session.get('form_data', {})
+    return render_template('form_summary.html', form_data=form_data)
 
 @app.route('/submissions')
 def view_submissions():
