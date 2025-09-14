@@ -79,13 +79,13 @@
                                 <div class="col-md-6">
                                     <!-- Step Progress Bar -->
                                     <div class="d-flex align-items-center justify-content-end">
-                                        <small class="text-white-50 me-3 fw-semibold">Step {{ current_step }} of {{ total_steps }}</small>
+                                        <small class="text-white-50 me-3 fw-semibold">Step {{ current_step }} of 5</small>
                                         <div class="progress bg-dark" style="width: 250px; height: 10px; border-radius: 10px;">
                                             <div class="progress-bar bg-success" role="progressbar" 
-                                                 style="width: {{ (current_step / total_steps * 100) }}%; border-radius: 10px;" 
-                                                 aria-valuenow="{{ (current_step / total_steps * 100) }}" 
+                                                 style="width: {{ (current_step / 5 * 100) }}%; border-radius: 10px;" 
+                                                 aria-valuenow="{{ (current_step / 5 * 100) }}" 
                                                  aria-valuemin="0" aria-valuemax="100">
-                                                <span class="visually-hidden">{{ (current_step / total_steps * 100) }}% Complete</span>
+                                                <span class="visually-hidden">{{ (current_step / 5 * 100) }}% Complete</span>
                                             </div>
                                         </div>
                                     </div>
@@ -99,33 +99,42 @@
                                     <li class="breadcrumb-item {{ 'active fw-bold' if current_step == 1 else 'text-primary' }}">
                                         {% if current_step != 1 %}
                                             <a href="{{ url_for('ramp_form_step', step=1) }}" class="text-decoration-none text-primary">
+                                                <i class="fas fa-info-circle me-1"></i>Ramp Details
+                                            </a>
+                                        {% else %}
+                                            <i class="fas fa-info-circle me-1"></i>Ramp Details
+                                        {% endif %}
+                                    </li>
+                                    <li class="breadcrumb-item {{ 'active fw-bold' if current_step == 2 else 'text-primary' }}">
+                                        {% if current_step != 2 %}
+                                            <a href="{{ url_for('ramp_form_step', step=2) }}" class="text-decoration-none text-primary">
                                                 <i class="fas fa-calendar-alt me-1"></i>Training Schedule
                                             </a>
                                         {% else %}
                                             <i class="fas fa-calendar-alt me-1"></i>Training Schedule
                                         {% endif %}
                                     </li>
-                                    <li class="breadcrumb-item {{ 'active fw-bold' if current_step == 2 else 'text-primary' }}">
-                                        {% if current_step != 2 %}
-                                            <a href="{{ url_for('ramp_form_step', step=2) }}" class="text-decoration-none text-primary">
+                                    <li class="breadcrumb-item {{ 'active fw-bold' if current_step == 3 else 'text-primary' }}">
+                                        {% if current_step != 3 %}
+                                            <a href="{{ url_for('ramp_form_step', step=3) }}" class="text-decoration-none text-primary">
                                                 <i class="fas fa-cogs me-1"></i>Operational Assumptions
                                             </a>
                                         {% else %}
                                             <i class="fas fa-cogs me-1"></i>Operational Assumptions
                                         {% endif %}
                                     </li>
-                                    <li class="breadcrumb-item {{ 'active fw-bold' if current_step == 3 else 'text-primary' }}">
-                                        {% if current_step != 3 %}
-                                            <a href="{{ url_for('ramp_form_step', step=3) }}" class="text-decoration-none text-primary">
+                                    <li class="breadcrumb-item {{ 'active fw-bold' if current_step == 4 else 'text-primary' }}">
+                                        {% if current_step != 4 %}
+                                            <a href="{{ url_for('ramp_form_step', step=4) }}" class="text-decoration-none text-primary">
                                                 <i class="fas fa-language me-1"></i>Language & Channel
                                             </a>
                                         {% else %}
                                             <i class="fas fa-language me-1"></i>Language & Channel
                                         {% endif %}
                                     </li>
-                                    <li class="breadcrumb-item {{ 'active fw-bold' if current_step == 4 else 'text-primary' }}">
-                                        {% if current_step != 4 %}
-                                            <a href="{{ url_for('ramp_form_step', step=4) }}" class="text-decoration-none text-primary">
+                                    <li class="breadcrumb-item {{ 'active fw-bold' if current_step == 5 else 'text-primary' }}">
+                                        {% if current_step != 5 %}
+                                            <a href="{{ url_for('ramp_form_step', step=5) }}" class="text-decoration-none text-primary">
                                                 <i class="fas fa-map-marker-alt me-1"></i>Location Planning
                                             </a>
                                         {% else %}
@@ -161,7 +170,7 @@
                                     <div class="text-center px-3">
                                         <div class="step-indicator">
                                             <span class="badge bg-primary fs-6 px-3 py-2">
-                                                Step {{ current_step }} of {{ total_steps }}
+                                                Step {{ current_step }} of 5
                                             </span>
                                             <div class="mt-2">
                                                 <small class="text-muted fw-semibold">{{ step_name }}</small>

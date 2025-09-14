@@ -39,22 +39,24 @@ def generate_date_choices():
 
 # Multi-step form configuration
 FORM_STEPS = {
-    1: {'name': 'Training Schedule', 'template': 'step1_training_schedule.html'},
-    2: {'name': 'Operational Assumptions', 'template': 'step2_operational_assumptions.html'},
-    3: {'name': 'Language & Channel Support', 'template': 'step3_language_channel.html'},
-    4: {'name': 'Location & Resource Planning', 'template': 'step4_location_planning.html'}
+    1: {'name': 'Ramp Details', 'template': 'step1_ramp_details.html'},
+    2: {'name': 'Training Schedule', 'template': 'step2_training_schedule.html'},
+    3: {'name': 'Operational Assumptions', 'template': 'step3_operational_assumptions.html'},
+    4: {'name': 'Language & Channel Support', 'template': 'step4_language_channel.html'},
+    5: {'name': 'Location & Resource Planning', 'template': 'step5_location_planning.html'}
 }
 
 def get_form_fields_for_step(step):
     """Get the list of form fields for a specific step"""
     step_fields = {
-        1: ['ramp_start_availability', 'ramp_start_date', 'ramp_end_availability', 'ramp_end_date',
+        1: ['client_name', 'ramp_start_date', 'ramp_end_date', 'ramp_requirement'],
+        2: ['ramp_start_availability', 'ramp_end_availability',
             'client_trainer', 'internal_trainer', 'total_trainers', 'training_duration',
             'training_duration_number', 'nesting_duration', 'nesting_duration_number', 'batch_size'],
-        2: ['supervisor_ratio', 'qa_ratio', 'trainer_ratio'],
-        3: ['languages_supported', 'specify_languages', 'voice_inbound', 'voice_outbound', 
+        3: ['supervisor_ratio', 'qa_ratio', 'trainer_ratio'],
+        4: ['languages_supported', 'specify_languages', 'voice_inbound', 'voice_outbound', 
             'chat', 'email', 'back_office', 'social_sms', 'others', 'others_text'],
-        4: ['requirement_type', 'requirement_value', 'geo_country', 'can_headcount', 'col_headcount',
+        5: ['requirement_type', 'requirement_value', 'geo_country', 'can_headcount', 'col_headcount',
             'hkg_headcount', 'ind_headcount', 'mex_headcount', 'pan_headcount', 'phl_headcount', 
             'pol_headcount', 'tto_headcount', 'usa_headcount']
     }

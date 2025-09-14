@@ -9,20 +9,24 @@ class MultiCheckboxField(SelectMultipleField):
     option_widget = CheckboxInput()
 
 class RampInputForm(FlaskForm):
-    # Ramp dates
+    # Ramp Details (Step 1)
+    client_name = StringField('Client Name', validators=[Optional()])
+    ramp_start_date = DateField('Ramp Start Date', validators=[Optional()])
+    ramp_end_date = DateField('Ramp End Date', validators=[Optional()])
+    ramp_requirement = IntegerField('Ramp Requirement', validators=[Optional(), NumberRange(min=1)])
+    
+    # Training Schedule fields (moved to Step 2)
     ramp_start_availability = SelectField(
         'Ramp Start Date Availability',
         choices=[('', 'Select'), ('available', 'Available'), ('not-available', 'Not Available')],
         validators=[Optional()]
     )
-    ramp_start_date = DateField('Ramp Start Date', validators=[Optional()])
     
     ramp_end_availability = SelectField(
         'Ramp End Date Availability',
         choices=[('', 'Select'), ('available', 'Available'), ('not-available', 'Not Available')],
         validators=[Optional()]
     )
-    ramp_end_date = DateField('Ramp End Date', validators=[Optional()])
     
     # Trainers
     client_trainer = SelectField(
