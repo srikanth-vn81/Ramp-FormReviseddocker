@@ -15,16 +15,29 @@ class RampInputForm(FlaskForm):
     ramp_end_date = DateField('Ramp End Date', validators=[Optional()])
     ramp_requirement = IntegerField('Ramp Requirement', validators=[Optional(), NumberRange(min=1)])
     
-    # Training Schedule fields (moved to Step 2)
+    # Ramp date availability fields (for Step 1)
     ramp_start_availability = SelectField(
         'Ramp Start Date Availability',
         choices=[('', 'Select'), ('available', 'Available'), ('not-available', 'Not Available')],
         validators=[Optional()]
     )
-    
     ramp_end_availability = SelectField(
         'Ramp End Date Availability',
         choices=[('', 'Select'), ('available', 'Available'), ('not-available', 'Not Available')],
+        validators=[Optional()]
+    )
+    
+    # Training Support fields (moved to Step 2)
+    training_support_type = RadioField(
+        'Training Support Type',
+        choices=[('client', 'Client'), ('internal', 'Internal'), ('both', 'Both')],
+        validators=[Optional()]
+    )
+    
+    # Internal Trainer Availability (conditional field for Internal selection)
+    internal_trainer_available = RadioField(
+        'Internal Trainer Available?',
+        choices=[('yes', 'Yes'), ('no', 'No')],
         validators=[Optional()]
     )
     

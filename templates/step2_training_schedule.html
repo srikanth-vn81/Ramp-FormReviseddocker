@@ -1,6 +1,6 @@
 {% extends "base_step.html" %}
 
-{% block title %}Training Schedule - WFM Analytics{% endblock %}
+{% block title %}Training Support - WFM Analytics{% endblock %}
 
 {% block form_content %}
 <!-- Training Schedule Card -->
@@ -9,38 +9,59 @@
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
                 <h6 class="card-title mb-0">
-                    <i class="fas fa-calendar-alt me-2"></i>Training Schedule
+                    <i class="fas fa-calendar-alt me-2"></i>Training Support
                 </h6>
             </div>
             <div class="card-body">
+                <!-- Training Support Type -->
                 <div class="row g-3 mb-4">
-                    <!-- Dates Row -->
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold required">Ramp Start Date</label>
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="flex-shrink-0">
-                                {{ form.ramp_start_availability(class="form-select") }}
-                            </div>
-                            <div class="flex-grow-1 date-input-container" id="ramp-start-date-container" style="display: none;">
-                                {{ form.ramp_start_date(class="form-control") }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold required">Ramp End Date</label>
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="flex-shrink-0">
-                                {{ form.ramp_end_availability(class="form-select") }}
-                            </div>
-                            <div class="flex-grow-1 date-input-container" id="ramp-end-date-container" style="display: none;">
-                                {{ form.ramp_end_date(class="form-control") }}
-                            </div>
+                    <div class="col-12">
+                        <label class="form-label fw-semibold required">Training Support Type</label>
+                        <div class="d-flex gap-4 mt-2">
+                            {% for value, label in form.training_support_type.choices %}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" 
+                                           name="{{ form.training_support_type.name }}" 
+                                           id="{{ form.training_support_type.name }}_{{ value }}" 
+                                           value="{{ value }}" 
+                                           {% if form.training_support_type.data == value %}checked{% endif %}>
+                                    <label class="form-check-label" for="{{ form.training_support_type.name }}_{{ value }}">
+                                        {{ label }}
+                                    </label>
+                                </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
                 
-                <div class="row g-3 mb-4">
-                    <!-- Trainers Row -->
+                <!-- Internal Trainer Availability (conditional) -->
+                <div id="internal-availability-section" class="row g-3 mb-4" style="display: none;">
+                    <div class="col-12">
+                        <label class="form-label fw-semibold required">Internal Trainer Available?</label>
+                        <div class="d-flex gap-4 mt-2">
+                            {% for value, label in form.internal_trainer_available.choices %}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" 
+                                           name="{{ form.internal_trainer_available.name }}" 
+                                           id="{{ form.internal_trainer_available.name }}_{{ value }}" 
+                                           value="{{ value }}" 
+                                           {% if form.internal_trainer_available.data == value %}checked{% endif %}>
+                                    <label class="form-check-label" for="{{ form.internal_trainer_available.name }}_{{ value }}">
+                                        {{ label }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Internal Trainer Details (conditional) -->
+                <div id="internal-trainer-details" class="row g-3 mb-4" style="display: none;">
+                    <div class="col-12">
+                        <div class="alert alert-info">
+                            <h6><i class="fas fa-user-tie me-2"></i>Internal Trainer Details</h6>
+                        </div>
+                    </div>
                     <div class="col-md-4">
                         <label class="form-label fw-semibold required">Client Trainer</label>
                         {{ form.client_trainer(class="form-select") }}
@@ -99,27 +120,47 @@
 {% block extra_js %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Show/hide date containers based on availability selection
-    function setupDateAvailability(availabilityId, containerId) {
-        const availability = document.getElementById(availabilityId);
-        const container = document.getElementById(containerId);
-        
-        if (availability && container) {
-            function toggleDateContainer() {
-                if (availability.value === 'available') {
-                    container.style.display = 'block';
-                } else {
-                    container.style.display = 'none';
-                }
+    // Training support type logic
+    const trainingSupportRadios = document.querySelectorAll('input[name="training_support_type"]');
+    const internalAvailabilitySection = document.getElementById('internal-availability-section');
+    const internalTrainerAvailableRadios = document.querySelectorAll('input[name="internal_trainer_available"]');
+    const internalTrainerDetails = document.getElementById('internal-trainer-details');
+    
+    // Handle training support type change
+    trainingSupportRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.value === 'internal') {
+                internalAvailabilitySection.style.display = 'block';
+            } else {
+                internalAvailabilitySection.style.display = 'none';
+                internalTrainerDetails.style.display = 'none';
+                // Reset internal availability selection
+                internalTrainerAvailableRadios.forEach(r => r.checked = false);
             }
-            
-            availability.addEventListener('change', toggleDateContainer);
-            toggleDateContainer(); // Initial call
+        });
+    });
+    
+    // Handle internal trainer availability change
+    internalTrainerAvailableRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.value === 'yes') {
+                internalTrainerDetails.style.display = 'block';
+            } else {
+                internalTrainerDetails.style.display = 'none';
+            }
+        });
+    });
+    
+    // Initialize visibility based on current selection
+    const selectedTrainingSupport = document.querySelector('input[name="training_support_type"]:checked');
+    if (selectedTrainingSupport && selectedTrainingSupport.value === 'internal') {
+        internalAvailabilitySection.style.display = 'block';
+        
+        const selectedAvailability = document.querySelector('input[name="internal_trainer_available"]:checked');
+        if (selectedAvailability && selectedAvailability.value === 'yes') {
+            internalTrainerDetails.style.display = 'block';
         }
     }
-    
-    setupDateAvailability('ramp_start_availability', 'ramp-start-date-container');
-    setupDateAvailability('ramp_end_availability', 'ramp-end-date-container');
     
     // Calculate total trainers
     function calculateTotalTrainers() {
