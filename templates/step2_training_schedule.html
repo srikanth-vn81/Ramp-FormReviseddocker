@@ -178,8 +178,10 @@ document.addEventListener('DOMContentLoaded', function() {
             // Show appropriate section based on selection
             if (this.value === 'client') {
                 clientTrainerDetails.style.display = 'block';
+                showAdditionalFields();
             } else if (this.value === 'both') {
                 bothTrainerDetails.style.display = 'block';
+                showAdditionalFields();
             } else if (this.value === 'internal') {
                 internalAvailabilitySection.style.display = 'block';
             }
@@ -191,6 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
         radio.addEventListener('change', function() {
             if (this.value === 'yes') {
                 internalTrainerDetails.style.display = 'block';
+                showAdditionalFields();
             } else if (this.value === 'no') {
                 internalTrainerDetails.style.display = 'none';
                 hideAdditionalFields();
@@ -212,23 +215,38 @@ document.addEventListener('DOMContentLoaded', function() {
     if (selectedTrainingSupport) {
         if (selectedTrainingSupport.value === 'client') {
             clientTrainerDetails.style.display = 'block';
+            showAdditionalFields();
         } else if (selectedTrainingSupport.value === 'both') {
             bothTrainerDetails.style.display = 'block';
+            showAdditionalFields();
         } else if (selectedTrainingSupport.value === 'internal') {
             internalAvailabilitySection.style.display = 'block';
             
             const selectedAvailability = document.querySelector('input[name="internal_trainer_available"]:checked');
             if (selectedAvailability && selectedAvailability.value === 'yes') {
                 internalTrainerDetails.style.display = 'block';
+                showAdditionalFields();
             }
         }
     }
     
-    // Calculate total trainers
+    // Calculate total trainers based on current section
     function calculateTotalTrainers() {
         const client = parseInt(document.getElementById('client_trainer').value) || 0;
         const internal = parseInt(document.getElementById('internal_trainer').value) || 0;
-        const total = client + internal;
+        let total = 0;
+        
+        // Determine which section is visible and calculate accordingly
+        if (clientTrainerDetails.style.display === 'block') {
+            // Client section: only client trainer
+            total = client;
+        } else if (bothTrainerDetails.style.display === 'block') {
+            // Both section: client + internal
+            total = client + internal;
+        } else if (internalTrainerDetails.style.display === 'block') {
+            // Internal section: only internal trainer
+            total = internal;
+        }
         
         // Update all total trainer fields
         const totalFields = document.querySelectorAll('input[name="total_trainers"]');
@@ -236,11 +254,9 @@ document.addEventListener('DOMContentLoaded', function() {
             field.value = total;
         });
         
-        // Show additional fields only if trainers are actually selected
+        // Show additional fields for all cases except Internal + No
         if (total > 0) {
             showAdditionalFields();
-        } else {
-            hideAdditionalFields();
         }
     }
     
