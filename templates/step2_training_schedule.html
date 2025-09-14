@@ -55,7 +55,45 @@
                     </div>
                 </div>
                 
-                <!-- Internal Trainer Details (conditional) -->
+                <!-- Client Trainer Details (for Client selection) -->
+                <div id="client-trainer-details" class="row g-3 mb-4" style="display: none;">
+                    <div class="col-12">
+                        <div class="alert alert-success">
+                            <h6><i class="fas fa-user-tie me-2"></i>Client Trainer Details</h6>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold required">Client Trainer</label>
+                        {{ form.client_trainer(class="form-select") }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold required"># of Total Trainer</label>
+                        {{ form.total_trainers(class="form-control", readonly=true, style="background-color: #f8f9fa; color: #495057;") }}
+                    </div>
+                </div>
+
+                <!-- Both Trainer Details (for Both selection) -->
+                <div id="both-trainer-details" class="row g-3 mb-4" style="display: none;">
+                    <div class="col-12">
+                        <div class="alert alert-warning">
+                            <h6><i class="fas fa-users me-2"></i>Client & Internal Trainer Details</h6>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold required">Client Trainer</label>
+                        {{ form.client_trainer(class="form-select") }}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold required">Internal Trainer</label>
+                        {{ form.internal_trainer(class="form-select") }}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold required"># of Total Trainer</label>
+                        {{ form.total_trainers(class="form-control", readonly=true, style="background-color: #f8f9fa; color: #495057;") }}
+                    </div>
+                </div>
+
+                <!-- Internal Trainer Details (for Internal selection after Yes) -->
                 <div id="internal-trainer-details" class="row g-3 mb-4" style="display: none;">
                     <div class="col-12">
                         <div class="alert alert-info">
@@ -124,18 +162,29 @@ document.addEventListener('DOMContentLoaded', function() {
     const trainingSupportRadios = document.querySelectorAll('input[name="training_support_type"]');
     const internalAvailabilitySection = document.getElementById('internal-availability-section');
     const internalTrainerAvailableRadios = document.querySelectorAll('input[name="internal_trainer_available"]');
+    const clientTrainerDetails = document.getElementById('client-trainer-details');
+    const bothTrainerDetails = document.getElementById('both-trainer-details');
     const internalTrainerDetails = document.getElementById('internal-trainer-details');
     
     // Handle training support type change
     trainingSupportRadios.forEach(radio => {
         radio.addEventListener('change', function() {
-            if (this.value === 'internal') {
+            // Hide all sections first
+            internalAvailabilitySection.style.display = 'none';
+            clientTrainerDetails.style.display = 'none';
+            bothTrainerDetails.style.display = 'none';
+            internalTrainerDetails.style.display = 'none';
+            
+            // Reset internal availability selection
+            internalTrainerAvailableRadios.forEach(r => r.checked = false);
+            
+            // Show appropriate section based on selection
+            if (this.value === 'client') {
+                clientTrainerDetails.style.display = 'block';
+            } else if (this.value === 'both') {
+                bothTrainerDetails.style.display = 'block';
+            } else if (this.value === 'internal') {
                 internalAvailabilitySection.style.display = 'block';
-            } else {
-                internalAvailabilitySection.style.display = 'none';
-                internalTrainerDetails.style.display = 'none';
-                // Reset internal availability selection
-                internalTrainerAvailableRadios.forEach(r => r.checked = false);
             }
         });
     });
@@ -153,12 +202,18 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize visibility based on current selection
     const selectedTrainingSupport = document.querySelector('input[name="training_support_type"]:checked');
-    if (selectedTrainingSupport && selectedTrainingSupport.value === 'internal') {
-        internalAvailabilitySection.style.display = 'block';
-        
-        const selectedAvailability = document.querySelector('input[name="internal_trainer_available"]:checked');
-        if (selectedAvailability && selectedAvailability.value === 'yes') {
-            internalTrainerDetails.style.display = 'block';
+    if (selectedTrainingSupport) {
+        if (selectedTrainingSupport.value === 'client') {
+            clientTrainerDetails.style.display = 'block';
+        } else if (selectedTrainingSupport.value === 'both') {
+            bothTrainerDetails.style.display = 'block';
+        } else if (selectedTrainingSupport.value === 'internal') {
+            internalAvailabilitySection.style.display = 'block';
+            
+            const selectedAvailability = document.querySelector('input[name="internal_trainer_available"]:checked');
+            if (selectedAvailability && selectedAvailability.value === 'yes') {
+                internalTrainerDetails.style.display = 'block';
+            }
         }
     }
     
