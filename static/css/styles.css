@@ -1043,6 +1043,15 @@ html, body {
     color: white !important;
 }
 
+/* Remove breadcrumb separators completely */
+.breadcrumb-item + .breadcrumb-item::before {
+    content: none !important;
+}
+
+.breadcrumb-item::before {
+    content: none !important;
+}
+
 /* Enhanced Button Styling */
 .btn-lg {
     border-radius: 25px;
