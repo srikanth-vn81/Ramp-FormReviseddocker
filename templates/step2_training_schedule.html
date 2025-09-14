@@ -185,6 +185,9 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (this.value === 'internal') {
                 internalAvailabilitySection.style.display = 'block';
             }
+            
+            // Recalculate totals after changing sections
+            calculateTotalTrainers();
         });
     });
     
@@ -198,6 +201,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 internalTrainerDetails.style.display = 'none';
                 hideAdditionalFields();
             }
+            
+            // Recalculate totals after changing availability
+            calculateTotalTrainers();
         });
     });
     
@@ -228,12 +234,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 showAdditionalFields();
             }
         }
+        
+        // Calculate initial totals
+        calculateTotalTrainers();
     }
     
     // Calculate total trainers based on current section
     function calculateTotalTrainers() {
-        const client = parseInt(document.getElementById('client_trainer').value) || 0;
-        const internal = parseInt(document.getElementById('internal_trainer').value) || 0;
         let total = 0;
         
         // Get current training support selection
@@ -242,15 +249,21 @@ document.addEventListener('DOMContentLoaded', function() {
         if (selectedTrainingSupport) {
             if (selectedTrainingSupport.value === 'client') {
                 // Client section: only client trainer
-                total = client;
+                const clientField = document.querySelector('#client-trainer-details select[name="client_trainer"]');
+                total = parseInt(clientField?.value) || 0;
             } else if (selectedTrainingSupport.value === 'both') {
                 // Both section: client + internal
+                const clientField = document.querySelector('#both-trainer-details select[name="client_trainer"]');
+                const internalField = document.querySelector('#both-trainer-details select[name="internal_trainer"]');
+                const client = parseInt(clientField?.value) || 0;
+                const internal = parseInt(internalField?.value) || 0;
                 total = client + internal;
             } else if (selectedTrainingSupport.value === 'internal') {
                 // Internal section: only internal trainer (if trainer is available)
                 const selectedAvailability = document.querySelector('input[name="internal_trainer_available"]:checked');
                 if (selectedAvailability && selectedAvailability.value === 'yes') {
-                    total = internal;
+                    const internalField = document.querySelector('#internal-trainer-details select[name="internal_trainer"]');
+                    total = parseInt(internalField?.value) || 0;
                 }
             }
         }
@@ -267,8 +280,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    document.getElementById('client_trainer').addEventListener('change', calculateTotalTrainers);
-    document.getElementById('internal_trainer').addEventListener('change', calculateTotalTrainers);
+    // Bind change listeners to all trainer selects
+    document.querySelectorAll('select[name="client_trainer"]').forEach(el => {
+        el.addEventListener('change', calculateTotalTrainers);
+    });
+    document.querySelectorAll('select[name="internal_trainer"]').forEach(el => {
+        el.addEventListener('change', calculateTotalTrainers);
+    });
     
     // Show/hide duration number containers
     function setupDurationHandlers(durationId, containerId) {
