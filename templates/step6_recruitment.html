@@ -15,61 +15,6 @@
                 </div>
             </div>
             <div class="card-body">
-                <!-- Lead Time Section -->
-                <div class="mb-4">
-                    <h6 class="fw-bold text-warning mb-3">
-                        <i class="fas fa-clock me-2"></i>Hiring Timeline
-                    </h6>
-                    <div class="row g-3">
-                        <div class="col-md-4">
-                            <label class="form-label fw-semibold">Lead Time to Hire</label>
-                            <div class="input-group">
-                                {{ form.recruitment_lead_time(class="form-control", placeholder="30") }}
-                                <span class="input-group-text">days</span>
-                            </div>
-                            <small class="text-muted">Average time from job posting to start date</small>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Hiring Capacity Section -->
-                <div class="mb-4">
-                    <h6 class="fw-bold text-info mb-3">
-                        <i class="fas fa-users me-2"></i>Hiring Capacity
-                    </h6>
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">Weekly Hiring Capacity</label>
-                            <div class="input-group">
-                                {{ form.hiring_capacity_weekly(class="form-control", placeholder="10") }}
-                                <span class="input-group-text">hires/week</span>
-                            </div>
-                            <small class="text-muted">Number of new hires per week</small>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">Monthly Hiring Capacity</label>
-                            <div class="input-group">
-                                {{ form.hiring_capacity_monthly(class="form-control", placeholder="40") }}
-                                <span class="input-group-text">hires/month</span>
-                            </div>
-                            <small class="text-muted">Maximum new hires per month</small>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Additional Notes Section -->
-                <div class="mb-4">
-                    <h6 class="fw-bold text-success mb-3">
-                        <i class="fas fa-sticky-note me-2"></i>Additional Information
-                    </h6>
-                    <div class="row">
-                        <div class="col-12">
-                            <label class="form-label fw-semibold">Recruitment Notes & Special Requirements</label>
-                            {{ form.recruitment_notes(class="form-control", rows="4", placeholder="Enter any specific recruitment requirements, preferred recruitment channels, skill requirements, or other relevant notes...") }}
-                            <small class="text-muted">Optional: Include any special requirements or constraints for recruitment</small>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Sites Configuration for Recruitment -->
                 <div class="mb-5">
@@ -385,29 +330,10 @@
 {% block extra_js %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Update recruitment summary
-    function updateRecruitmentSummary() {
-        const leadTime = document.getElementById('recruitment_lead_time').value || 30;
-        const weeklyCapacity = document.getElementById('hiring_capacity_weekly').value || 10;
-        const monthlyCapacity = document.getElementById('hiring_capacity_monthly').value || 40;
-        
-        document.getElementById('summary-lead-time').textContent = `${leadTime} days`;
-        document.getElementById('summary-weekly').textContent = `${weeklyCapacity} hires`;
-        document.getElementById('summary-monthly').textContent = `${monthlyCapacity} hires`;
-    }
-    
-    // Add event listeners to form inputs
-    document.getElementById('recruitment_lead_time').addEventListener('input', updateRecruitmentSummary);
-    document.getElementById('hiring_capacity_weekly').addEventListener('input', updateRecruitmentSummary);
-    document.getElementById('hiring_capacity_monthly').addEventListener('input', updateRecruitmentSummary);
-    
-    // Reset function
+    // Reset function (simplified since we removed the form fields)
     window.resetRecruitmentForm = function() {
-        document.getElementById('recruitment_lead_time').value = '';
-        document.getElementById('hiring_capacity_weekly').value = '';
-        document.getElementById('hiring_capacity_monthly').value = '';
-        document.getElementById('recruitment_notes').value = '';
-        updateRecruitmentSummary();
+        // Reset any remaining form fields if needed
+        console.log('Recruitment form reset');
     };
     
     // Initialize Sites Configuration
@@ -460,9 +386,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
-    // Initial summary update
-    updateRecruitmentSummary();
     
     // Initialize sites configuration
     initializeSitesConfiguration();
