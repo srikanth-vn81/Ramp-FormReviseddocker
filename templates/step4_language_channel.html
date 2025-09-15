@@ -24,22 +24,9 @@
                         <label class="form-label fw-semibold">
                             <i class="fas fa-list-ul me-1"></i>LOB Names
                         </label>
-                        <div class="border rounded p-3" style="max-height: 200px; overflow-y: auto;">
-                            <div class="form-check mb-2">
-                                <input type="checkbox" class="form-check-input" id="select-all-lobs">
-                                <label class="form-check-label fw-bold" for="select-all-lobs">
-                                    Select All
-                                </label>
-                            </div>
-                            <hr class="my-2">
-                            {% for choice in form.lob_names %}
-                                <div class="form-check mb-1">
-                                    {{ choice(class="form-check-input lob-checkbox") }}
-                                    {{ choice.label(class="form-check-label") }}
-                                </div>
-                            {% endfor %}
-                        </div>
+                        {{ form.lob_names(class="form-select", multiple=true, size="6", id="lob-names-select") }}
                         <small class="form-text text-muted" id="lob-selection-info">Select up to <span id="max-lob-count">0</span> LOBs</small>
+                        <small class="form-text text-info">Hold Ctrl (Windows) or Cmd (Mac) to select multiple options</small>
                     </div>
                 </div>
             </div>
@@ -283,8 +270,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // LOB selection functionality
     const lobCountField = document.getElementById('lob_count');
-    const selectAllLobsCheckbox = document.getElementById('select-all-lobs');
-    const lobCheckboxes = document.querySelectorAll('.lob-checkbox');
+    const lobNamesSelect = document.getElementById('lob-names-select');
     const maxLobCountSpan = document.getElementById('max-lob-count');
     const lobSelectionInfo = document.getElementById('lob-selection-info');
     
@@ -294,19 +280,19 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (maxCount === 0) {
             lobSelectionInfo.style.display = 'none';
-            // Disable all checkboxes if no count specified
-            lobCheckboxes.forEach(checkbox => {
-                checkbox.disabled = true;
-                checkbox.checked = false;
-            });
-            selectAllLobsCheckbox.disabled = true;
-            selectAllLobsCheckbox.checked = false;
+            // Disable dropdown if no count specified
+            if (lobNamesSelect) {
+                lobNamesSelect.disabled = true;
+                // Clear all selections
+                Array.from(lobNamesSelect.options).forEach(option => {
+                    option.selected = false;
+                });
+            }
         } else {
             lobSelectionInfo.style.display = 'block';
-            lobCheckboxes.forEach(checkbox => {
-                checkbox.disabled = false;
-            });
-            selectAllLobsCheckbox.disabled = false;
+            if (lobNamesSelect) {
+                lobNamesSelect.disabled = false;
+            }
         }
         
         // Validate current selections
@@ -314,54 +300,23 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function validateLobSelection() {
+        if (!lobNamesSelect) return;
+        
         const maxCount = parseInt(lobCountField.value) || 0;
-        const checkedBoxes = document.querySelectorAll('.lob-checkbox:checked');
+        const selectedOptions = Array.from(lobNamesSelect.options).filter(option => option.selected);
         
-        if (checkedBoxes.length >= maxCount) {
-            // Disable unchecked boxes
-            lobCheckboxes.forEach(checkbox => {
-                if (!checkbox.checked) {
-                    checkbox.disabled = true;
-                }
+        // If user has selected more than allowed, remove the excess selections
+        if (selectedOptions.length > maxCount && maxCount > 0) {
+            // Keep only the first maxCount selections
+            selectedOptions.forEach((option, index) => {
+                option.selected = index < maxCount;
             });
-            selectAllLobsCheckbox.disabled = true;
-        } else {
-            // Enable all boxes
-            lobCheckboxes.forEach(checkbox => {
-                checkbox.disabled = false;
-            });
-            selectAllLobsCheckbox.disabled = maxCount === 0;
+            
+            // Show alert to user
+            if (maxCount > 0) {
+                alert(`You can only select up to ${maxCount} LOBs. Extra selections have been removed.`);
+            }
         }
-        
-        // Update select all checkbox state
-        const allChecked = Array.from(lobCheckboxes).every(cb => cb.checked);
-        const someChecked = Array.from(lobCheckboxes).some(cb => cb.checked);
-        selectAllLobsCheckbox.checked = allChecked && checkedBoxes.length > 0;
-        selectAllLobsCheckbox.indeterminate = !allChecked && someChecked;
-    }
-    
-    function handleSelectAllLobs() {
-        const maxCount = parseInt(lobCountField.value) || 0;
-        
-        if (selectAllLobsCheckbox.checked) {
-            // Select up to max count
-            let selectedCount = 0;
-            lobCheckboxes.forEach(checkbox => {
-                if (selectedCount < maxCount) {
-                    checkbox.checked = true;
-                    selectedCount++;
-                } else {
-                    checkbox.checked = false;
-                }
-            });
-        } else {
-            // Unselect all
-            lobCheckboxes.forEach(checkbox => {
-                checkbox.checked = false;
-            });
-        }
-        
-        validateLobSelection();
     }
     
     // Event listeners for LOB functionality
@@ -371,13 +326,9 @@ document.addEventListener('DOMContentLoaded', function() {
         updateLobLimit(); // Initial call
     }
     
-    if (selectAllLobsCheckbox) {
-        selectAllLobsCheckbox.addEventListener('change', handleSelectAllLobs);
+    if (lobNamesSelect) {
+        lobNamesSelect.addEventListener('change', validateLobSelection);
     }
-    
-    lobCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', validateLobSelection);
-    });
 });
 </script>
 {% endblock %}
