@@ -982,17 +982,43 @@ function generateSiteSections(selectedCountries, siteCount) {
     // Generate sections for each site
     for (let siteIndex = 1; siteIndex <= siteCount; siteIndex++) {
         const siteSection = document.createElement('div');
-        siteSection.className = 'site-section mb-4';
+        siteSection.className = 'site-section mb-5';
         siteSection.innerHTML = `
-            <div class="card border-0 shadow-sm">
+            <div class="card border-0 shadow-lg">
                 <div class="card-header bg-gradient-primary text-white">
-                    <h5 class="mb-0 fw-bold">
+                    <h4 class="mb-0 fw-bold">
                         <i class="fas fa-building me-2"></i>Site ${siteIndex} Configuration
-                    </h5>
+                    </h4>
                 </div>
-                <div class="card-body">
-                    <div class="countries-grid row g-3" id="site-${siteIndex}-countries">
-                        <!-- Country cards will be generated here -->
+                <div class="card-body p-0">
+                    <!-- Site-wise Selections Section -->
+                    <div class="site-subsection border-bottom">
+                        <div class="subsection-header">
+                            <h5 class="mb-0 fw-semibold text-primary">
+                                <i class="fas fa-list-check me-2"></i>Site-wise Selections
+                            </h5>
+                            <p class="text-muted mb-0 small">Configure site locations and agent profiles for each country</p>
+                        </div>
+                        <div class="subsection-body">
+                            <div class="countries-grid row g-3" id="site-${siteIndex}-selections">
+                                <!-- Selection country cards will be generated here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Capacity Planning Section -->
+                    <div class="site-subsection">
+                        <div class="subsection-header">
+                            <h5 class="mb-0 fw-semibold text-success">
+                                <i class="fas fa-calculator me-2"></i>Capacity Planning
+                            </h5>
+                            <p class="text-muted mb-0 small">Set hiring capacity and lead times for each country</p>
+                        </div>
+                        <div class="subsection-body">
+                            <div class="countries-grid row g-3" id="site-${siteIndex}-capacity">
+                                <!-- Capacity country cards will be generated here -->
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1000,8 +1026,8 @@ function generateSiteSections(selectedCountries, siteCount) {
 
         sitesContainer.appendChild(siteSection);
 
-        // Generate country cards for this site
-        const countriesGrid = siteSection.querySelector(`#site-${siteIndex}-countries`);
+        // Generate country cards for selections
+        const selectionsGrid = siteSection.querySelector(`#site-${siteIndex}-selections`);
         selectedCountries.forEach(country => {
             if (!countryData[country]) return;
 
@@ -1010,10 +1036,10 @@ function generateSiteSections(selectedCountries, siteCount) {
                 `<option value="${site.value}">${site.text}</option>`
             ).join('');
 
-            const countryCard = document.createElement('div');
-            countryCard.className = 'col-md-6 col-lg-4';
-            countryCard.innerHTML = `
-                <div class="country-card h-100">
+            const selectionCard = document.createElement('div');
+            selectionCard.className = 'col-md-6 col-lg-4';
+            selectionCard.innerHTML = `
+                <div class="country-card selection-card h-100">
                     <div class="country-card-header">
                         <span class="country-flag">${countryInfo.flag}</span>
                         <div class="country-info">
@@ -1022,57 +1048,68 @@ function generateSiteSections(selectedCountries, siteCount) {
                         </div>
                     </div>
                     <div class="country-card-body">
-                        <!-- Selections Section -->
-                        <div class="parameter-section selection-section">
-                            <div class="section-header">
-                                <i class="fas fa-list-check me-1"></i>
-                                <span class="section-title">Selections</span>
-                            </div>
-                            <div class="site-field">
-                                <label class="site-field-label">Site Location</label>
-                                <select class="form-select site-location-select" data-country="${country}" data-site="${siteIndex}" name="site_location_${country}_${siteIndex}">
-                                    <option value="">Select Site</option>
-                                    ${siteOptions}
-                                </select>
-                            </div>
-                            <div class="site-field">
-                                <label class="site-field-label">Agent Profile</label>
-                                <select class="form-select agent-profile-select" data-country="${country}" data-site="${siteIndex}" name="agent_profile_${country}_${siteIndex}">
-                                    <option value="">Select Tier</option>
-                                    <option value="tier1">Tier 1</option>
-                                    <option value="tier2">Tier 2</option>
-                                    <option value="tier3">Tier 3</option>
-                                </select>
-                            </div>
+                        <div class="site-field">
+                            <label class="site-field-label">Site Location</label>
+                            <select class="form-select site-location-select" data-country="${country}" data-site="${siteIndex}" name="site_location_${country}_${siteIndex}">
+                                <option value="">Select Site</option>
+                                ${siteOptions}
+                            </select>
                         </div>
-
-                        <!-- Capacity Planning Section -->
-                        <div class="parameter-section capacity-section">
-                            <div class="section-header">
-                                <i class="fas fa-calculator me-1"></i>
-                                <span class="section-title">Capacity Planning</span>
-                            </div>
-                            <div class="site-field">
-                                <label class="site-field-label">Lead Time (Days)</label>
-                                <input type="number" class="form-control lead-time-input" data-country="${country}" data-site="${siteIndex}" name="lead_time_${country}_${siteIndex}" placeholder="0" min="0">
-                            </div>
-                            <div class="site-field">
-                                <label class="site-field-label">Weekly Capacity</label>
-                                <input type="number" class="form-control weekly-capacity-input" data-country="${country}" data-site="${siteIndex}" name="weekly_capacity_${country}_${siteIndex}" placeholder="0" min="0">
-                            </div>
-                            <div class="site-field">
-                                <label class="site-field-label">Monthly Capacity</label>
-                                <input type="number" class="form-control monthly-capacity-input" data-country="${country}" data-site="${siteIndex}" name="monthly_capacity_${country}_${siteIndex}" placeholder="0" min="0">
-                            </div>
+                        <div class="site-field">
+                            <label class="site-field-label">Agent Profile</label>
+                            <select class="form-select agent-profile-select" data-country="${country}" data-site="${siteIndex}" name="agent_profile_${country}_${siteIndex}">
+                                <option value="">Select Tier</option>
+                                <option value="tier1">Tier 1</option>
+                                <option value="tier2">Tier 2</option>
+                                <option value="tier3">Tier 3</option>
+                            </select>
                         </div>
                     </div>
                 </div>
             `;
 
-            countriesGrid.appendChild(countryCard);
+            selectionsGrid.appendChild(selectionCard);
+        });
+
+        // Generate country cards for capacity planning
+        const capacityGrid = siteSection.querySelector(`#site-${siteIndex}-capacity`);
+        selectedCountries.forEach(country => {
+            if (!countryData[country]) return;
+
+            const countryInfo = countryData[country];
+
+            const capacityCard = document.createElement('div');
+            capacityCard.className = 'col-md-6 col-lg-4';
+            capacityCard.innerHTML = `
+                <div class="country-card capacity-card h-100">
+                    <div class="country-card-header">
+                        <span class="country-flag">${countryInfo.flag}</span>
+                        <div class="country-info">
+                            <h6 class="country-name">${countryInfo.name}</h6>
+                            <span class="country-code">${country}</span>
+                        </div>
+                    </div>
+                    <div class="country-card-body">
+                        <div class="site-field">
+                            <label class="site-field-label">Lead Time (Days)</label>
+                            <input type="number" class="form-control lead-time-input" data-country="${country}" data-site="${siteIndex}" name="lead_time_${country}_${siteIndex}" placeholder="0" min="0">
+                        </div>
+                        <div class="site-field">
+                            <label class="site-field-label">Weekly Capacity</label>
+                            <input type="number" class="form-control weekly-capacity-input" data-country="${country}" data-site="${siteIndex}" name="weekly_capacity_${country}_${siteIndex}" placeholder="0" min="0">
+                        </div>
+                        <div class="site-field">
+                            <label class="site-field-label">Monthly Capacity</label>
+                            <input type="number" class="form-control monthly-capacity-input" data-country="${country}" data-site="${siteIndex}" name="monthly_capacity_${country}_${siteIndex}" placeholder="0" min="0">
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            capacityGrid.appendChild(capacityCard);
 
             // Add event listeners for capacity inputs to update totals
-            const capacityInputs = countryCard.querySelectorAll('.weekly-capacity-input, .monthly-capacity-input');
+            const capacityInputs = capacityCard.querySelectorAll('.weekly-capacity-input, .monthly-capacity-input');
             capacityInputs.forEach(input => {
                 input.addEventListener('input', function() {
                     updateSitesTotals();
