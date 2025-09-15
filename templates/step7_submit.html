@@ -29,15 +29,15 @@
                                         <div class="small">
                                             <div class="d-flex justify-content-between mb-1">
                                                 <span>Client:</span>
-                                                <span id="summary-client">{{ session.form_data.client_name or 'Not specified' }}</span>
+                                                <span id="summary-client">{{ form_data.client_name or 'Not specified' }}</span>
                                             </div>
                                             <div class="d-flex justify-content-between mb-1">
                                                 <span>Requirement:</span>
-                                                <span id="summary-requirement">{{ session.form_data.ramp_requirement or 'Not specified' }}</span>
+                                                <span id="summary-requirement">{{ form_data.ramp_requirement or 'Not specified' }}</span>
                                             </div>
                                             <div class="d-flex justify-content-between">
                                                 <span>Type:</span>
-                                                <span id="summary-type">{{ session.form_data.ramp_requirement_type or 'Not specified' }}</span>
+                                                <span id="summary-type">{{ form_data.ramp_requirement_type or 'Not specified' }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -52,15 +52,15 @@
                                         <div class="small">
                                             <div class="d-flex justify-content-between mb-1">
                                                 <span>Total Trainers:</span>
-                                                <span id="summary-trainers">{{ session.form_data.total_trainers or 'Not specified' }}</span>
+                                                <span id="summary-trainers">{{ form_data.total_trainers or 'Not specified' }}</span>
                                             </div>
                                             <div class="d-flex justify-content-between mb-1">
                                                 <span>Training Duration:</span>
-                                                <span id="summary-training">{{ session.form_data.training_duration_number or 'Not specified' }} {{ session.form_data.training_duration or '' }}</span>
+                                                <span id="summary-training">{{ form_data.training_duration_number or 'Not specified' }} {{ form_data.training_duration or '' }}</span>
                                             </div>
                                             <div class="d-flex justify-content-between">
                                                 <span>Batch Size:</span>
-                                                <span id="summary-batch">{{ session.form_data.batch_size or 'Not specified' }}</span>
+                                                <span id="summary-batch">{{ form_data.batch_size or 'Not specified' }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -75,11 +75,11 @@
                                         <div class="small">
                                             <div class="d-flex justify-content-between mb-1">
                                                 <span>LOB Count:</span>
-                                                <span id="summary-lob-count">{{ session.form_data.lob_count or 'Not specified' }}</span>
+                                                <span id="summary-lob-count">{{ form_data.lob_count or 'Not specified' }}</span>
                                             </div>
                                             <div class="d-flex justify-content-between mb-1">
                                                 <span>Languages:</span>
-                                                <span id="summary-languages">{{ session.form_data.languages_supported or 'Not specified' }}</span>
+                                                <span id="summary-languages">{{ form_data.languages_supported or 'Not specified' }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -94,11 +94,11 @@
                                         <div class="small">
                                             <div class="d-flex justify-content-between mb-1">
                                                 <span>Lead Time:</span>
-                                                <span id="summary-lead-time">{{ session.form_data.recruitment_lead_time or '30' }} days</span>
+                                                <span id="summary-lead-time">{{ form_data.recruitment_lead_time or '30' }} days</span>
                                             </div>
                                             <div class="d-flex justify-content-between mb-1">
                                                 <span>Weekly Capacity:</span>
-                                                <span id="summary-weekly-capacity">{{ session.form_data.hiring_capacity_weekly or '10' }} hires</span>
+                                                <span id="summary-weekly-capacity">{{ form_data.hiring_capacity_weekly or '10' }} hires</span>
                                             </div>
                                         </div>
                                     </div>

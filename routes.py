@@ -153,6 +153,10 @@ def ramp_form_step(step):
         'is_last_step': step == len(FORM_STEPS)
     }
     
+    # For submit step, include form data for summary
+    if step == 7:
+        context['form_data'] = session.get('form_data', {})
+    
     return render_template(FORM_STEPS[step]['template'], **context)
 
 @app.route('/ramp-form/submit', methods=['GET', 'POST'])
