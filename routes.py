@@ -92,6 +92,10 @@ def load_step_data(step, form):
         if field_name in session['form_data'] and hasattr(form, field_name):
             field_value = session['form_data'][field_name]
             if field_value is not None:
+                # Skip loading geo_country if it contains all countries (old default behavior)
+                if field_name == 'geo_country' and isinstance(field_value, list) and len(field_value) >= 10:
+                    continue
+                    
                 field = getattr(form, field_name)
                 
                 # Handle date fields - parse ISO strings back to date objects
