@@ -110,6 +110,13 @@ def index():
     """Redirect to step 1 of the form"""
     return redirect(url_for('ramp_form_step', step=1))
 
+@app.route('/clear-session')
+def clear_session():
+    """Clear session data to start fresh"""
+    session.pop('form_data', None)
+    session.modified = True
+    return redirect(url_for('ramp_form_step', step=1))
+
 @app.route('/ramp-form/step/<int:step>', methods=['GET', 'POST'])
 def ramp_form_step(step):
     """Handle individual form steps"""
