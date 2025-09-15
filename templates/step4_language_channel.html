@@ -24,32 +24,99 @@
                         <label class="form-label fw-semibold">
                             <i class="fas fa-list-ul me-1"></i>LOB Names
                         </label>
-                        <div class="position-relative">
-                            <div class="form-control dropdown-toggle d-flex justify-content-between align-items-center" 
-                                 id="lob-dropdown-toggle" 
-                                 data-bs-toggle="dropdown" 
-                                 aria-expanded="false"
-                                 style="cursor: pointer; min-height: 38px;">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start d-flex justify-content-between align-items-center" 
+                                    type="button" 
+                                    id="lob-dropdown-toggle" 
+                                    data-bs-toggle="dropdown" 
+                                    aria-expanded="false">
                                 <span id="lob-selection-display">Select LOBs...</span>
-                                <i class="fas fa-chevron-down"></i>
-                            </div>
+                            </button>
                             <ul class="dropdown-menu w-100" id="lob-dropdown-menu" style="max-height: 250px; overflow-y: auto;">
                                 <li class="px-3 py-2">
                                     <input type="text" class="form-control form-control-sm" placeholder="Search LOBs..." id="lob-search">
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
-                                {% for choice in form.lob_names.choices %}
-                                <li class="lob-option" data-value="{{ choice[0] }}">
+                                <li class="lob-option" data-value="Customer Service">
                                     <div class="dropdown-item py-1">
                                         <div class="form-check">
-                                            <input class="form-check-input lob-checkbox" type="checkbox" value="{{ choice[0] }}" id="lob-{{ loop.index }}">
-                                            <label class="form-check-label w-100" for="lob-{{ loop.index }}">
-                                                {{ choice[1] }}
-                                            </label>
+                                            <input class="form-check-input lob-checkbox" type="checkbox" value="Customer Service" id="lob-1">
+                                            <label class="form-check-label w-100" for="lob-1">Customer Service</label>
                                         </div>
                                     </div>
                                 </li>
-                                {% endfor %}
+                                <li class="lob-option" data-value="Technical Support">
+                                    <div class="dropdown-item py-1">
+                                        <div class="form-check">
+                                            <input class="form-check-input lob-checkbox" type="checkbox" value="Technical Support" id="lob-2">
+                                            <label class="form-check-label w-100" for="lob-2">Technical Support</label>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="lob-option" data-value="Sales">
+                                    <div class="dropdown-item py-1">
+                                        <div class="form-check">
+                                            <input class="form-check-input lob-checkbox" type="checkbox" value="Sales" id="lob-3">
+                                            <label class="form-check-label w-100" for="lob-3">Sales</label>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="lob-option" data-value="Billing">
+                                    <div class="dropdown-item py-1">
+                                        <div class="form-check">
+                                            <input class="form-check-input lob-checkbox" type="checkbox" value="Billing" id="lob-4">
+                                            <label class="form-check-label w-100" for="lob-4">Billing</label>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="lob-option" data-value="Collections">
+                                    <div class="dropdown-item py-1">
+                                        <div class="form-check">
+                                            <input class="form-check-input lob-checkbox" type="checkbox" value="Collections" id="lob-5">
+                                            <label class="form-check-label w-100" for="lob-5">Collections</label>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="lob-option" data-value="Back Office Operations">
+                                    <div class="dropdown-item py-1">
+                                        <div class="form-check">
+                                            <input class="form-check-input lob-checkbox" type="checkbox" value="Back Office Operations" id="lob-6">
+                                            <label class="form-check-label w-100" for="lob-6">Back Office Operations</label>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="lob-option" data-value="Quality Assurance">
+                                    <div class="dropdown-item py-1">
+                                        <div class="form-check">
+                                            <input class="form-check-input lob-checkbox" type="checkbox" value="Quality Assurance" id="lob-7">
+                                            <label class="form-check-label w-100" for="lob-7">Quality Assurance</label>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="lob-option" data-value="Retention">
+                                    <div class="dropdown-item py-1">
+                                        <div class="form-check">
+                                            <input class="form-check-input lob-checkbox" type="checkbox" value="Retention" id="lob-8">
+                                            <label class="form-check-label w-100" for="lob-8">Retention</label>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="lob-option" data-value="Fraud Prevention">
+                                    <div class="dropdown-item py-1">
+                                        <div class="form-check">
+                                            <input class="form-check-input lob-checkbox" type="checkbox" value="Fraud Prevention" id="lob-9">
+                                            <label class="form-check-label w-100" for="lob-9">Fraud Prevention</label>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="lob-option" data-value="Others">
+                                    <div class="dropdown-item py-1">
+                                        <div class="form-check">
+                                            <input class="form-check-input lob-checkbox" type="checkbox" value="Others" id="lob-10">
+                                            <label class="form-check-label w-100" for="lob-10">Others</label>
+                                        </div>
+                                    </div>
+                                </li>
                             </ul>
                             <!-- Hidden select for form submission -->
                             {{ form.lob_names(class="d-none", multiple=true, id="lob-names-select") }}
@@ -306,6 +373,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const lobOptions = document.querySelectorAll('.lob-option');
     const maxLobCountSpan = document.getElementById('max-lob-count');
     const lobSelectionInfo = document.getElementById('lob-selection-info');
+    
+    console.log('LOB elements found:', {
+        lobCountField: !!lobCountField,
+        lobNamesSelect: !!lobNamesSelect,
+        lobDropdownToggle: !!lobDropdownToggle,
+        lobSelectionDisplay: !!lobSelectionDisplay,
+        lobCheckboxes: lobCheckboxes.length
+    });
     
     function updateLobLimit() {
         const maxCount = parseInt(lobCountField.value) || 0;
