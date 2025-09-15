@@ -91,6 +91,10 @@ class RampInputForm(FlaskForm):
     qa_ratio = StringField('QA Ratio', default='1:1')
     trainer_ratio = StringField('Trainer Ratio', default='1:1')
     
+    # LOB Details
+    lob_count = IntegerField('LOB Count', validators=[Optional(), NumberRange(min=1)])
+    lob_names = TextAreaField('LOB Names', validators=[Optional()])
+    
     # Language support
     languages_supported = SelectField(
         'Languages Supported',
