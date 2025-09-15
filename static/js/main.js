@@ -1124,23 +1124,23 @@ function generateSitesTableRows(selectedCountries) {
         const labelCell = document.createElement('td');
         labelCell.className = 'site-label-cell';
         
-        // Add very light colors with inline styles
+        // Add greyish colors with inline styles
         if (siteIndex === 1) {
-            labelCell.style.background = 'linear-gradient(135deg, #ffe0b3 0%, #ffcc80 100%)';
-            labelCell.style.color = '#d84315';
-            labelCell.style.borderRightColor = '#ffcc80';
+            labelCell.style.background = 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)';
+            labelCell.style.color = '#424242';
+            labelCell.style.borderRightColor = '#e0e0e0';
         } else if (siteIndex === 2) {
-            labelCell.style.background = 'linear-gradient(135deg, #b3e5d1 0%, #80cbc4 100%)';
-            labelCell.style.color = '#00695c';
-            labelCell.style.borderRightColor = '#80cbc4';
+            labelCell.style.background = 'linear-gradient(135deg, #eeeeee 0%, #d5d5d5 100%)';
+            labelCell.style.color = '#424242';
+            labelCell.style.borderRightColor = '#d5d5d5';
         } else if (siteIndex === 3) {
-            labelCell.style.background = 'linear-gradient(135deg, #f8bbd9 0%, #f48fb1 100%)';
-            labelCell.style.color = '#ad1457';
-            labelCell.style.borderRightColor = '#f48fb1';
+            labelCell.style.background = 'linear-gradient(135deg, #e8e8e8 0%, #cccccc 100%)';
+            labelCell.style.color = '#424242';
+            labelCell.style.borderRightColor = '#cccccc';
         } else {
-            labelCell.style.background = 'linear-gradient(135deg, #bbdefb 0%, #90caf9 100%)';
-            labelCell.style.color = '#1565c0';
-            labelCell.style.borderRightColor = '#90caf9';
+            labelCell.style.background = 'linear-gradient(135deg, #f0f0f0 0%, #d9d9d9 100%)';
+            labelCell.style.color = '#424242';
+            labelCell.style.borderRightColor = '#d9d9d9';
         }
         
         labelCell.innerHTML = `<strong>Site ${siteIndex}</strong>`;
