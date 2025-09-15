@@ -15,9 +15,33 @@
                 </div>
             </div>
             <div class="card-body">
+                <!-- Site Configuration Toggle -->
+                <div class="mb-4">
+                    <h6 class="fw-bold text-dark mb-3">
+                        <i class="fas fa-question-circle me-2"></i>Do you need Site Configuration?
+                    </h6>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="d-flex gap-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="site_config_needed" id="site_config_yes" value="yes">
+                                    <label class="form-check-label fw-semibold" for="site_config_yes">
+                                        <i class="fas fa-check-circle text-success me-1"></i>Yes
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="site_config_needed" id="site_config_no" value="no" checked>
+                                    <label class="form-check-label fw-semibold" for="site_config_no">
+                                        <i class="fas fa-times-circle text-danger me-1"></i>No
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Sites Configuration for Recruitment -->
-                <div class="mb-5">
+                <div class="mb-5" id="sites-configuration-section" style="display: none;">
                     <h6 class="fw-bold text-dark mb-4">
                         <i class="fas fa-building me-2"></i>Sites Configuration for Recruitment
                     </h6>
@@ -293,9 +317,31 @@
 {% block extra_js %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Handle site configuration toggle
+    function handleSiteConfigToggle() {
+        const yesRadio = document.getElementById('site_config_yes');
+        const noRadio = document.getElementById('site_config_no');
+        const sitesSection = document.getElementById('sites-configuration-section');
+        
+        if (yesRadio.checked) {
+            sitesSection.style.display = 'block';
+            // Initialize sites configuration when shown
+            initializeSitesConfiguration();
+        } else {
+            sitesSection.style.display = 'none';
+        }
+    }
+    
+    // Add event listeners to radio buttons
+    document.getElementById('site_config_yes').addEventListener('change', handleSiteConfigToggle);
+    document.getElementById('site_config_no').addEventListener('change', handleSiteConfigToggle);
+    
     // Reset function (simplified since we removed the form fields)
     window.resetRecruitmentForm = function() {
-        // Reset any remaining form fields if needed
+        // Reset radio buttons to No
+        document.getElementById('site_config_no').checked = true;
+        document.getElementById('site_config_yes').checked = false;
+        handleSiteConfigToggle();
         console.log('Recruitment form reset');
     };
     
@@ -350,8 +396,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Initialize sites configuration
-    initializeSitesConfiguration();
+    // Initialize the toggle state
+    handleSiteConfigToggle();
 });
 </script>
 {% endblock %}
