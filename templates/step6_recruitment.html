@@ -91,21 +91,24 @@
     background: #f8f9fa !important;
 }
 
-/* Professional Sites Configuration Table */
+/* Professional Corporate Sites Configuration Table */
 :root {
     --brand: #0d6efd;
     --text: #212529;
     --muted: #6c757d;
     --border: #e9ecef;
-    --th: #f8f9fa;
+    --th: linear-gradient(135deg, #f8f9ff 0%, #e8f2ff 100%);
+    --light-blue: #f0f6ff;
+    --soft-green: #f0f9f4;
+    --warm-gray: #f8f9fa;
 }
 
 .sites-table-container {
     background: white;
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-    border: 1px solid var(--border);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e3e6f0;
 }
 
 .sites-config-table {
@@ -114,12 +117,13 @@
     border-collapse: separate;
     border-spacing: 0;
     width: 100%;
+    background: white;
 }
 
 .sites-config-table th,
 .sites-config-table td {
-    padding: 14px 12px;
-    border: 1px solid var(--border);
+    padding: 16px 12px;
+    border: 1px solid #e3e6f0;
 }
 
 .sites-config-table thead th {
@@ -127,96 +131,126 @@
     top: 0;
     z-index: 2;
     background: var(--th);
-    border-bottom: 2px solid var(--border);
+    border-bottom: 2px solid #d1ecf1;
     font-weight: 600;
     font-size: 0.95rem;
     text-align: center;
     vertical-align: middle;
+    color: #2c5aa0;
 }
 
 .sites-config-table .metrics-header {
     position: sticky;
     left: 0;
     z-index: 3;
-    background: #343a40;
+    background: linear-gradient(135deg, #495057 0%, #343a40 100%);
     color: #fff;
     width: 140px;
     min-width: 140px;
     font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 
 .sites-config-table .country-header {
     background: var(--th);
     min-width: 140px;
     width: 140px;
+    border-left: 3px solid #0d6efd;
 }
 
 .sites-config-table .country-header .header-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
 }
 
 .sites-config-table .country-header span {
-    font-size: 0.95rem;
-    color: #495057;
-    font-weight: 600;
+    font-size: 1rem;
+    color: #2c5aa0;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .sites-config-table .country-sites-select {
-    height: 34px;
-    font-size: 0.82rem;
-    padding: 4px 8px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    background: white;
+    height: 36px;
+    font-size: 0.85rem;
+    padding: 6px 10px;
+    border: 2px solid #b8daff;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fcff 100%);
+    font-weight: 600;
+    color: #2c5aa0;
+    box-shadow: 0 2px 4px rgba(0,123,255,0.1);
+    transition: all 0.2s ease;
 }
 
 .sites-config-table .country-sites-select:focus {
-    border-color: var(--brand);
-    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.3rem rgba(13, 110, 253, 0.2);
+    background: #ffffff;
+    outline: none;
+}
+
+.sites-config-table .country-sites-select:hover {
+    border-color: #4dabf7;
+    background: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,123,255,0.15);
 }
 
 .sites-config-table .site-label-cell {
     position: sticky;
     left: 0;
     z-index: 1;
-    background: #fff;
-    border-right: 2px solid var(--border);
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: var(--text);
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-right: 3px solid #0d6efd;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #2c5aa0;
     text-align: center;
     vertical-align: middle;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .sites-config-table .site-content-cell {
-    background: white;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fcff 100%);
     text-align: left;
     vertical-align: top;
 }
 
 /* Professional Zebra Striping and Hover Effects */
 .sites-config-table tbody tr:nth-child(odd) {
-    background: #fcfcfd;
+    background: linear-gradient(135deg, #fdfdff 0%, #f5f8ff 100%);
 }
 
 .sites-config-table tbody tr:nth-child(odd) .site-label-cell {
-    background: #f8f9fa;
+    background: linear-gradient(135deg, #f0f2f5 0%, #e6eaf0 100%);
+}
+
+.sites-config-table tbody tr:nth-child(odd) .site-content-cell {
+    background: linear-gradient(135deg, #fdfdff 0%, #f5f8ff 100%);
 }
 
 .sites-config-table tbody tr:hover {
-    background: #f5f9ff;
+    background: linear-gradient(135deg, #e8f4fd 0%, #d1ecf1 100%);
+    transform: scale(1.005);
+    transition: all 0.2s ease;
 }
 
 .sites-config-table tbody tr:hover .site-label-cell {
-    background: #f5f9ff;
+    background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
 }
 
-/* Professional Form Fields in Table Cells */
+.sites-config-table tbody tr:hover .site-content-cell {
+    background: linear-gradient(135deg, #e8f4fd 0%, #d1ecf1 100%);
+}
+
+/* Professional Corporate Form Fields in Table Cells */
 .cell-form-group {
-    margin-bottom: 12px;
+    margin-bottom: 14px;
     text-align: left;
 }
 
@@ -226,35 +260,92 @@
 
 .cell-label {
     font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--muted);
-    text-transform: none;
-    letter-spacing: 0.2px;
-    margin-bottom: 6px;
+    font-weight: 700;
+    color: #2c5aa0;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 8px;
     display: block;
+    text-shadow: 0 1px 2px rgba(44,90,160,0.1);
 }
 
 .cell-form-group .form-select,
 .cell-form-group .form-control {
-    height: 36px;
+    height: 38px;
     font-size: 0.875rem;
-    padding: 6px 10px;
-    border: 1px solid #ced4da;
-    border-radius: 6px;
-    background: white;
-    transition: all 0.15s ease-in-out;
+    padding: 8px 12px;
+    border: 2px solid #b8daff;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fcff 100%);
+    font-weight: 500;
+    color: #2c5aa0;
+    box-shadow: 0 2px 4px rgba(0,123,255,0.08);
+    transition: all 0.2s ease;
 }
 
 .cell-form-group .form-select:focus,
 .cell-form-group .form-control:focus {
-    border-color: var(--brand);
-    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.3rem rgba(13, 110, 253, 0.15);
+    background: #ffffff;
     outline: none;
+    transform: translateY(-1px);
 }
 
 .cell-form-group .form-select:hover,
 .cell-form-group .form-control:hover {
-    border-color: #adb5bd;
+    border-color: #4dabf7;
+    background: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,123,255,0.12);
+}
+
+.cell-form-group .form-select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%232c5aa0' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+    padding-right: 2.5rem;
+}
+
+/* Highlight Site Location and Agent Profile dropdowns */
+.cell-form-group .site-location-select,
+.cell-form-group .agent-profile-select {
+    border: 2px solid #90e0ef;
+    background: linear-gradient(135deg, #f0faff 0%, #e6f7ff 100%);
+    box-shadow: 0 2px 6px rgba(144,224,239,0.2);
+}
+
+.cell-form-group .site-location-select:focus,
+.cell-form-group .agent-profile-select:focus {
+    border-color: #0077b6;
+    box-shadow: 0 0 0 0.3rem rgba(0, 119, 182, 0.2);
+    background: linear-gradient(135deg, #ffffff 0%, #f0faff 100%);
+}
+
+.cell-form-group .site-location-select:hover,
+.cell-form-group .agent-profile-select:hover {
+    border-color: #0096c7;
+    background: linear-gradient(135deg, #ffffff 0%, #f0faff 100%);
+    box-shadow: 0 4px 12px rgba(0,150,199,0.15);
+}
+
+/* Input field styling for numeric fields */
+.cell-form-group .form-control {
+    border-color: #c7f9cc;
+    background: linear-gradient(135deg, #f8fff8 0%, #f0fff4 100%);
+}
+
+.cell-form-group .form-control:focus {
+    border-color: #52b788;
+    box-shadow: 0 0 0 0.3rem rgba(82, 183, 136, 0.2);
+    background: #ffffff;
+}
+
+.cell-form-group .form-control:hover {
+    border-color: #74c69d;
+    background: #ffffff;
+    box-shadow: 0 4px 8px rgba(116,198,157,0.12);
 }
 
 /* Professional Table Header Accent */
