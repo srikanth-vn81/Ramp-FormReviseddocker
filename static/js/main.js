@@ -665,25 +665,37 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 function initializeLocationDetails() {
     // Initialize geo country functionality - handle checkbox changes
-    const geoSelect = document.getElementById('geo-country-select');
+    let geoSelect = document.getElementById('geo-country-select');
+    let checkboxes;
+    
     if (geoSelect) {
-        const checkboxes = geoSelect.querySelectorAll('input[type="checkbox"]');
+        // Legacy support for geo-country-select container
+        checkboxes = geoSelect.querySelectorAll('input[type="checkbox"]');
+    } else {
+        // Direct support for step 5 checkboxes without container
+        checkboxes = document.querySelectorAll('input[name="geo_country"]');
+    }
+    
+    if (checkboxes.length > 0) {
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('change', function() {
                 updateCountryConfiguration();
                 updateSummaryValues();
                 updateSitesTable();
+                // Save selected countries to sessionStorage for cross-step access
+                saveSelectedCountries();
             });
         });
         
         // Set default selection (all countries) always on page load
-        if (checkboxes.length > 0) {
-            checkboxes.forEach(checkbox => {
-                if (!checkbox.checked) {
-                    checkbox.checked = true;
-                }
-            });
-        }
+        checkboxes.forEach(checkbox => {
+            if (!checkbox.checked) {
+                checkbox.checked = true;
+            }
+        });
+        
+        // Save initial selection to sessionStorage
+        saveSelectedCountries();
         
         // Trigger initial display
         updateCountryConfiguration();
@@ -876,26 +888,143 @@ function initializeSitesConfiguration() {
 }
 
 /**
- * Update sites table based on selected countries
+ * Update sites table based on selected countries from Location Planning
  */
 function updateSitesTable() {
+    const sitesTableHead = document.getElementById('sites-table-head');
     const sitesTableBody = document.getElementById('sites-table-body');
 
-    if (!sitesTableBody) return;
+    if (!sitesTableHead || !sitesTableBody) return;
 
-    // Use default countries for step 6 (all countries)
-    const defaultCountries = ['CAN', 'COL', 'HKG', 'IND', 'MEX', 'PAN', 'PHL', 'POL', 'TTO', 'USA'];
+    // Get selected countries from Location Planning step (step 5)
+    const selectedCountries = getSelectedCountriesFromLocationPlanning();
 
-    // Generate sites table rows
-    generateSitesTableRows(defaultCountries);
+    // Handle case where no countries are selected
+    if (selectedCountries.length === 0) {
+        showNoCountriesMessage(sitesTableHead, sitesTableBody);
+        return;
+    }
+
+    // Generate table headers with selected countries
+    generateSitesTableHeaders(selectedCountries);
+    
+    // Generate sites table rows with selected countries
+    generateSitesTableRows(selectedCountries);
 
     // Add event listeners to country site selectors
     const countrySiteSelects = document.querySelectorAll('.country-sites-select');
     countrySiteSelects.forEach(select => {
         select.addEventListener('change', function() {
-            generateSitesTableRows(defaultCountries);
+            const updatedCountries = getSelectedCountriesFromLocationPlanning();
+            if (updatedCountries.length > 0) {
+                generateSitesTableRows(updatedCountries);
+            }
         });
     });
+}
+
+/**
+ * Show message when no countries are selected
+ */
+function showNoCountriesMessage(sitesTableHead, sitesTableBody) {
+    sitesTableHead.innerHTML = '';
+    sitesTableBody.innerHTML = '';
+    
+    const messageRow = document.createElement('tr');
+    const messageCell = document.createElement('td');
+    messageCell.colSpan = 1;
+    messageCell.className = 'text-center p-5';
+    messageCell.innerHTML = `
+        <div class="text-muted">
+            <i class="fas fa-info-circle fa-3x mb-3 text-warning"></i>
+            <h6>No Countries Selected</h6>
+            <p class="mb-0">Please go back to <strong>Location Planning</strong> step and select countries to configure sites.</p>
+        </div>
+    `;
+    messageRow.appendChild(messageCell);
+    sitesTableBody.appendChild(messageRow);
+}
+
+/**
+ * Get selected countries from Location Planning step
+ */
+function getSelectedCountriesFromLocationPlanning() {
+    // Try to get selected countries from sessionStorage (cross-step persistence)
+    const storedCountries = sessionStorage.getItem('selected_countries');
+    
+    if (storedCountries) {
+        try {
+            const countries = JSON.parse(storedCountries);
+            if (Array.isArray(countries) && countries.length > 0) {
+                return countries;
+            }
+        } catch (e) {
+            console.warn('Error parsing stored countries:', e);
+        }
+    }
+    
+    // Try to get from current page checkboxes (if on same step)
+    const selectedCheckboxes = document.querySelectorAll('input[name="geo_country"]:checked');
+    if (selectedCheckboxes.length > 0) {
+        const countries = Array.from(selectedCheckboxes).map(cb => cb.value);
+        // Save to sessionStorage for future steps
+        sessionStorage.setItem('selected_countries', JSON.stringify(countries));
+        return countries;
+    }
+    
+    // No countries found - return empty array to indicate no selection made
+    return [];
+}
+
+/**
+ * Save selected countries to sessionStorage for cross-step persistence
+ */
+function saveSelectedCountries() {
+    const selectedCheckboxes = document.querySelectorAll('input[name="geo_country"]:checked');
+    const countries = Array.from(selectedCheckboxes).map(cb => cb.value);
+    sessionStorage.setItem('selected_countries', JSON.stringify(countries));
+}
+
+/**
+ * Generate table headers dynamically based on selected countries
+ */
+function generateSitesTableHeaders(selectedCountries) {
+    const sitesTableHead = document.getElementById('sites-table-head');
+    if (!sitesTableHead) return;
+
+    sitesTableHead.innerHTML = '';
+
+    const headerRow = document.createElement('tr');
+    headerRow.className = 'header-row';
+
+    // Metrics header (sticky)
+    const metricsHeader = document.createElement('th');
+    metricsHeader.className = 'metrics-header';
+    metricsHeader.innerHTML = `
+        <div class="header-content">
+            <span class="fw-bold">Metrics</span>
+        </div>
+    `;
+    headerRow.appendChild(metricsHeader);
+
+    // Country headers
+    selectedCountries.forEach(country => {
+        const countryHeader = document.createElement('th');
+        countryHeader.className = 'country-header';
+        countryHeader.innerHTML = `
+            <div class="header-content">
+                <span class="fw-bold">${country}</span>
+                <select class="form-select form-select-sm mt-1 country-sites-select" data-country="${country}">
+                    <option value="1">1 Site</option>
+                    <option value="2">2 Sites</option>
+                    <option value="3" selected>3 Sites</option>
+                </select>
+            </div>
+        `;
+        headerRow.appendChild(countryHeader);
+    });
+
+    sitesTableHead.appendChild(headerRow);
 }
 
 /**
