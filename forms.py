@@ -14,6 +14,11 @@ class RampInputForm(FlaskForm):
     ramp_start_date = DateField('Ramp Start Date', validators=[Optional()])
     ramp_end_date = DateField('Ramp End Date', validators=[Optional()])
     ramp_requirement = IntegerField('Ramp Requirement', validators=[Optional(), NumberRange(min=1)])
+    ramp_requirement_type = SelectField(
+        'Requirement Type',
+        choices=[('', 'Select Type'), ('FTE', 'FTE'), ('HC', 'HC')],
+        validators=[Optional()]
+    )
     
     # Ramp date availability fields (for Step 1)
     ramp_start_availability = SelectField(

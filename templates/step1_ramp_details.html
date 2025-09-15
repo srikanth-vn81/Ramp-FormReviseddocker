@@ -20,7 +20,14 @@
                     <!-- Ramp Requirement -->
                     <div class="col-md-6">
                         <label class="form-label fw-semibold required">Ramp Requirement</label>
-                        {{ form.ramp_requirement(class="form-control", placeholder="Enter numerical value") }}
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="flex-grow-1">
+                                {{ form.ramp_requirement(class="form-control", placeholder="Enter numerical value", id="ramp-requirement-input") }}
+                            </div>
+                            <div class="flex-shrink-0" id="requirement-type-container" style="display: none; min-width: 100px;">
+                                {{ form.ramp_requirement_type(class="form-select", id="ramp-requirement-type") }}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -106,6 +113,36 @@ document.addEventListener('DOMContentLoaded', function() {
     
     setupDateAvailability('ramp_start_availability', 'ramp-start-date-container');
     setupDateAvailability('ramp_end_availability', 'ramp-end-date-container');
+    
+    // Show/hide FTE/HC dropdown based on ramp requirement input
+    function setupRequirementTypeDropdown() {
+        const rampRequirementInput = document.getElementById('ramp-requirement-input');
+        const requirementTypeContainer = document.getElementById('requirement-type-container');
+        
+        if (rampRequirementInput && requirementTypeContainer) {
+            function toggleRequirementType() {
+                if (rampRequirementInput.value && rampRequirementInput.value.trim() !== '') {
+                    requirementTypeContainer.style.display = 'block';
+                } else {
+                    requirementTypeContainer.style.display = 'none';
+                    // Reset dropdown when hiding
+                    const requirementTypeSelect = document.getElementById('ramp-requirement-type');
+                    if (requirementTypeSelect) {
+                        requirementTypeSelect.value = '';
+                    }
+                }
+            }
+            
+            // Listen for both input and change events
+            rampRequirementInput.addEventListener('input', toggleRequirementType);
+            rampRequirementInput.addEventListener('change', toggleRequirementType);
+            
+            // Initial check on page load
+            toggleRequirementType();
+        }
+    }
+    
+    setupRequirementTypeDropdown();
     
     console.log('Ramp Details form initialized successfully');
 });
