@@ -24,9 +24,37 @@
                         <label class="form-label fw-semibold">
                             <i class="fas fa-list-ul me-1"></i>LOB Names
                         </label>
-                        {{ form.lob_names(class="form-select", multiple=true, size="6", id="lob-names-select") }}
+                        <div class="position-relative">
+                            <div class="form-control dropdown-toggle d-flex justify-content-between align-items-center" 
+                                 id="lob-dropdown-toggle" 
+                                 data-bs-toggle="dropdown" 
+                                 aria-expanded="false"
+                                 style="cursor: pointer; min-height: 38px;">
+                                <span id="lob-selection-display">Select LOBs...</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <ul class="dropdown-menu w-100" id="lob-dropdown-menu" style="max-height: 250px; overflow-y: auto;">
+                                <li class="px-3 py-2">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Search LOBs..." id="lob-search">
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                {% for choice in form.lob_names.choices %}
+                                <li class="lob-option" data-value="{{ choice[0] }}">
+                                    <div class="dropdown-item py-1">
+                                        <div class="form-check">
+                                            <input class="form-check-input lob-checkbox" type="checkbox" value="{{ choice[0] }}" id="lob-{{ loop.index }}">
+                                            <label class="form-check-label w-100" for="lob-{{ loop.index }}">
+                                                {{ choice[1] }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            <!-- Hidden select for form submission -->
+                            {{ form.lob_names(class="d-none", multiple=true, id="lob-names-select") }}
+                        </div>
                         <small class="form-text text-muted" id="lob-selection-info">Select up to <span id="max-lob-count">0</span> LOBs</small>
-                        <small class="form-text text-info">Hold Ctrl (Windows) or Cmd (Mac) to select multiple options</small>
                     </div>
                 </div>
             </div>
@@ -268,9 +296,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initial summary update
     updateChannelSummary();
     
-    // LOB selection functionality
+    // LOB filterable dropdown functionality
     const lobCountField = document.getElementById('lob_count');
     const lobNamesSelect = document.getElementById('lob-names-select');
+    const lobDropdownToggle = document.getElementById('lob-dropdown-toggle');
+    const lobSelectionDisplay = document.getElementById('lob-selection-display');
+    const lobSearchInput = document.getElementById('lob-search');
+    const lobCheckboxes = document.querySelectorAll('.lob-checkbox');
+    const lobOptions = document.querySelectorAll('.lob-option');
     const maxLobCountSpan = document.getElementById('max-lob-count');
     const lobSelectionInfo = document.getElementById('lob-selection-info');
     
@@ -281,42 +314,75 @@ document.addEventListener('DOMContentLoaded', function() {
         if (maxCount === 0) {
             lobSelectionInfo.style.display = 'none';
             // Disable dropdown if no count specified
-            if (lobNamesSelect) {
-                lobNamesSelect.disabled = true;
-                // Clear all selections
-                Array.from(lobNamesSelect.options).forEach(option => {
-                    option.selected = false;
-                });
-            }
+            lobDropdownToggle.style.opacity = '0.5';
+            lobDropdownToggle.style.pointerEvents = 'none';
+            clearLobSelections();
         } else {
             lobSelectionInfo.style.display = 'block';
-            if (lobNamesSelect) {
-                lobNamesSelect.disabled = false;
-            }
+            lobDropdownToggle.style.opacity = '1';
+            lobDropdownToggle.style.pointerEvents = 'auto';
         }
-        
-        // Validate current selections
-        validateLobSelection();
     }
     
-    function validateLobSelection() {
-        if (!lobNamesSelect) return;
+    function clearLobSelections() {
+        lobCheckboxes.forEach(checkbox => {
+            checkbox.checked = false;
+        });
+        updateLobDisplay();
+        updateHiddenSelect();
+    }
+    
+    function updateLobDisplay() {
+        const selectedCheckboxes = Array.from(lobCheckboxes).filter(cb => cb.checked);
         
+        if (selectedCheckboxes.length === 0) {
+            lobSelectionDisplay.textContent = 'Select LOBs...';
+        } else if (selectedCheckboxes.length === 1) {
+            const selectedText = selectedCheckboxes[0].nextElementSibling.textContent.trim();
+            lobSelectionDisplay.textContent = selectedText;
+        } else {
+            lobSelectionDisplay.textContent = `${selectedCheckboxes.length} LOBs selected`;
+        }
+    }
+    
+    function updateHiddenSelect() {
+        // Update the hidden select element for form submission
+        const selectedValues = Array.from(lobCheckboxes)
+            .filter(cb => cb.checked)
+            .map(cb => cb.value);
+        
+        Array.from(lobNamesSelect.options).forEach(option => {
+            option.selected = selectedValues.includes(option.value);
+        });
+    }
+    
+    function validateLobSelection(clickedCheckbox) {
         const maxCount = parseInt(lobCountField.value) || 0;
-        const selectedOptions = Array.from(lobNamesSelect.options).filter(option => option.selected);
+        const selectedCheckboxes = Array.from(lobCheckboxes).filter(cb => cb.checked);
         
-        // If user has selected more than allowed, remove the excess selections
-        if (selectedOptions.length > maxCount && maxCount > 0) {
-            // Keep only the first maxCount selections
-            selectedOptions.forEach((option, index) => {
-                option.selected = index < maxCount;
-            });
-            
-            // Show alert to user
-            if (maxCount > 0) {
-                alert(`You can only select up to ${maxCount} LOBs. Extra selections have been removed.`);
+        if (selectedCheckboxes.length > maxCount && maxCount > 0) {
+            // If user just checked a box and exceeded limit, uncheck it
+            if (clickedCheckbox && clickedCheckbox.checked) {
+                clickedCheckbox.checked = false;
+                alert(`You can only select up to ${maxCount} LOBs.`);
             }
         }
+        
+        updateLobDisplay();
+        updateHiddenSelect();
+    }
+    
+    function filterLobOptions() {
+        const searchTerm = lobSearchInput.value.toLowerCase();
+        
+        lobOptions.forEach(option => {
+            const text = option.textContent.toLowerCase();
+            if (text.includes(searchTerm)) {
+                option.style.display = 'block';
+            } else {
+                option.style.display = 'none';
+            }
+        });
     }
     
     // Event listeners for LOB functionality
@@ -326,9 +392,24 @@ document.addEventListener('DOMContentLoaded', function() {
         updateLobLimit(); // Initial call
     }
     
-    if (lobNamesSelect) {
-        lobNamesSelect.addEventListener('change', validateLobSelection);
+    // Search functionality
+    if (lobSearchInput) {
+        lobSearchInput.addEventListener('input', filterLobOptions);
+        // Prevent dropdown from closing when typing in search
+        lobSearchInput.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
     }
+    
+    // Checkbox change events
+    lobCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            validateLobSelection(this);
+        });
+    });
+    
+    // Initialize display
+    updateLobDisplay();
 });
 </script>
 {% endblock %}
