@@ -143,12 +143,14 @@
     position: sticky;
     left: 0;
     z-index: 3;
-    background: linear-gradient(135deg, #495057 0%, #343a40 100%);
+    background: linear-gradient(135deg, #6f42c1 0%, #5a359a 100%);
     color: #fff;
     width: 140px;
     min-width: 140px;
     font-weight: 700;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    border: 2px solid #8a63d2;
+    box-shadow: 0 3px 8px rgba(111, 66, 193, 0.3);
 }
 
 .sites-config-table .country-header {
@@ -204,15 +206,43 @@
     position: sticky;
     left: 0;
     z-index: 1;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border-right: 3px solid #0d6efd;
     font-weight: 700;
     font-size: 0.95rem;
-    color: #2c5aa0;
     text-align: center;
     vertical-align: middle;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    border-right: 3px solid #0d6efd;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    box-shadow: 2px 0 6px rgba(0,0,0,0.1);
+}
+
+/* Site 1 - Orange Theme */
+.sites-config-table tbody tr:nth-child(1) .site-label-cell {
+    background: linear-gradient(135deg, #ff7b25 0%, #e55100 100%);
+    color: white;
+    border-right-color: #ff5722;
+}
+
+/* Site 2 - Teal Theme */
+.sites-config-table tbody tr:nth-child(2) .site-label-cell {
+    background: linear-gradient(135deg, #26a69a 0%, #00695c 100%);
+    color: white;
+    border-right-color: #009688;
+}
+
+/* Site 3 - Pink Theme */
+.sites-config-table tbody tr:nth-child(3) .site-label-cell {
+    background: linear-gradient(135deg, #ec407a 0%, #c2185b 100%);
+    color: white;
+    border-right-color: #e91e63;
+}
+
+/* Additional sites beyond 3 - Default Blue */
+.sites-config-table tbody tr:nth-child(n+4) .site-label-cell {
+    background: linear-gradient(135deg, #42a5f5 0%, #1976d2 100%);
+    color: white;
+    border-right-color: #2196f3;
 }
 
 .sites-config-table .site-content-cell {
@@ -222,30 +252,38 @@
 }
 
 /* Professional Zebra Striping and Hover Effects */
-.sites-config-table tbody tr:nth-child(odd) {
-    background: linear-gradient(135deg, #fdfdff 0%, #f5f8ff 100%);
-}
-
-.sites-config-table tbody tr:nth-child(odd) .site-label-cell {
-    background: linear-gradient(135deg, #f0f2f5 0%, #e6eaf0 100%);
-}
-
 .sites-config-table tbody tr:nth-child(odd) .site-content-cell {
     background: linear-gradient(135deg, #fdfdff 0%, #f5f8ff 100%);
 }
 
 .sites-config-table tbody tr:hover {
-    background: linear-gradient(135deg, #e8f4fd 0%, #d1ecf1 100%);
     transform: scale(1.005);
     transition: all 0.2s ease;
 }
 
-.sites-config-table tbody tr:hover .site-label-cell {
-    background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
-}
-
 .sites-config-table tbody tr:hover .site-content-cell {
     background: linear-gradient(135deg, #e8f4fd 0%, #d1ecf1 100%);
+}
+
+/* Hover effects for colored Site labels */
+.sites-config-table tbody tr:nth-child(1):hover .site-label-cell {
+    background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+    box-shadow: 4px 0 12px rgba(255, 152, 0, 0.4);
+}
+
+.sites-config-table tbody tr:nth-child(2):hover .site-label-cell {
+    background: linear-gradient(135deg, #4db6ac 0%, #00897b 100%);
+    box-shadow: 4px 0 12px rgba(77, 182, 172, 0.4);
+}
+
+.sites-config-table tbody tr:nth-child(3):hover .site-label-cell {
+    background: linear-gradient(135deg, #f48fb1 0%, #d81b60 100%);
+    box-shadow: 4px 0 12px rgba(244, 143, 177, 0.4);
+}
+
+.sites-config-table tbody tr:nth-child(n+4):hover .site-label-cell {
+    background: linear-gradient(135deg, #64b5f6 0%, #1e88e5 100%);
+    box-shadow: 4px 0 12px rgba(100, 181, 246, 0.4);
 }
 
 /* Professional Corporate Form Fields in Table Cells */
