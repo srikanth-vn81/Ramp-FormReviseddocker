@@ -654,6 +654,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize location details functionality
     initializeLocationDetails();
     
+    // Initialize Sites Configuration functionality
+    initializeSitesConfiguration();
+    
     console.log('WFM Analytics - Ramp Input Form initialized successfully');
 });
 
@@ -706,8 +709,8 @@ function initializeLocationDetails() {
         });
     });
 
-    // Initialize sites table
-    updateSitesTable();
+    // Initialize sites accordion
+    updateSitesAccordion();
     
     // Initialize summary values
     updateSummaryValues();
@@ -835,6 +838,40 @@ function validateHeadcountDistribution() {
         } else {
             validationMessage.style.display = 'none';
         }
+    }
+}
+
+/**
+ * Initialize Sites Configuration functionality
+ */
+function initializeSitesConfiguration() {
+    const siteConfigYes = document.getElementById('site_config_yes');
+    const siteConfigNo = document.getElementById('site_config_no');
+    const sitesConfigSection = document.getElementById('sites-configuration-section');
+
+    if (!siteConfigYes || !siteConfigNo || !sitesConfigSection) return;
+
+    // Add event listeners for radio buttons
+    siteConfigYes.addEventListener('change', function() {
+        if (this.checked) {
+            sitesConfigSection.style.display = 'block';
+            // Initialize the accordion with current selected countries
+            updateSitesAccordion();
+        }
+    });
+
+    siteConfigNo.addEventListener('change', function() {
+        if (this.checked) {
+            sitesConfigSection.style.display = 'none';
+        }
+    });
+
+    // Check initial state and initialize if needed
+    if (siteConfigYes.checked) {
+        sitesConfigSection.style.display = 'block';
+        updateSitesAccordion();
+    } else {
+        sitesConfigSection.style.display = 'none';
     }
 }
 
