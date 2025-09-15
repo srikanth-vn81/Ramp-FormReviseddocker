@@ -1008,31 +1008,54 @@ function generateSitesRows(selectedCountries) {
                     });
                     
                     cell.innerHTML = `
-                        <div class="d-flex flex-column gap-1" style="align-items: center; padding: 0.5rem;">
-                            <div class="input-group-sm" style="width: 130px;">
-                                <small class="site-field-label">Site Location</small>
-                                <select class="form-select form-select-sm site-selector" data-country="${country}" data-site="${siteIndex}" style="width: 100%;">${selectOptions}</select>
+                        <div class="d-flex flex-column gap-2" style="align-items: center; padding: 0.8rem;">
+                            <!-- Site Information Section -->
+                            <div class="parameter-section">
+                                <div class="section-header">
+                                    <i class="fas fa-map-marker-alt me-1"></i>
+                                    <span class="section-title">Site Info</span>
+                                </div>
+                                <div class="input-group-sm" style="width: 140px;">
+                                    <small class="site-field-label">Location</small>
+                                    <select class="form-select form-select-sm site-selector" data-country="${country}" data-site="${siteIndex}" style="width: 100%;">${selectOptions}</select>
+                                </div>
                             </div>
-                            <div class="input-group-sm" style="width: 130px;">
-                                <small class="site-field-label">Agent Profile</small>
-                                <select class="form-select form-select-sm agent-profile-input" style="width: 100%;" data-field="agent-profile">
-                                    <option value="">Select Tier</option>
-                                    <option value="tier1">Tier 1</option>
-                                    <option value="tier2">Tier 2</option>
-                                    <option value="tier3">Tier 3</option>
-                                </select>
+
+                            <!-- Resource Configuration Section -->
+                            <div class="parameter-section">
+                                <div class="section-header">
+                                    <i class="fas fa-user-tie me-1"></i>
+                                    <span class="section-title">Resources</span>
+                                </div>
+                                <div class="input-group-sm" style="width: 140px;">
+                                    <small class="site-field-label">Agent Profile</small>
+                                    <select class="form-select form-select-sm agent-profile-input" style="width: 100%;" data-field="agent-profile">
+                                        <option value="">Select Tier</option>
+                                        <option value="tier1">Tier 1</option>
+                                        <option value="tier2">Tier 2</option>
+                                        <option value="tier3">Tier 3</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="input-group-sm" style="width: 130px;">
-                                <small class="site-field-label">Lead Time (Days)</small>
-                                <input type="number" class="form-control form-control-sm lead-time-input" min="0" placeholder="0" style="width: 100%;" data-field="lead-time">
-                            </div>
-                            <div class="input-group-sm" style="width: 130px;">
-                                <small class="site-field-label">Weekly Capacity</small>
-                                <input type="number" class="form-control form-control-sm weekly-capacity-input" min="0" placeholder="0" style="width: 100%;" data-field="weekly-capacity">
-                            </div>
-                            <div class="input-group-sm" style="width: 130px;">
-                                <small class="site-field-label">Monthly Capacity</small>
-                                <input type="number" class="form-control form-control-sm monthly-capacity-input" min="0" placeholder="0" style="width: 100%;" data-field="monthly-capacity">
+
+                            <!-- Hiring Timeline & Capacity Section -->
+                            <div class="parameter-section">
+                                <div class="section-header">
+                                    <i class="fas fa-clock me-1"></i>
+                                    <span class="section-title">Hiring</span>
+                                </div>
+                                <div class="input-group-sm mb-1" style="width: 140px;">
+                                    <small class="site-field-label">Lead Time (Days)</small>
+                                    <input type="number" class="form-control form-control-sm lead-time-input" min="0" placeholder="0" style="width: 100%;" data-field="lead-time">
+                                </div>
+                                <div class="input-group-sm mb-1" style="width: 140px;">
+                                    <small class="site-field-label">Weekly Capacity</small>
+                                    <input type="number" class="form-control form-control-sm weekly-capacity-input" min="0" placeholder="0" style="width: 100%;" data-field="weekly-capacity">
+                                </div>
+                                <div class="input-group-sm" style="width: 140px;">
+                                    <small class="site-field-label">Monthly Capacity</small>
+                                    <input type="number" class="form-control form-control-sm monthly-capacity-input" min="0" placeholder="0" style="width: 100%;" data-field="monthly-capacity">
+                                </div>
                             </div>
                         </div>
                     `;

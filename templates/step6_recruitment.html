@@ -45,12 +45,6 @@
                     <h6 class="fw-bold text-dark mb-4">
                         <i class="fas fa-building me-2"></i>Sites Configuration for Recruitment
                     </h6>
-                    <div class="alert alert-info border-0 mb-3">
-                        <h6 class="alert-heading fw-bold">
-                            <i class="fas fa-info-circle me-2"></i>Configure Recruitment Parameters by Site
-                        </h6>
-                        <p class="mb-0 small">Set up specific recruitment details for each operational site across different countries. This helps optimize hiring strategies based on local conditions and requirements.</p>
-                    </div>
                     <div class="sites-configuration-section">
                         <div class="sites-table-container bg-white border rounded shadow-sm p-3">
                             <table class="table table-sm table-bordered recruitment-sites-table" id="sites-table">
@@ -296,6 +290,55 @@
     text-align: center;
 }
 
+/* Professional Parameter Sections */
+.parameter-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 8px;
+    margin-bottom: 4px;
+    width: 100%;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6px;
+    padding: 4px 0;
+    background: linear-gradient(135deg, #495057 0%, #6c757d 100%);
+    color: white;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.section-title {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.site-field-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #495057;
+    display: block;
+    margin-bottom: 2px;
+    text-align: center;
+}
+
+.form-select-sm, .form-control-sm {
+    font-size: 0.75rem;
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+}
+
+.form-select-sm:focus, .form-control-sm:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.15);
+}
+
 /* Mobile responsiveness */
 @media (max-width: 768px) {
     .sites-table-container {
@@ -309,6 +352,15 @@
     
     .country-sites-select {
         min-width: 70px;
+    }
+    
+    .parameter-section {
+        padding: 6px;
+    }
+    
+    .section-header {
+        font-size: 0.7rem;
+        padding: 3px 0;
     }
 }
 </style>
