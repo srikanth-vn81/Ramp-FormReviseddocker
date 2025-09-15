@@ -26,13 +26,14 @@ def save_submission(data):
 
 def generate_date_choices():
     """Generate date choices for the next 60 days"""
-    choices = [('', 'Select Date')]
+    choices = []
+    choices.append(('', 'Select Date'))
     today = datetime.now().date()
     
     for i in range(60):  # Next 60 days
-        date = today + timedelta(days=i)
-        date_str = date.strftime('%Y-%m-%d')
-        display_str = date.strftime('%m/%d/%Y')
+        current_date = today + timedelta(days=i)
+        date_str = current_date.strftime('%Y-%m-%d')
+        display_str = current_date.strftime('%m/%d/%Y')
         choices.append((date_str, display_str))
     
     return choices
