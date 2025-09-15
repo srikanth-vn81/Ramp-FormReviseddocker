@@ -134,11 +134,32 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             // Listen for both input and change events
-            rampRequirementInput.addEventListener('input', toggleRequirementType);
-            rampRequirementInput.addEventListener('change', toggleRequirementType);
+            rampRequirementInput.addEventListener('input', function() {
+                toggleRequirementType();
+                // Save to session storage for other steps to access
+                if (rampRequirementInput.value) {
+                    window.sessionStorage.setItem('ramp_requirement', rampRequirementInput.value);
+                } else {
+                    window.sessionStorage.removeItem('ramp_requirement');
+                }
+            });
+            rampRequirementInput.addEventListener('change', function() {
+                toggleRequirementType();
+                // Save to session storage for other steps to access
+                if (rampRequirementInput.value) {
+                    window.sessionStorage.setItem('ramp_requirement', rampRequirementInput.value);
+                } else {
+                    window.sessionStorage.removeItem('ramp_requirement');
+                }
+            });
             
             // Initial check on page load
             toggleRequirementType();
+            
+            // Save initial value if it exists
+            if (rampRequirementInput.value) {
+                window.sessionStorage.setItem('ramp_requirement', rampRequirementInput.value);
+            }
         }
     }
     

@@ -411,7 +411,17 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Update resource summary with balance calculation (only for visible countries)
     function updateResourceSummary() {
-        const totalRequired = 100; // Fixed requirement since we removed the input
+        // Get the requirement from Step 1 Ramp Details
+        const rampRequirementInput = document.getElementById('ramp-requirement-input');
+        let totalRequired = 0;
+        
+        if (rampRequirementInput && rampRequirementInput.value) {
+            totalRequired = parseInt(rampRequirementInput.value) || 0;
+        } else {
+            // Fallback: try to get from session data or use 0 if not available
+            const sessionData = window.sessionStorage.getItem('ramp_requirement');
+            totalRequired = sessionData ? parseInt(sessionData) : 0;
+        }
         
         let totalAllocated = 0;
         document.querySelectorAll('.country-headcount').forEach(function(input) {
