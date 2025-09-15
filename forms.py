@@ -149,8 +149,7 @@ class RampInputForm(FlaskForm):
             ('TTO', 'Trinidad and Tobago'),
             ('USA', 'USA')
         ],
-        coerce=str,
-        default=['CAN', 'COL', 'HKG', 'IND', 'MEX', 'PAN', 'PHL', 'POL', 'TTO', 'USA']
+        coerce=str
     )
     
     # Country headcount distribution
