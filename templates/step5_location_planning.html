@@ -482,6 +482,13 @@ document.addEventListener('DOMContentLoaded', function() {
         updateResourceSummary();
     };
     
+    // Set checkboxes based on server-provided data
+    window.preselectedCountries = {{ preselected_countries|tojson|default([]) }};
+    const preselected = window.preselectedCountries || [];
+    document.querySelectorAll('input[name="geo_country"]').forEach(function(checkbox) {
+        checkbox.checked = preselected.includes(checkbox.value);
+    });
+    
     // Initial updates
     updateCountryCount();
     updateResourceSummary();

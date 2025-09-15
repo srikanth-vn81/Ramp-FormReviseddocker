@@ -687,12 +687,7 @@ function initializeLocationDetails() {
             });
         });
         
-        // Set default selection (all countries) always on page load
-        checkboxes.forEach(checkbox => {
-            if (!checkbox.checked) {
-                checkbox.checked = true;
-            }
-        });
+        // Countries will be set based on server data in step template
         
         // Save initial selection to sessionStorage
         saveSelectedCountries();
