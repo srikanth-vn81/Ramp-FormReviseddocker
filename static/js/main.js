@@ -1114,26 +1114,31 @@ function generateSitesTableRows(selectedCountries) {
         ]
     };
 
+    console.log('🎨 Generating sites table rows - Colors should appear now!');
+    
     // Generate rows for each site
     for (let siteIndex = 1; siteIndex <= maxSites; siteIndex++) {
         const row = document.createElement('tr');
         
-        // Add theme class for reliable color styling
-        if (siteIndex === 1) {
-            row.classList.add('site-theme-orange');
-        } else if (siteIndex === 2) {
-            row.classList.add('site-theme-teal');
-        } else if (siteIndex === 3) {
-            row.classList.add('site-theme-pink');
-        } else {
-            row.classList.add('site-theme-blue');
-        }
-        
-        // Site label cell
+        // Site label cell with direct theme class for reliable coloring
         const labelCell = document.createElement('td');
         labelCell.className = 'site-label-cell';
+        
+        // Add theme class directly to the label cell for reliable styling
+        if (siteIndex === 1) {
+            labelCell.classList.add('site-theme-orange');
+        } else if (siteIndex === 2) {
+            labelCell.classList.add('site-theme-teal');
+        } else if (siteIndex === 3) {
+            labelCell.classList.add('site-theme-pink');
+        } else {
+            labelCell.classList.add('site-theme-blue');
+        }
+        
         labelCell.innerHTML = `<strong>Site ${siteIndex}</strong>`;
         row.appendChild(labelCell);
+        
+        console.log(`🏷️ Created Site ${siteIndex} label with classes:`, labelCell.className);
         
         // Country columns
         selectedCountries.forEach(country => {
@@ -1186,6 +1191,15 @@ function generateSitesTableRows(selectedCountries) {
         });
         
         sitesTableBody.appendChild(row);
+    }
+    
+    console.log('✅ Sites table generation complete - checking first site label:');
+    const firstSiteLabel = sitesTableBody.querySelector('.site-label-cell');
+    if (firstSiteLabel) {
+        console.log('🎯 First site label element:', firstSiteLabel.outerHTML);
+        console.log('🎯 First site label classes:', firstSiteLabel.classList.toString());
+    } else {
+        console.log('❌ No site label found!');
     }
 }
 
