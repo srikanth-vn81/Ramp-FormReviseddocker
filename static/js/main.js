@@ -1009,23 +1009,15 @@ function generateSitesRows(selectedCountries) {
                     
                     cell.innerHTML = `
                         <div class="d-flex flex-column gap-2" style="align-items: center; padding: 0.8rem;">
-                            <!-- Site Information Section -->
-                            <div class="parameter-section">
+                            <!-- Selection Parameters Section -->
+                            <div class="parameter-section selection-section">
                                 <div class="section-header">
-                                    <i class="fas fa-map-marker-alt me-1"></i>
-                                    <span class="section-title">Site Info</span>
+                                    <i class="fas fa-list-ul me-1"></i>
+                                    <span class="section-title">Selections</span>
                                 </div>
-                                <div class="input-group-sm" style="width: 140px;">
-                                    <small class="site-field-label">Location</small>
+                                <div class="input-group-sm mb-2" style="width: 140px;">
+                                    <small class="site-field-label">Site Location</small>
                                     <select class="form-select form-select-sm site-selector" data-country="${country}" data-site="${siteIndex}" style="width: 100%;">${selectOptions}</select>
-                                </div>
-                            </div>
-
-                            <!-- Resource Configuration Section -->
-                            <div class="parameter-section">
-                                <div class="section-header">
-                                    <i class="fas fa-user-tie me-1"></i>
-                                    <span class="section-title">Resources</span>
                                 </div>
                                 <div class="input-group-sm" style="width: 140px;">
                                     <small class="site-field-label">Agent Profile</small>
@@ -1038,11 +1030,11 @@ function generateSitesRows(selectedCountries) {
                                 </div>
                             </div>
 
-                            <!-- Hiring Timeline & Capacity Section -->
-                            <div class="parameter-section">
+                            <!-- Capacity Planning Section -->
+                            <div class="parameter-section capacity-section">
                                 <div class="section-header">
-                                    <i class="fas fa-clock me-1"></i>
-                                    <span class="section-title">Hiring</span>
+                                    <i class="fas fa-calculator me-1"></i>
+                                    <span class="section-title">Capacity Planning</span>
                                 </div>
                                 <div class="input-group-sm mb-1" style="width: 140px;">
                                     <small class="site-field-label">Lead Time (Days)</small>
