@@ -879,20 +879,19 @@ function initializeSitesConfiguration() {
  * Update sites accordion based on selected countries
  */
 function updateSitesAccordion() {
-    const geoSelect = document.getElementById('geo-country-select');
     const countriesAccordion = document.getElementById('countriesAccordion');
 
-    if (!geoSelect || !countriesAccordion) return;
+    if (!countriesAccordion) return;
 
-    // Get selected countries from checkboxes
-    const selectedCheckboxes = geoSelect.querySelectorAll('input[type="checkbox"]:checked');
-    const selectedCountries = Array.from(selectedCheckboxes).map(cb => cb.value);
+    // Since geo-country-select is from step 5, use default countries for step 6
+    // These should match the default countries from the form definition
+    const defaultCountries = ['CAN', 'COL', 'HKG', 'IND', 'MEX', 'PAN', 'PHL', 'POL', 'TTO', 'USA'];
 
     // Generate country accordion panels
-    generateCountryPanels(selectedCountries);
+    generateCountryPanels(defaultCountries);
     
     // Update country filter chips
-    updateCountryFilterChips(selectedCountries);
+    updateCountryFilterChips(defaultCountries);
     
     // Update summary totals
     updateSitesTotals();
