@@ -197,38 +197,62 @@
     background: #f8f9fa !important;
 }
 
-/* Sites Configuration Table Styling */
+/* Professional Sites Configuration Table */
+:root {
+    --brand: #0d6efd;
+    --text: #212529;
+    --muted: #6c757d;
+    --border: #e9ecef;
+    --th: #f8f9fa;
+}
+
 .sites-table-container {
     background: white;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--border);
 }
 
 .sites-config-table {
     margin-bottom: 0;
-    font-size: 0.875rem;
+    font-size: 0.95rem;
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
 }
 
-.sites-config-table th {
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
-    padding: 16px 12px;
+.sites-config-table th,
+.sites-config-table td {
+    padding: 14px 12px;
+    border: 1px solid var(--border);
+}
+
+.sites-config-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: var(--th);
+    border-bottom: 2px solid var(--border);
+    font-weight: 600;
+    font-size: 0.95rem;
     text-align: center;
     vertical-align: middle;
-    font-weight: 600;
 }
 
 .sites-config-table .metrics-header {
-    background: #495057;
-    color: white;
+    position: sticky;
+    left: 0;
+    z-index: 3;
+    background: #343a40;
+    color: #fff;
+    width: 140px;
+    min-width: 140px;
     font-weight: 700;
-    width: 120px;
-    min-width: 120px;
 }
 
 .sites-config-table .country-header {
-    background: #f8f9fa;
+    background: var(--th);
     min-width: 140px;
     width: 140px;
 }
@@ -241,40 +265,62 @@
 }
 
 .sites-config-table .country-header span {
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: #495057;
+    font-weight: 600;
 }
 
 .sites-config-table .country-sites-select {
-    font-size: 0.8rem;
+    height: 34px;
+    font-size: 0.82rem;
     padding: 4px 8px;
     border: 1px solid #ced4da;
     border-radius: 4px;
     background: white;
 }
 
-.sites-config-table td {
-    border: 1px solid #dee2e6;
-    padding: 12px 8px;
-    text-align: center;
-    vertical-align: top;
+.sites-config-table .country-sites-select:focus {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
 }
 
 .sites-config-table .site-label-cell {
-    background: #f8f9fa;
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: #fff;
+    border-right: 2px solid var(--border);
     font-weight: 600;
-    color: #495057;
+    font-size: 0.9rem;
+    color: var(--text);
     text-align: center;
     vertical-align: middle;
-    font-size: 0.9rem;
 }
 
 .sites-config-table .site-content-cell {
     background: white;
-    padding: 16px 8px;
+    text-align: left;
+    vertical-align: top;
 }
 
-/* Form Fields in Table Cells */
+/* Professional Zebra Striping and Hover Effects */
+.sites-config-table tbody tr:nth-child(odd) {
+    background: #fcfcfd;
+}
+
+.sites-config-table tbody tr:nth-child(odd) .site-label-cell {
+    background: #f8f9fa;
+}
+
+.sites-config-table tbody tr:hover {
+    background: #f5f9ff;
+}
+
+.sites-config-table tbody tr:hover .site-label-cell {
+    background: #f5f9ff;
+}
+
+/* Professional Form Fields in Table Cells */
 .cell-form-group {
     margin-bottom: 12px;
     text-align: left;
@@ -285,32 +331,56 @@
 }
 
 .cell-label {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: 600;
-    color: #6c757d;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 4px;
+    color: var(--muted);
+    text-transform: none;
+    letter-spacing: 0.2px;
+    margin-bottom: 6px;
     display: block;
 }
 
 .cell-form-group .form-select,
 .cell-form-group .form-control {
+    height: 36px;
     font-size: 0.875rem;
-    padding: 6px 8px;
+    padding: 6px 10px;
     border: 1px solid #ced4da;
-    border-radius: 4px;
+    border-radius: 6px;
     background: white;
+    transition: all 0.15s ease-in-out;
 }
 
 .cell-form-group .form-select:focus,
 .cell-form-group .form-control:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    border-color: var(--brand);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+    outline: none;
 }
 
-/* Responsive Table */
-@media (max-width: 1200px) {
+.cell-form-group .form-select:hover,
+.cell-form-group .form-control:hover {
+    border-color: #adb5bd;
+}
+
+/* Professional Table Header Accent */
+.sites-config-table thead::after {
+    content: "";
+    display: block;
+    height: 2px;
+    background: rgba(13, 110, 253, 0.35);
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 100%;
+}
+
+.sites-config-table thead {
+    position: relative;
+}
+
+/* Responsive Professional Table */
+@media (max-width: 1400px) {
     .sites-table-container {
         overflow-x: auto;
     }
@@ -318,6 +388,25 @@
     .sites-config-table {
         min-width: 1200px;
     }
+}
+
+/* Professional Input Validation States */
+.cell-form-group .form-control:invalid {
+    border-color: #dc3545;
+}
+
+.cell-form-group .form-control:invalid:focus {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.cell-form-group .form-control:valid {
+    border-color: #198754;
+}
+
+.cell-form-group .form-control:valid:focus {
+    border-color: #198754;
+    box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
 }
 
 /* Professional Parameter Sections */
