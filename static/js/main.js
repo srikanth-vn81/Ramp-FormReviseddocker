@@ -1118,6 +1118,17 @@ function generateSitesTableRows(selectedCountries) {
     for (let siteIndex = 1; siteIndex <= maxSites; siteIndex++) {
         const row = document.createElement('tr');
         
+        // Add theme class for reliable color styling
+        if (siteIndex === 1) {
+            row.classList.add('site-theme-orange');
+        } else if (siteIndex === 2) {
+            row.classList.add('site-theme-teal');
+        } else if (siteIndex === 3) {
+            row.classList.add('site-theme-pink');
+        } else {
+            row.classList.add('site-theme-blue');
+        }
+        
         // Site label cell
         const labelCell = document.createElement('td');
         labelCell.className = 'site-label-cell';
