@@ -802,6 +802,7 @@ function updateSummaryValues() {
  */
 function validateHeadcountDistribution() {
     const requirementValueInput = document.getElementById('requirement-value-input');
+    if (!requirementValueInput) return; // Exit if element doesn't exist
     const totalRequirement = parseInt(requirementValueInput.value) || 0;
     const headcountInputs = document.querySelectorAll('.country-headcount');
     let currentTotalHeadcount = 0;
