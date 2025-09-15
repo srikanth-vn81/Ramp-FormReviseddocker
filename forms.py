@@ -105,7 +105,7 @@ class RampInputForm(FlaskForm):
     # Language support
     languages_supported = SelectField(
         'Languages Supported',
-        choices=[('', 'Select'), ('single', 'Single'), ('multilingual', 'Multilingual')]
+        choices=[('', 'Select'), ('english_only', 'English Only'), ('bilingual', 'Bilingual'), ('multilingual', 'Multilingual')]
     )
     specify_languages = StringField('Specify the Languages', validators=[Optional()])
     
