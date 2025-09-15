@@ -1113,11 +1113,19 @@ function generateSitesTableRows(selectedCountries) {
     for (let siteIndex = 1; siteIndex <= maxSites; siteIndex++) {
         const row = document.createElement('tr');
         
-        // Add alternating row background - greyish
-        if (siteIndex % 2 === 0) {
-            row.style.backgroundColor = '#e8e8e8';
+        // Add alternating row background - very light site colors
+        if (siteIndex === 1) {
+            row.style.backgroundColor = '#fff8f0'; // very light orange
+        } else if (siteIndex === 2) {
+            row.style.backgroundColor = '#f0fffe'; // very light teal
+        } else if (siteIndex === 3) {
+            row.style.backgroundColor = '#fef7fb'; // very light pink
         } else {
-            row.style.backgroundColor = '#f0f0f0';
+            if (siteIndex % 2 === 0) {
+                row.style.backgroundColor = '#f8fbff'; // very light blue
+            } else {
+                row.style.backgroundColor = '#f0f8ff'; // even lighter blue
+            }
         }
         
         // Site label cell with direct theme class for reliable coloring
@@ -1151,11 +1159,19 @@ function generateSitesTableRows(selectedCountries) {
             const cell = document.createElement('td');
             cell.className = 'site-content-cell';
             
-            // Add alternating background to content cells - greyish
-            if (siteIndex % 2 === 0) {
-                cell.style.backgroundColor = '#e8e8e8';
+            // Add alternating background to content cells - very light site colors
+            if (siteIndex === 1) {
+                cell.style.backgroundColor = '#fff8f0'; // very light orange
+            } else if (siteIndex === 2) {
+                cell.style.backgroundColor = '#f0fffe'; // very light teal
+            } else if (siteIndex === 3) {
+                cell.style.backgroundColor = '#fef7fb'; // very light pink
             } else {
-                cell.style.backgroundColor = '#f0f0f0';
+                if (siteIndex % 2 === 0) {
+                    cell.style.backgroundColor = '#f8fbff'; // very light blue
+                } else {
+                    cell.style.backgroundColor = '#f0f8ff'; // even lighter blue
+                }
             }
             
             if (siteIndex <= countrySiteCounts[country]) {
