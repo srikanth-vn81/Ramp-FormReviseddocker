@@ -1,0 +1,228 @@
+{% extends "base_step.html" %}
+
+{% block form_content %}
+<div class="row justify-content-center">
+    <div class="col-lg-12">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-success text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h6 class="card-title mb-0 fw-bold">
+                        <i class="fas fa-paper-plane me-2"></i>Review & Submit
+                    </h6>
+                    <span class="badge bg-light text-success">Final Step</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Summary Overview -->
+                <div class="mb-4">
+                    <h6 class="fw-bold text-success mb-3">
+                        <i class="fas fa-clipboard-check me-2"></i>Form Summary
+                    </h6>
+                    <div class="bg-light p-4 rounded">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-body">
+                                        <h6 class="card-title text-primary">
+                                            <i class="fas fa-info-circle me-2"></i>Ramp Details
+                                        </h6>
+                                        <div class="small">
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span>Client:</span>
+                                                <span id="summary-client">{{ session.form_data.client_name or 'Not specified' }}</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span>Requirement:</span>
+                                                <span id="summary-requirement">{{ session.form_data.ramp_requirement or 'Not specified' }}</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <span>Type:</span>
+                                                <span id="summary-type">{{ session.form_data.ramp_requirement_type or 'Not specified' }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-body">
+                                        <h6 class="card-title text-info">
+                                            <i class="fas fa-calendar-alt me-2"></i>Training Support
+                                        </h6>
+                                        <div class="small">
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span>Total Trainers:</span>
+                                                <span id="summary-trainers">{{ session.form_data.total_trainers or 'Not specified' }}</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span>Training Duration:</span>
+                                                <span id="summary-training">{{ session.form_data.training_duration_number or 'Not specified' }} {{ session.form_data.training_duration or '' }}</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <span>Batch Size:</span>
+                                                <span id="summary-batch">{{ session.form_data.batch_size or 'Not specified' }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-body">
+                                        <h6 class="card-title text-warning">
+                                            <i class="fas fa-clipboard-list me-2"></i>Program Details
+                                        </h6>
+                                        <div class="small">
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span>LOB Count:</span>
+                                                <span id="summary-lob-count">{{ session.form_data.lob_count or 'Not specified' }}</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span>Languages:</span>
+                                                <span id="summary-languages">{{ session.form_data.languages_supported or 'Not specified' }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-body">
+                                        <h6 class="card-title text-secondary">
+                                            <i class="fas fa-user-tie me-2"></i>Recruitment
+                                        </h6>
+                                        <div class="small">
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span>Lead Time:</span>
+                                                <span id="summary-lead-time">{{ session.form_data.recruitment_lead_time or '30' }} days</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span>Weekly Capacity:</span>
+                                                <span id="summary-weekly-capacity">{{ session.form_data.hiring_capacity_weekly or '10' }} hires</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Important Notice -->
+                <div class="alert alert-info border-0" role="alert">
+                    <h6 class="alert-heading">
+                        <i class="fas fa-info-circle me-2"></i>Before Submitting
+                    </h6>
+                    <p class="mb-0">Please review all the information above. Once submitted, this ramp input form will be processed and stored in the system. You can go back to any previous step to make changes before final submission.</p>
+                </div>
+
+                <!-- Final Actions -->
+                <div class="mb-4">
+                    <h6 class="fw-bold text-danger mb-3">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Final Actions
+                    </h6>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="confirm-accuracy" required>
+                                <label class="form-check-label fw-semibold" for="confirm-accuracy">
+                                    I confirm that all information provided is accurate
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="confirm-authorization" required>
+                                <label class="form-check-label fw-semibold" for="confirm-authorization">
+                                    I have authorization to submit this request
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{{ url_for('ramp_form_step', step=6) }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Previous: Recruitment
+                    </a>
+                    <button type="submit" class="btn btn-success btn-lg" id="final-submit-btn" disabled>
+                        <i class="fas fa-paper-plane me-2"></i>Submit Ramp Input Form
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Professional Submit Form Styling */
+.card-header.bg-success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+}
+
+.card.border-0 {
+    border: 1px solid #e9ecef !important;
+}
+
+.alert-info {
+    background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+    border-left: 4px solid #2196f3;
+}
+
+.form-check-input:checked {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-success:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.card-body .card {
+    transition: transform 0.2s ease;
+}
+
+.card-body .card:hover {
+    transform: translateY(-2px);
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Enable submit button only when both checkboxes are checked
+    const confirmAccuracy = document.getElementById('confirm-accuracy');
+    const confirmAuthorization = document.getElementById('confirm-authorization');
+    const submitBtn = document.getElementById('final-submit-btn');
+    
+    function updateSubmitButton() {
+        if (confirmAccuracy.checked && confirmAuthorization.checked) {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('btn-outline-success');
+            submitBtn.classList.add('btn-success');
+        } else {
+            submitBtn.disabled = true;
+            submitBtn.classList.add('btn-outline-success');
+            submitBtn.classList.remove('btn-success');
+        }
+    }
+    
+    confirmAccuracy.addEventListener('change', updateSubmitButton);
+    confirmAuthorization.addEventListener('change', updateSubmitButton);
+    
+    // Add confirmation dialog on submit
+    submitBtn.addEventListener('click', function(e) {
+        if (!confirm('Are you sure you want to submit this ramp input form? This action cannot be undone.')) {
+            e.preventDefault();
+        }
+    });
+    
+    console.log('Submit form initialized successfully');
+});
+</script>
+{% endblock %}

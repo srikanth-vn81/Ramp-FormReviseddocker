@@ -43,7 +43,9 @@ FORM_STEPS = {
     2: {'name': 'Training Schedule', 'template': 'step2_training_schedule.html'},
     3: {'name': 'Operational Assumptions', 'template': 'step3_operational_assumptions.html'},
     4: {'name': 'Program Details', 'template': 'step4_language_channel.html'},
-    5: {'name': 'Location & Resource Planning', 'template': 'step5_location_planning.html'}
+    5: {'name': 'Location & Resource Planning', 'template': 'step5_location_planning.html'},
+    6: {'name': 'Recruitment', 'template': 'step6_recruitment.html'},
+    7: {'name': 'Submit', 'template': 'step7_submit.html'}
 }
 
 def get_form_fields_for_step(step):
@@ -58,7 +60,9 @@ def get_form_fields_for_step(step):
             'chat', 'email', 'back_office', 'social_sms', 'others', 'others_text'],
         5: ['requirement_type', 'requirement_value', 'geo_country', 'can_headcount', 'col_headcount',
             'hkg_headcount', 'ind_headcount', 'mex_headcount', 'pan_headcount', 'phl_headcount', 
-            'pol_headcount', 'tto_headcount', 'usa_headcount']
+            'pol_headcount', 'tto_headcount', 'usa_headcount'],
+        6: ['recruitment_lead_time', 'hiring_capacity_weekly', 'hiring_capacity_monthly', 'recruitment_notes'],
+        7: []  # Submit step has no form fields, just review and submit
     }
     return step_fields.get(step, [])
 

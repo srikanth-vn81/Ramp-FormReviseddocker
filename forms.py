@@ -164,3 +164,9 @@ class RampInputForm(FlaskForm):
     pol_headcount = IntegerField('Poland Headcount', validators=[Optional(), NumberRange(min=0)], default=0)
     tto_headcount = IntegerField('Trinidad and Tobago Headcount', validators=[Optional(), NumberRange(min=0)], default=0)
     usa_headcount = IntegerField('USA Headcount', validators=[Optional(), NumberRange(min=0)], default=0)
+    
+    # Recruitment Details (Step 6)
+    recruitment_lead_time = IntegerField('Lead Time to Hire (Days)', validators=[Optional(), NumberRange(min=1)], default=30)
+    hiring_capacity_weekly = IntegerField('Weekly Hiring Capacity', validators=[Optional(), NumberRange(min=1)], default=10)
+    hiring_capacity_monthly = IntegerField('Monthly Hiring Capacity', validators=[Optional(), NumberRange(min=1)], default=40)
+    recruitment_notes = TextAreaField('Additional Recruitment Notes', validators=[Optional()])
