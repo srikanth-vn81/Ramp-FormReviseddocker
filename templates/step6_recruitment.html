@@ -45,68 +45,122 @@
                     <h6 class="fw-bold text-dark mb-4">
                         <i class="fas fa-building me-2"></i>Sites Configuration for Recruitment
                     </h6>
-                    <!-- Global Site Count Controls -->
-                    <div class="global-controls mb-4">
-                        <div class="card border-0 shadow-sm">
-                            <div class="card-body py-3">
-                                <div class="row align-items-center">
-                                    <div class="col-md-6">
-                                        <h6 class="mb-0 fw-semibold text-dark">
-                                            <i class="fas fa-cog me-2 text-primary"></i>Configure Number of Sites per Country
-                                        </h6>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="d-flex align-items-center gap-3">
-                                            <label class="form-label mb-0 fw-semibold">Sites per Country:</label>
-                                            <select class="form-select" id="global-site-count" style="max-width: 150px;">
+                    <!-- Sites Configuration Table -->
+                    <div class="sites-table-container">
+                        <table class="sites-config-table table table-bordered" id="sites-config-table">
+                            <thead>
+                                <tr class="header-row">
+                                    <th class="metrics-header">
+                                        <div class="header-content">
+                                            <span class="fw-bold">Metrics</span>
+                                        </div>
+                                    </th>
+                                    <th class="country-header">
+                                        <div class="header-content">
+                                            <span class="fw-bold">CAN</span>
+                                            <select class="form-select form-select-sm mt-1 country-sites-select" data-country="CAN">
                                                 <option value="1">1 Site</option>
                                                 <option value="2">2 Sites</option>
                                                 <option value="3" selected>3 Sites</option>
                                             </select>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sites Sections Container -->
-                    <div id="sites-sections-container">
-                        <!-- Site sections will be dynamically generated here -->
-                    </div>
-
-                    <!-- Summary Footer -->
-                    <div class="sites-summary-footer mt-4">
-                        <div class="card border-0 shadow-sm">
-                            <div class="card-body py-3">
-                                <div class="row align-items-center">
-                                    <div class="col-md-8">
-                                        <div class="d-flex gap-4 flex-wrap">
-                                            <div class="summary-stat">
-                                                <span class="stat-label">Total Sites:</span>
-                                                <span class="stat-value" id="total-sites-count">0</span>
-                                            </div>
-                                            <div class="summary-stat">
-                                                <span class="stat-label">Weekly Capacity:</span>
-                                                <span class="stat-value" id="total-weekly-capacity">0</span>
-                                            </div>
-                                            <div class="summary-stat">
-                                                <span class="stat-label">Monthly Capacity:</span>
-                                                <span class="stat-value" id="total-monthly-capacity">0</span>
-                                            </div>
+                                    </th>
+                                    <th class="country-header">
+                                        <div class="header-content">
+                                            <span class="fw-bold">COL</span>
+                                            <select class="form-select form-select-sm mt-1 country-sites-select" data-country="COL">
+                                                <option value="1">1 Site</option>
+                                                <option value="2">2 Sites</option>
+                                                <option value="3" selected>3 Sites</option>
+                                            </select>
                                         </div>
-                                    </div>
-                                    <div class="col-md-4 text-end">
-                                        <button type="button" class="btn btn-outline-secondary btn-sm me-2" onclick="resetAllSites()">
-                                            <i class="fas fa-undo me-1"></i>Reset All
-                                        </button>
-                                        <button type="button" class="btn btn-success btn-sm" onclick="validateAllSites()">
-                                            <i class="fas fa-check me-1"></i>Validate
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                    </th>
+                                    <th class="country-header">
+                                        <div class="header-content">
+                                            <span class="fw-bold">HKG</span>
+                                            <select class="form-select form-select-sm mt-1 country-sites-select" data-country="HKG">
+                                                <option value="1">1 Site</option>
+                                                <option value="2">2 Sites</option>
+                                                <option value="3" selected>3 Sites</option>
+                                            </select>
+                                        </div>
+                                    </th>
+                                    <th class="country-header">
+                                        <div class="header-content">
+                                            <span class="fw-bold">IND</span>
+                                            <select class="form-select form-select-sm mt-1 country-sites-select" data-country="IND">
+                                                <option value="1">1 Site</option>
+                                                <option value="2">2 Sites</option>
+                                                <option value="3" selected>3 Sites</option>
+                                            </select>
+                                        </div>
+                                    </th>
+                                    <th class="country-header">
+                                        <div class="header-content">
+                                            <span class="fw-bold">MEX</span>
+                                            <select class="form-select form-select-sm mt-1 country-sites-select" data-country="MEX">
+                                                <option value="1">1 Site</option>
+                                                <option value="2">2 Sites</option>
+                                                <option value="3" selected>3 Sites</option>
+                                            </select>
+                                        </div>
+                                    </th>
+                                    <th class="country-header">
+                                        <div class="header-content">
+                                            <span class="fw-bold">PAN</span>
+                                            <select class="form-select form-select-sm mt-1 country-sites-select" data-country="PAN">
+                                                <option value="1">1 Site</option>
+                                                <option value="2">2 Sites</option>
+                                                <option value="3" selected>3 Sites</option>
+                                            </select>
+                                        </div>
+                                    </th>
+                                    <th class="country-header">
+                                        <div class="header-content">
+                                            <span class="fw-bold">PHL</span>
+                                            <select class="form-select form-select-sm mt-1 country-sites-select" data-country="PHL">
+                                                <option value="1">1 Site</option>
+                                                <option value="2">2 Sites</option>
+                                                <option value="3" selected>3 Sites</option>
+                                            </select>
+                                        </div>
+                                    </th>
+                                    <th class="country-header">
+                                        <div class="header-content">
+                                            <span class="fw-bold">POL</span>
+                                            <select class="form-select form-select-sm mt-1 country-sites-select" data-country="POL">
+                                                <option value="1">1 Site</option>
+                                                <option value="2">2 Sites</option>
+                                                <option value="3" selected>3 Sites</option>
+                                            </select>
+                                        </div>
+                                    </th>
+                                    <th class="country-header">
+                                        <div class="header-content">
+                                            <span class="fw-bold">TTO</span>
+                                            <select class="form-select form-select-sm mt-1 country-sites-select" data-country="TTO">
+                                                <option value="1">1 Site</option>
+                                                <option value="2">2 Sites</option>
+                                                <option value="3" selected>3 Sites</option>
+                                            </select>
+                                        </div>
+                                    </th>
+                                    <th class="country-header">
+                                        <div class="header-content">
+                                            <span class="fw-bold">USA</span>
+                                            <select class="form-select form-select-sm mt-1 country-sites-select" data-country="USA">
+                                                <option value="1">1 Site</option>
+                                                <option value="2">2 Sites</option>
+                                                <option value="3" selected>3 Sites</option>
+                                            </select>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="sites-table-body">
+                                <!-- Site rows will be dynamically generated here -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -143,158 +197,127 @@
     background: #f8f9fa !important;
 }
 
-/* Professional Site Sections Styling */
-.site-section .card-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-    border: none;
-    border-radius: 12px 12px 0 0 !important;
-}
-
-.site-section .card {
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    border: none;
-}
-
-.site-section .card-body {
-    padding: 24px;
-    background: #fafbfc;
-}
-
-/* Global Controls Styling */
-.global-controls .card {
-    border-radius: 12px;
-    border: none;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-}
-
-/* Country Cards Styling */
-.country-card {
+/* Sites Configuration Table Styling */
+.sites-table-container {
     background: white;
-    border: 1px solid #e9ecef;
-    border-radius: 12px;
+    border-radius: 8px;
     overflow: hidden;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.country-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    border-color: #007bff;
+.sites-config-table {
+    margin-bottom: 0;
+    font-size: 0.875rem;
 }
 
-.country-card-header {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    padding: 16px;
-    border-bottom: 1px solid #e9ecef;
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.sites-config-table th {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 16px 12px;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: 600;
 }
 
-.country-flag {
-    font-size: 1.5rem;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.country-info .country-name {
-    margin: 0;
-    font-size: 1rem;
+.sites-config-table .metrics-header {
+    background: #495057;
+    color: white;
     font-weight: 700;
-    color: #495057;
+    width: 120px;
+    min-width: 120px;
 }
 
-.country-info .country-code {
-    font-size: 0.875rem;
-    color: #6c757d;
-    font-weight: 500;
+.sites-config-table .country-header {
+    background: #f8f9fa;
+    min-width: 140px;
+    width: 140px;
 }
 
-.country-card-body {
-    padding: 20px;
-}
-
-/* Site Subsections Styling */
-.site-subsection {
-    padding: 24px;
-}
-
-.site-subsection.border-bottom {
-    border-bottom: 2px solid #e9ecef !important;
-}
-
-.subsection-header {
-    margin-bottom: 20px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid #e9ecef;
-}
-
-.subsection-header h5 {
-    font-size: 1.2rem;
+.sites-config-table .country-header .header-content {
     display: flex;
-    align-items: center;
-}
-
-.subsection-header p {
-    margin-top: 4px;
-    font-size: 0.875rem;
-}
-
-.subsection-body {
-    padding-top: 8px;
-}
-
-/* Selection and Capacity Card Styling */
-.selection-card {
-    border-left: 4px solid #007bff;
-}
-
-.selection-card:hover {
-    border-left-color: #0056b3;
-    box-shadow: 0 8px 25px rgba(0, 123, 255, 0.15);
-}
-
-.capacity-card {
-    border-left: 4px solid #28a745;
-}
-
-.capacity-card:hover {
-    border-left-color: #1e7e34;
-    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.15);
-}
-
-/* Summary Stats Styling */
-.summary-stat {
-    display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 8px;
 }
 
-.stat-label {
-    color: #6c757d;
-    font-size: 0.875rem;
-    font-weight: 500;
+.sites-config-table .country-header span {
+    font-size: 1rem;
+    color: #495057;
 }
 
-.stat-value {
-    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
-    color: white;
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-weight: 700;
-    font-size: 0.875rem;
-    min-width: 40px;
+.sites-config-table .country-sites-select {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background: white;
+}
+
+.sites-config-table td {
+    border: 1px solid #dee2e6;
+    padding: 12px 8px;
     text-align: center;
-    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+    vertical-align: top;
+}
+
+.sites-config-table .site-label-cell {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 0.9rem;
+}
+
+.sites-config-table .site-content-cell {
+    background: white;
+    padding: 16px 8px;
+}
+
+/* Form Fields in Table Cells */
+.cell-form-group {
+    margin-bottom: 12px;
+    text-align: left;
+}
+
+.cell-form-group:last-child {
+    margin-bottom: 0;
+}
+
+.cell-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+    display: block;
+}
+
+.cell-form-group .form-select,
+.cell-form-group .form-control {
+    font-size: 0.875rem;
+    padding: 6px 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background: white;
+}
+
+.cell-form-group .form-select:focus,
+.cell-form-group .form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Responsive Table */
+@media (max-width: 1200px) {
+    .sites-table-container {
+        overflow-x: auto;
+    }
+    
+    .sites-config-table {
+        min-width: 1200px;
+    }
 }
 
 /* Professional Parameter Sections */

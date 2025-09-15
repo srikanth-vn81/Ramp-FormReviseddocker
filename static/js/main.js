@@ -876,66 +876,72 @@ function initializeSitesConfiguration() {
 }
 
 /**
- * Update sites sections based on selected countries
+ * Update sites table based on selected countries
  */
 function updateSitesTable() {
-    const sitesContainer = document.getElementById('sites-sections-container');
-    const globalSiteCount = document.getElementById('global-site-count');
+    const sitesTableBody = document.getElementById('sites-table-body');
 
-    if (!sitesContainer) return;
+    if (!sitesTableBody) return;
 
     // Use default countries for step 6 (all countries)
     const defaultCountries = ['CAN', 'COL', 'HKG', 'IND', 'MEX', 'PAN', 'PHL', 'POL', 'TTO', 'USA'];
-    
-    // Get number of sites from global control
-    const siteCount = globalSiteCount ? parseInt(globalSiteCount.value) : 3;
 
-    // Generate site sections
-    generateSiteSections(defaultCountries, siteCount);
+    // Generate sites table rows
+    generateSitesTableRows(defaultCountries);
 
-    // Add event listener to global site count selector
-    if (globalSiteCount) {
-        globalSiteCount.addEventListener('change', function() {
-            const newSiteCount = parseInt(this.value);
-            generateSiteSections(defaultCountries, newSiteCount);
-            updateSitesTotals();
+    // Add event listeners to country site selectors
+    const countrySiteSelects = document.querySelectorAll('.country-sites-select');
+    countrySiteSelects.forEach(select => {
+        select.addEventListener('change', function() {
+            generateSitesTableRows(defaultCountries);
         });
-    }
+    });
 }
 
 /**
  * Generate sites table rows
  */
-function generateSiteSections(selectedCountries, siteCount) {
-    const sitesContainer = document.getElementById('sites-sections-container');
-    if (!sitesContainer) return;
+function generateSitesTableRows(selectedCountries) {
+    const sitesTableBody = document.getElementById('sites-table-body');
+    if (!sitesTableBody) return;
 
-    sitesContainer.innerHTML = '';
+    sitesTableBody.innerHTML = '';
 
-    // Country configuration data
-    const countryData = {
-        'CAN': { name: 'Canada', flag: '🇨🇦', color: 'danger', sites: [
+    // Get the maximum number of sites across all countries
+    let maxSites = 0;
+    const countrySiteCounts = {};
+    
+    selectedCountries.forEach(country => {
+        const select = document.querySelector(`.country-sites-select[data-country="${country}"]`);
+        const siteCount = select ? parseInt(select.value) : 3;
+        countrySiteCounts[country] = siteCount;
+        maxSites = Math.max(maxSites, siteCount);
+    });
+
+    // Country site options data
+    const countrySites = {
+        'CAN': [
             { value: 'montreal', text: 'Montreal' },
             { value: 'toronto-02', text: 'Toronto 02' }
-        ]},
-        'COL': { name: 'Colombia', flag: '🇨🇴', color: 'warning', sites: [
+        ],
+        'COL': [
             { value: 'medellin', text: 'Medellin' }
-        ]},
-        'HKG': { name: 'Hong Kong', flag: '🇭🇰', color: 'info', sites: [
+        ],
+        'HKG': [
             { value: 'hong-kong', text: 'Hong Kong' }
-        ]},
-        'IND': { name: 'India', flag: '🇮🇳', color: 'success', sites: [
+        ],
+        'IND': [
             { value: 'noida', text: 'Noida' },
             { value: 'noida-02', text: 'Noida 02' }
-        ]},
-        'MEX': { name: 'Mexico', flag: '🇲🇽', color: 'success', sites: [
+        ],
+        'MEX': [
             { value: 'mexico-city-02', text: 'Mexico City 02' },
             { value: 'mexico-city-03', text: 'Mexico City 03' }
-        ]},
-        'PAN': { name: 'Panama', flag: '🇵🇦', color: 'primary', sites: [
+        ],
+        'PAN': [
             { value: 'panama-city', text: 'Panama City' }
-        ]},
-        'PHL': { name: 'Philippines', flag: '🇵🇭', color: 'info', sites: [
+        ],
+        'PHL': [
             { value: 'bacolod-city', text: 'Bacolod City' },
             { value: 'clark-01', text: 'Clark 01' },
             { value: 'clark-02', text: 'Clark 02' },
@@ -953,16 +959,16 @@ function generateSiteSections(selectedCountries, siteCount) {
             { value: 'santa-rosa', text: 'Santa Rosa' },
             { value: 'santa-rosa-02', text: 'Santa Rosa 02' },
             { value: 'talisay-city', text: 'Talisay City' }
-        ]},
-        'POL': { name: 'Poland', flag: '🇵🇱', color: 'danger', sites: [
+        ],
+        'POL': [
             { value: 'warsaw', text: 'Warsaw' }
-        ]},
-        'TTO': { name: 'Trinidad and Tobago', flag: '🇹🇹', color: 'success', sites: [
+        ],
+        'TTO': [
             { value: 'barataria', text: 'Barataria' },
             { value: 'chaguanas', text: 'Chaguanas' },
             { value: 'waterfield', text: 'Waterfield' }
-        ]},
-        'USA': { name: 'United States', flag: '🇺🇸', color: 'primary', sites: [
+        ],
+        'USA': [
             { value: 'allentown', text: 'Allentown' },
             { value: 'atlanta', text: 'Atlanta' },
             { value: 'buffalo', text: 'Buffalo' },
@@ -976,146 +982,70 @@ function generateSiteSections(selectedCountries, siteCount) {
             { value: 'richfield', text: 'Richfield' },
             { value: 'tempe', text: 'Tempe' },
             { value: 'west-des-moines', text: 'West Des Moines' }
-        ]}
+        ]
     };
 
-    // Generate sections for each site
-    for (let siteIndex = 1; siteIndex <= siteCount; siteIndex++) {
-        const siteSection = document.createElement('div');
-        siteSection.className = 'site-section mb-5';
-        siteSection.innerHTML = `
-            <div class="card border-0 shadow-lg">
-                <div class="card-header bg-gradient-primary text-white">
-                    <h4 class="mb-0 fw-bold">
-                        <i class="fas fa-building me-2"></i>Site ${siteIndex} Configuration
-                    </h4>
-                </div>
-                <div class="card-body p-0">
-                    <!-- Site-wise Selections Section -->
-                    <div class="site-subsection border-bottom">
-                        <div class="subsection-header">
-                            <h5 class="mb-0 fw-semibold text-primary">
-                                <i class="fas fa-list-check me-2"></i>Site-wise Selections
-                            </h5>
-                            <p class="text-muted mb-0 small">Configure site locations and agent profiles for each country</p>
-                        </div>
-                        <div class="subsection-body">
-                            <div class="countries-grid row g-3" id="site-${siteIndex}-selections">
-                                <!-- Selection country cards will be generated here -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Capacity Planning Section -->
-                    <div class="site-subsection">
-                        <div class="subsection-header">
-                            <h5 class="mb-0 fw-semibold text-success">
-                                <i class="fas fa-calculator me-2"></i>Capacity Planning
-                            </h5>
-                            <p class="text-muted mb-0 small">Set hiring capacity and lead times for each country</p>
-                        </div>
-                        <div class="subsection-body">
-                            <div class="countries-grid row g-3" id="site-${siteIndex}-capacity">
-                                <!-- Capacity country cards will be generated here -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        sitesContainer.appendChild(siteSection);
-
-        // Generate country cards for selections
-        const selectionsGrid = siteSection.querySelector(`#site-${siteIndex}-selections`);
+    // Generate rows for each site
+    for (let siteIndex = 1; siteIndex <= maxSites; siteIndex++) {
+        const row = document.createElement('tr');
+        
+        // Site label cell
+        const labelCell = document.createElement('td');
+        labelCell.className = 'site-label-cell';
+        labelCell.innerHTML = `<strong>Site ${siteIndex}</strong>`;
+        row.appendChild(labelCell);
+        
+        // Country columns
         selectedCountries.forEach(country => {
-            if (!countryData[country]) return;
-
-            const countryInfo = countryData[country];
-            const siteOptions = countryInfo.sites.map(site => 
-                `<option value="${site.value}">${site.text}</option>`
-            ).join('');
-
-            const selectionCard = document.createElement('div');
-            selectionCard.className = 'col-md-6 col-lg-4';
-            selectionCard.innerHTML = `
-                <div class="country-card selection-card h-100">
-                    <div class="country-card-header">
-                        <span class="country-flag">${countryInfo.flag}</span>
-                        <div class="country-info">
-                            <h6 class="country-name">${countryInfo.name}</h6>
-                            <span class="country-code">${country}</span>
-                        </div>
-                    </div>
-                    <div class="country-card-body">
-                        <div class="site-field">
-                            <label class="site-field-label">Site Location</label>
-                            <select class="form-select site-location-select" data-country="${country}" data-site="${siteIndex}" name="site_location_${country}_${siteIndex}">
-                                <option value="">Select Site</option>
-                                ${siteOptions}
-                            </select>
-                        </div>
-                        <div class="site-field">
-                            <label class="site-field-label">Agent Profile</label>
-                            <select class="form-select agent-profile-select" data-country="${country}" data-site="${siteIndex}" name="agent_profile_${country}_${siteIndex}">
-                                <option value="">Select Tier</option>
-                                <option value="tier1">Tier 1</option>
-                                <option value="tier2">Tier 2</option>
-                                <option value="tier3">Tier 3</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            selectionsGrid.appendChild(selectionCard);
-        });
-
-        // Generate country cards for capacity planning
-        const capacityGrid = siteSection.querySelector(`#site-${siteIndex}-capacity`);
-        selectedCountries.forEach(country => {
-            if (!countryData[country]) return;
-
-            const countryInfo = countryData[country];
-
-            const capacityCard = document.createElement('div');
-            capacityCard.className = 'col-md-6 col-lg-4';
-            capacityCard.innerHTML = `
-                <div class="country-card capacity-card h-100">
-                    <div class="country-card-header">
-                        <span class="country-flag">${countryInfo.flag}</span>
-                        <div class="country-info">
-                            <h6 class="country-name">${countryInfo.name}</h6>
-                            <span class="country-code">${country}</span>
-                        </div>
-                    </div>
-                    <div class="country-card-body">
-                        <div class="site-field">
-                            <label class="site-field-label">Lead Time (Days)</label>
-                            <input type="number" class="form-control lead-time-input" data-country="${country}" data-site="${siteIndex}" name="lead_time_${country}_${siteIndex}" placeholder="0" min="0">
-                        </div>
-                        <div class="site-field">
-                            <label class="site-field-label">Weekly Capacity</label>
-                            <input type="number" class="form-control weekly-capacity-input" data-country="${country}" data-site="${siteIndex}" name="weekly_capacity_${country}_${siteIndex}" placeholder="0" min="0">
-                        </div>
-                        <div class="site-field">
-                            <label class="site-field-label">Monthly Capacity</label>
-                            <input type="number" class="form-control monthly-capacity-input" data-country="${country}" data-site="${siteIndex}" name="monthly_capacity_${country}_${siteIndex}" placeholder="0" min="0">
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            capacityGrid.appendChild(capacityCard);
-
-            // Add event listeners for capacity inputs to update totals
-            const capacityInputs = capacityCard.querySelectorAll('.weekly-capacity-input, .monthly-capacity-input');
-            capacityInputs.forEach(input => {
-                input.addEventListener('input', function() {
-                    updateSitesTotals();
+            const cell = document.createElement('td');
+            cell.className = 'site-content-cell';
+            
+            if (siteIndex <= countrySiteCounts[country]) {
+                // Get country-specific sites
+                const siteOptions = countrySites[country] || [];
+                
+                let selectOptions = '<option value="">Select Site</option>';
+                siteOptions.forEach(option => {
+                    selectOptions += `<option value="${option.value}">${option.text}</option>`;
                 });
-            });
+                
+                cell.innerHTML = `
+                    <div class="cell-form-group">
+                        <label class="cell-label">Site Location</label>
+                        <select class="form-select site-location-select" data-country="${country}" data-site="${siteIndex}" name="site_location_${country}_${siteIndex}">
+                            ${selectOptions}
+                        </select>
+                    </div>
+                    <div class="cell-form-group">
+                        <label class="cell-label">Agent Profile</label>
+                        <select class="form-select agent-profile-select" data-country="${country}" data-site="${siteIndex}" name="agent_profile_${country}_${siteIndex}">
+                            <option value="">Select Tier</option>
+                            <option value="tier1">Tier 1</option>
+                            <option value="tier2">Tier 2</option>
+                            <option value="tier3">Tier 3</option>
+                        </select>
+                    </div>
+                    <div class="cell-form-group">
+                        <label class="cell-label">Lead Time (Days)</label>
+                        <input type="number" class="form-control lead-time-input" data-country="${country}" data-site="${siteIndex}" name="lead_time_${country}_${siteIndex}" placeholder="0" min="0">
+                    </div>
+                    <div class="cell-form-group">
+                        <label class="cell-label">Weekly Capacity</label>
+                        <input type="number" class="form-control weekly-capacity-input" data-country="${country}" data-site="${siteIndex}" name="weekly_capacity_${country}_${siteIndex}" placeholder="0" min="0">
+                    </div>
+                    <div class="cell-form-group">
+                        <label class="cell-label">Monthly Capacity</label>
+                        <input type="number" class="form-control monthly-capacity-input" data-country="${country}" data-site="${siteIndex}" name="monthly_capacity_${country}_${siteIndex}" placeholder="0" min="0">
+                    </div>
+                `;
+            } else {
+                cell.innerHTML = '<span class="text-muted">-</span>';
+            }
+            
+            row.appendChild(cell);
         });
+        
+        sitesTableBody.appendChild(row);
     }
 }
 
