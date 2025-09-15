@@ -1124,15 +1124,23 @@ function generateSitesTableRows(selectedCountries) {
         const labelCell = document.createElement('td');
         labelCell.className = 'site-label-cell';
         
-        // Add theme class directly to the label cell for reliable styling
+        // Add colors directly with inline styles - guaranteed to work
         if (siteIndex === 1) {
-            labelCell.classList.add('site-theme-orange');
+            labelCell.style.background = 'linear-gradient(135deg, #ff7b25 0%, #e55100 100%)';
+            labelCell.style.color = 'white';
+            labelCell.style.borderRightColor = '#ff5722';
         } else if (siteIndex === 2) {
-            labelCell.classList.add('site-theme-teal');
+            labelCell.style.background = 'linear-gradient(135deg, #26a69a 0%, #00695c 100%)';
+            labelCell.style.color = 'white';
+            labelCell.style.borderRightColor = '#009688';
         } else if (siteIndex === 3) {
-            labelCell.classList.add('site-theme-pink');
+            labelCell.style.background = 'linear-gradient(135deg, #ec407a 0%, #c2185b 100%)';
+            labelCell.style.color = 'white';
+            labelCell.style.borderRightColor = '#e91e63';
         } else {
-            labelCell.classList.add('site-theme-blue');
+            labelCell.style.background = 'linear-gradient(135deg, #42a5f5 0%, #1976d2 100%)';
+            labelCell.style.color = 'white';
+            labelCell.style.borderRightColor = '#2196f3';
         }
         
         labelCell.innerHTML = `<strong>Site ${siteIndex}</strong>`;
