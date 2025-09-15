@@ -93,7 +93,14 @@ class RampInputForm(FlaskForm):
     
     # LOB Details
     lob_count = IntegerField('LOB Count', validators=[Optional(), NumberRange(min=1)])
-    lob_names = TextAreaField('LOB Names', validators=[Optional()])
+    lob_names = SelectField(
+        'LOB Names', 
+        choices=[('', 'Select LOB'), ('Customer Service', 'Customer Service'), ('Technical Support', 'Technical Support'), 
+                 ('Sales', 'Sales'), ('Billing', 'Billing'), ('Collections', 'Collections'),
+                 ('Back Office Operations', 'Back Office Operations'), ('Quality Assurance', 'Quality Assurance'),
+                 ('Retention', 'Retention'), ('Fraud Prevention', 'Fraud Prevention'), ('Others', 'Others')],
+        validators=[Optional()]
+    )
     
     # Language support
     languages_supported = SelectField(

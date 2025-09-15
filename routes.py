@@ -42,7 +42,7 @@ FORM_STEPS = {
     1: {'name': 'Ramp Details', 'template': 'step1_ramp_details.html'},
     2: {'name': 'Training Schedule', 'template': 'step2_training_schedule.html'},
     3: {'name': 'Operational Assumptions', 'template': 'step3_operational_assumptions.html'},
-    4: {'name': 'Language & Channel Support', 'template': 'step4_language_channel.html'},
+    4: {'name': 'Program Details', 'template': 'step4_language_channel.html'},
     5: {'name': 'Location & Resource Planning', 'template': 'step5_location_planning.html'}
 }
 
@@ -54,7 +54,7 @@ def get_form_fields_for_step(step):
             'client_trainer', 'internal_trainer', 'total_trainers', 'training_duration',
             'training_duration_number', 'nesting_duration', 'nesting_duration_number', 'batch_size'],
         3: ['supervisor_ratio', 'qa_ratio', 'trainer_ratio'],
-        4: ['languages_supported', 'specify_languages', 'voice_inbound', 'voice_outbound', 
+        4: ['lob_count', 'lob_names', 'languages_supported', 'specify_languages', 'voice_inbound', 'voice_outbound', 
             'chat', 'email', 'back_office', 'social_sms', 'others', 'others_text'],
         5: ['requirement_type', 'requirement_value', 'geo_country', 'can_headcount', 'col_headcount',
             'hkg_headcount', 'ind_headcount', 'mex_headcount', 'pan_headcount', 'phl_headcount', 
