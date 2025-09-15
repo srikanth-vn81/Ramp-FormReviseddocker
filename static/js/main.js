@@ -1120,27 +1120,34 @@ function generateSitesTableRows(selectedCountries) {
     for (let siteIndex = 1; siteIndex <= maxSites; siteIndex++) {
         const row = document.createElement('tr');
         
+        // Add alternating row background
+        if (siteIndex % 2 === 0) {
+            row.style.backgroundColor = '#f8f9fa';
+        } else {
+            row.style.backgroundColor = '#ffffff';
+        }
+        
         // Site label cell with direct theme class for reliable coloring
         const labelCell = document.createElement('td');
         labelCell.className = 'site-label-cell';
         
-        // Add colors directly with inline styles - guaranteed to work
+        // Add lighter colors with inline styles
         if (siteIndex === 1) {
-            labelCell.style.background = 'linear-gradient(135deg, #ff7b25 0%, #e55100 100%)';
+            labelCell.style.background = 'linear-gradient(135deg, #ffb74d 0%, #ff9800 100%)';
             labelCell.style.color = 'white';
-            labelCell.style.borderRightColor = '#ff5722';
+            labelCell.style.borderRightColor = '#ff9800';
         } else if (siteIndex === 2) {
-            labelCell.style.background = 'linear-gradient(135deg, #26a69a 0%, #00695c 100%)';
+            labelCell.style.background = 'linear-gradient(135deg, #4db6ac 0%, #26a69a 100%)';
             labelCell.style.color = 'white';
-            labelCell.style.borderRightColor = '#009688';
+            labelCell.style.borderRightColor = '#26a69a';
         } else if (siteIndex === 3) {
-            labelCell.style.background = 'linear-gradient(135deg, #ec407a 0%, #c2185b 100%)';
+            labelCell.style.background = 'linear-gradient(135deg, #f48fb1 0%, #ec407a 100%)';
             labelCell.style.color = 'white';
-            labelCell.style.borderRightColor = '#e91e63';
+            labelCell.style.borderRightColor = '#ec407a';
         } else {
-            labelCell.style.background = 'linear-gradient(135deg, #42a5f5 0%, #1976d2 100%)';
+            labelCell.style.background = 'linear-gradient(135deg, #64b5f6 0%, #42a5f5 100%)';
             labelCell.style.color = 'white';
-            labelCell.style.borderRightColor = '#2196f3';
+            labelCell.style.borderRightColor = '#42a5f5';
         }
         
         labelCell.innerHTML = `<strong>Site ${siteIndex}</strong>`;
@@ -1152,6 +1159,13 @@ function generateSitesTableRows(selectedCountries) {
         selectedCountries.forEach(country => {
             const cell = document.createElement('td');
             cell.className = 'site-content-cell';
+            
+            // Add alternating background to content cells
+            if (siteIndex % 2 === 0) {
+                cell.style.backgroundColor = '#f8f9fa';
+            } else {
+                cell.style.backgroundColor = '#ffffff';
+            }
             
             if (siteIndex <= countrySiteCounts[country]) {
                 // Get country-specific sites
