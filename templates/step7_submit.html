@@ -12,176 +12,12 @@
                     <span class="badge bg-light text-success">Final Step</span>
                 </div>
             </div>
-            <div class="card-body">
-                <!-- Printed Form Style Preview -->
-                <div class="form-preview mb-4">
-                    <div class="form-header text-center mb-4">
-                        <h4 class="fw-bold">WFM Analytics Ramp Input Form</h4>
-                        <p class="text-muted">Complete Form Preview</p>
-                        <hr>
-                    </div>
-                    
-                    <!-- Step 1: Ramp Details -->
-                    <div class="form-section mb-4">
-                        <h6 class="section-header">1. Ramp Details</h6>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-field">
-                                    <label>Client Name:</label>
-                                    <span class="field-value">{{ form_data.client_name or 'Not specified' }}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-field">
-                                    <label>Ramp Requirement:</label>
-                                    <span class="field-value">{{ form_data.ramp_requirement or 'Not specified' }}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-field">
-                                    <label>Requirement Type:</label>
-                                    <span class="field-value">{{ form_data.ramp_requirement_type or 'Not specified' }}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-field">
-                                    <label>Ramp Date:</label>
-                                    <span class="field-value">{{ form_data.ramp_date or 'Not specified' }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Step 2: Training Support -->
-                    <div class="form-section mb-4">
-                        <h6 class="section-header">2. Training Support</h6>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-field">
-                                    <label>Total Trainers:</label>
-                                    <span class="field-value">{{ form_data.total_trainers or 'Not specified' }}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-field">
-                                    <label>Training Duration:</label>
-                                    <span class="field-value">{{ form_data.training_duration_number or 'Not specified' }} {{ form_data.training_duration or '' }}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-field">
-                                    <label>Batch Size:</label>
-                                    <span class="field-value">{{ form_data.batch_size or 'Not specified' }}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-field">
-                                    <label>Training Start Date:</label>
-                                    <span class="field-value">{{ form_data.training_start_date or 'Not specified' }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Step 3: Program Information -->
-                    <div class="form-section mb-4">
-                        <h6 class="section-header">3. Program Information</h6>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-field">
-                                    <label>LOB Count:</label>
-                                    <span class="field-value">{{ form_data.lob_count or 'Not specified' }}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-field">
-                                    <label>Languages Supported:</label>
-                                    <span class="field-value">{{ form_data.languages_supported or 'Not specified' }}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-field">
-                                    <label>Channels:</label>
-                                    <span class="field-value">
-                                        {% if form_data.channels %}
-                                            {{ form_data.channels | join(', ') }}
-                                        {% else %}
-                                            Not specified
-                                        {% endif %}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Step 4: Capacity Planning -->
-                    <div class="form-section mb-4">
-                        <h6 class="section-header">4. Capacity Planning</h6>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-field">
-                                    <label>Capacity Requirement:</label>
-                                    <span class="field-value">{{ form_data.capacity_requirement or 'Not specified' }}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-field">
-                                    <label>Production Date:</label>
-                                    <span class="field-value">{{ form_data.production_date or 'Not specified' }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Step 5: Location Planning -->
-                    <div class="form-section mb-4">
-                        <h6 class="section-header">5. Location Planning</h6>
-                        <div class="form-field">
-                            <label>Selected Countries:</label>
-                            <span class="field-value">
-                                {% if form_data.selected_countries %}
-                                    {{ form_data.selected_countries | join(', ') }}
-                                {% else %}
-                                    Not specified
-                                {% endif %}
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- Step 6: Recruitment -->
-                    <div class="form-section mb-4">
-                        <h6 class="section-header">6. Recruitment</h6>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-field">
-                                    <label>Lead Time to Hire:</label>
-                                    <span class="field-value">{{ form_data.recruitment_lead_time or '30' }} days</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-field">
-                                    <label>Weekly Hiring Capacity:</label>
-                                    <span class="field-value">{{ form_data.hiring_capacity_weekly or '10' }} hires</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-field">
-                                    <label>Monthly Hiring Capacity:</label>
-                                    <span class="field-value">{{ form_data.hiring_capacity_monthly or '40' }} hires</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-field">
-                                    <label>Sites Configuration:</label>
-                                    <span class="field-value">{{ 'Configured' if form_data.sites_configuration == 'yes' else 'Not configured' }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Professional Submit Button -->
-                <div class="text-center mt-5 pt-4 border-top">
+            <div class="card-body text-center py-5">
+                <!-- Action Buttons -->
+                <div class="d-flex justify-content-center gap-3">
+                    <button type="button" class="btn btn-outline-primary px-4 py-2" onclick="window.print()">
+                        <i class="fas fa-print me-2"></i>Print
+                    </button>
                     <button type="submit" class="btn btn-success px-4 py-2">
                         <i class="fas fa-paper-plane me-2"></i>Submit Form
                     </button>
@@ -194,80 +30,35 @@
 
 {% block extra_css %}
 <style>
-/* Printed Form Style */
-.form-preview {
-    background: white;
-    border: 1px solid #ddd;
-    padding: 30px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.form-header h4 {
-    color: #2c3e50;
-    font-size: 1.5rem;
-}
-
-.section-header {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    color: #495057;
-    padding: 8px 15px;
-    margin-bottom: 15px;
-    border-left: 4px solid #28a745;
-    font-weight: 600;
-    font-size: 1rem;
-}
-
-.form-section {
-    margin-bottom: 25px;
-}
-
-.form-field {
-    margin-bottom: 12px;
-    padding: 8px 0;
-    border-bottom: 1px dotted #dee2e6;
-}
-
-.form-field label {
-    font-weight: 600;
-    color: #495057;
-    margin-right: 10px;
-    min-width: 150px;
-    display: inline-block;
-}
-
-.field-value {
-    color: #212529;
-    font-weight: 500;
-}
-
-/* Professional Submit Button */
-.btn-success {
-    font-size: 0.95rem;
-    font-weight: 500;
-    border-radius: 6px;
-    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
-    transition: all 0.2s ease;
-}
-
-.btn-success:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
-}
-
 .card-header.bg-success {
     background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
 }
 
-/* Print-friendly styling */
-@media print {
-    .card-header, .btn, .border-top {
-        display: none !important;
-    }
-    
-    .form-preview {
-        border: none;
-        padding: 0;
-    }
+.btn {
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-success {
+    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
+}
+
+.btn-success:hover {
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+
+.btn-outline-primary {
+    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+}
+
+.btn-outline-primary:hover {
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
 }
 </style>
 {% endblock %}
