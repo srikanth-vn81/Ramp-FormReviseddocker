@@ -18,49 +18,152 @@
                 </div>
             </div>
             <div class="card-body">
-                <!-- Requirement Section -->
-                <div class="row mb-4">
-                    <div class="col-md-3">
-                        <label class="form-label fw-semibold required">
-                            <i class="fas fa-calculator me-1"></i>Requirement
-                        </label>
-                    </div>
-                    <div class="col-md-9">
-                        <div class="row g-2">
-                            <div class="col-6">
-                                {{ form.requirement_type(class="form-select") }}
-                            </div>
-                            <div class="col-6">
-                                {{ form.requirement_value(class="form-control", id="requirement-value-input", placeholder="Enter value") }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Geo Country Section -->
-                <div class="row mb-4">
-                    <div class="col-md-3">
-                        <label class="form-label fw-semibold required">
-                            <i class="fas fa-globe me-1"></i>Geo (Country)
-                        </label>
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h6 class="card-title mb-0">
+                            <i class="fas fa-globe me-2"></i>Geo (Country) Selection
+                        </h6>
                     </div>
-                    <div class="col-md-9">
-                        <div class="country-multiselect" id="geo-country-select">
-                            {{ form.geo_country(class="country-checkbox-group") }}
+                    <div class="card-body">
+                        <div class="row g-3" id="geo-country-checkboxes">
+                            <div class="col-md-3">
+                                <div class="country-checkbox-card">
+                                    <input type="checkbox" class="form-check-input d-none" name="geo_country" value="CAN" id="country-can">
+                                    <label for="country-can" class="country-label w-100">
+                                        <div class="country-card">
+                                            <i class="fas fa-flag text-primary mb-2"></i>
+                                            <div class="country-name">Canada</div>
+                                            <div class="country-code">CAN</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="country-checkbox-card">
+                                    <input type="checkbox" class="form-check-input d-none" name="geo_country" value="COL" id="country-col">
+                                    <label for="country-col" class="country-label w-100">
+                                        <div class="country-card">
+                                            <i class="fas fa-flag text-success mb-2"></i>
+                                            <div class="country-name">Colombia</div>
+                                            <div class="country-code">COL</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="country-checkbox-card">
+                                    <input type="checkbox" class="form-check-input d-none" name="geo_country" value="HKG" id="country-hkg">
+                                    <label for="country-hkg" class="country-label w-100">
+                                        <div class="country-card">
+                                            <i class="fas fa-flag text-danger mb-2"></i>
+                                            <div class="country-name">Hong Kong</div>
+                                            <div class="country-code">HKG</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="country-checkbox-card">
+                                    <input type="checkbox" class="form-check-input d-none" name="geo_country" value="IND" id="country-ind">
+                                    <label for="country-ind" class="country-label w-100">
+                                        <div class="country-card">
+                                            <i class="fas fa-flag text-warning mb-2"></i>
+                                            <div class="country-name">India</div>
+                                            <div class="country-code">IND</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="country-checkbox-card">
+                                    <input type="checkbox" class="form-check-input d-none" name="geo_country" value="MEX" id="country-mex">
+                                    <label for="country-mex" class="country-label w-100">
+                                        <div class="country-card">
+                                            <i class="fas fa-flag text-info mb-2"></i>
+                                            <div class="country-name">Mexico</div>
+                                            <div class="country-code">MEX</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="country-checkbox-card">
+                                    <input type="checkbox" class="form-check-input d-none" name="geo_country" value="PAN" id="country-pan">
+                                    <label for="country-pan" class="country-label w-100">
+                                        <div class="country-card">
+                                            <i class="fas fa-flag text-primary mb-2"></i>
+                                            <div class="country-name">Panama</div>
+                                            <div class="country-code">PAN</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="country-checkbox-card">
+                                    <input type="checkbox" class="form-check-input d-none" name="geo_country" value="PHL" id="country-phl">
+                                    <label for="country-phl" class="country-label w-100">
+                                        <div class="country-card">
+                                            <i class="fas fa-flag text-secondary mb-2"></i>
+                                            <div class="country-name">Philippines</div>
+                                            <div class="country-code">PHL</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="country-checkbox-card">
+                                    <input type="checkbox" class="form-check-input d-none" name="geo_country" value="POL" id="country-pol">
+                                    <label for="country-pol" class="country-label w-100">
+                                        <div class="country-card">
+                                            <i class="fas fa-flag text-danger mb-2"></i>
+                                            <div class="country-name">Poland</div>
+                                            <div class="country-code">POL</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="country-checkbox-card">
+                                    <input type="checkbox" class="form-check-input d-none" name="geo_country" value="TTO" id="country-tto">
+                                    <label for="country-tto" class="country-label w-100">
+                                        <div class="country-card">
+                                            <i class="fas fa-flag text-success mb-2"></i>
+                                            <div class="country-name">Trinidad & Tobago</div>
+                                            <div class="country-code">TTO</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="country-checkbox-card">
+                                    <input type="checkbox" class="form-check-input d-none" name="geo_country" value="USA" id="country-usa">
+                                    <label for="country-usa" class="country-label w-100">
+                                        <div class="country-card">
+                                            <i class="fas fa-flag-usa text-primary mb-2"></i>
+                                            <div class="country-name">United States</div>
+                                            <div class="country-code">USA</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
-                        <div class="mt-2">
-                            <span class="badge bg-info country-count-display">0 Countries Selected</span>
+                        <div class="mt-3 text-center">
+                            <span class="badge bg-info fs-6 country-count-display">0 Countries Selected</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Country Headcount Distribution -->
-                <div class="mb-4">
-                    <label class="form-label fw-semibold mb-3">
-                        <i class="fas fa-users me-1"></i>Country-wise Headcount Distribution
-                    </label>
-                    <div class="country-grid" id="country-grid">
-                        <div class="row g-3">
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-header bg-info text-white">
+                        <h6 class="card-title mb-0">
+                            <i class="fas fa-users me-2"></i>Country-wise Headcount Distribution
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="country-grid" id="country-grid">
+                            <div class="row g-4">
                             <div class="col-md-3">
                                 <div class="card">
                                     <div class="card-body text-center">
@@ -151,6 +254,7 @@
                                     </div>
                                 </div>
                             </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -166,16 +270,22 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="d-flex justify-content-between">
-                                            <span><strong>Total Requirement:</strong></span>
-                                            <span id="total-requirement">0</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="d-flex justify-content-between">
                                             <span><strong>Total Allocated:</strong></span>
                                             <span id="total-allocated">0</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="d-flex justify-content-between">
+                                            <span><strong>Required:</strong></span>
+                                            <span id="total-required">100</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="d-flex justify-content-between">
+                                            <span><strong>Balance:</strong></span>
+                                            <span id="balance" class="fw-bold">100</span>
                                         </div>
                                     </div>
                                 </div>
@@ -199,6 +309,103 @@
 </div>
 {% endblock %}
 
+{% block extra_css %}
+<style>
+/* Professional Country Checkbox Styling */
+.country-checkbox-card {
+    position: relative;
+    height: 100%;
+}
+
+.country-label {
+    cursor: pointer;
+    display: block;
+    margin: 0;
+    height: 100%;
+}
+
+.country-card {
+    padding: 1.5rem 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 0.5rem;
+    background: #ffffff;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.country-card:hover {
+    border-color: #007bff;
+    background: #f8f9ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,123,255,0.15);
+}
+
+.country-card i {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.country-name {
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+.country-code {
+    font-size: 0.75rem;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+/* Selected state */
+.country-checkbox-card input:checked + .country-label .country-card {
+    border-color: #007bff;
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+}
+
+.country-checkbox-card input:checked + .country-label .country-name,
+.country-checkbox-card input:checked + .country-label .country-code {
+    color: white;
+}
+
+.country-checkbox-card input:checked + .country-label .country-card i {
+    color: white !important;
+}
+
+/* Add checkmark overlay for selected cards */
+.country-checkbox-card input:checked + .country-label .country-card::after {
+    content: '\f00c';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    color: white;
+    font-size: 0.8rem;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.country-card {
+    position: relative;
+}
+</style>
+{% endblock %}
+
 {% block extra_js %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -208,6 +415,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const countDisplay = document.querySelector('.country-count-display');
         if (countDisplay) {
             countDisplay.textContent = `${checkboxes.length} Countries Selected`;
+            countDisplay.className = checkboxes.length > 0 ? 'badge bg-success fs-6 country-count-display' : 'badge bg-info fs-6 country-count-display';
         }
     }
     
@@ -216,19 +424,33 @@ document.addEventListener('DOMContentLoaded', function() {
         checkbox.addEventListener('change', updateCountryCount);
     });
     
-    // Update resource summary
+    // Update resource summary with balance calculation
     function updateResourceSummary() {
-        const requirementValue = parseInt(document.getElementById('requirement-value-input').value) || 0;
+        const totalRequired = 100; // Fixed requirement since we removed the input
         
         let totalAllocated = 0;
         document.querySelectorAll('.country-headcount').forEach(function(input) {
             totalAllocated += parseInt(input.value) || 0;
         });
         
-        document.getElementById('total-requirement').textContent = requirementValue;
-        document.getElementById('total-allocated').textContent = totalAllocated;
+        const balance = totalRequired - totalAllocated;
         
-        const percentage = requirementValue > 0 ? Math.min((totalAllocated / requirementValue) * 100, 100) : 0;
+        document.getElementById('total-required').textContent = totalRequired;
+        document.getElementById('total-allocated').textContent = totalAllocated;
+        document.getElementById('balance').textContent = balance;
+        
+        // Style balance based on value
+        const balanceElement = document.getElementById('balance');
+        balanceElement.className = 'fw-bold';
+        if (balance === 0) {
+            balanceElement.classList.add('text-success');
+        } else if (balance < 0) {
+            balanceElement.classList.add('text-danger');
+        } else {
+            balanceElement.classList.add('text-warning');
+        }
+        
+        const percentage = totalRequired > 0 ? Math.min((totalAllocated / totalRequired) * 100, 100) : 0;
         const progressBar = document.getElementById('allocation-progress');
         progressBar.style.width = `${percentage}%`;
         progressBar.textContent = `${Math.round(percentage)}%`;
@@ -244,15 +466,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Add event listeners to requirement and headcount inputs
-    document.getElementById('requirement-value-input').addEventListener('input', updateResourceSummary);
+    // Add event listeners to headcount inputs
     document.querySelectorAll('.country-headcount').forEach(function(input) {
         input.addEventListener('input', updateResourceSummary);
     });
     
     // Reset function
     window.resetLocationForm = function() {
-        document.getElementById('requirement-value-input').value = '';
         document.querySelectorAll('.country-headcount').forEach(function(input) {
             input.value = '0';
         });
