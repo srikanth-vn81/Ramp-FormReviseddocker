@@ -669,7 +669,7 @@ function initializeLocationDetails() {
             checkbox.addEventListener('change', function() {
                 updateCountryConfiguration();
                 updateSummaryValues();
-                updateSitesTable();
+                updateSitesAccordion();
             });
         });
         
@@ -839,230 +839,430 @@ function validateHeadcountDistribution() {
 }
 
 /**
- * Update sites table based on selected countries
+ * Update sites accordion based on selected countries
  */
-function updateSitesTable() {
+function updateSitesAccordion() {
     const geoSelect = document.getElementById('geo-country-select');
-    const sitesTable = document.getElementById('sites-table');
-    const sitesTableBody = document.getElementById('sites-table-body');
+    const countriesAccordion = document.getElementById('countriesAccordion');
 
-    if (!geoSelect || !sitesTable || !sitesTableBody) return;
+    if (!geoSelect || !countriesAccordion) return;
 
     // Get selected countries from checkboxes
     const selectedCheckboxes = geoSelect.querySelectorAll('input[type="checkbox"]:checked');
     const selectedCountries = Array.from(selectedCheckboxes).map(cb => cb.value);
 
-    // Update column visibility
-    const headers = sitesTable.querySelectorAll('th.country-header');
-    headers.forEach(header => {
-        const country = header.getAttribute('data-country');
-        if (selectedCountries.includes(country)) {
-            header.style.display = 'table-cell';
-        } else {
-            header.style.display = 'none';
-        }
-    });
-
-    // Generate sites rows
-    generateSitesRows(selectedCountries);
-
-    // Add event listeners to country site selectors
-    const countrySiteSelects = document.querySelectorAll('.country-sites-select');
-    countrySiteSelects.forEach(select => {
-        const country = select.getAttribute('data-country');
-        if (selectedCountries.includes(country)) {
-            select.addEventListener('change', function() {
-                generateSitesRows(selectedCountries);
-            });
-        }
-    });
+    // Generate country accordion panels
+    generateCountryPanels(selectedCountries);
+    
+    // Update country filter chips
+    updateCountryFilterChips(selectedCountries);
+    
+    // Update summary totals
+    updateSitesTotals();
 }
 
 /**
  * Generate sites table rows
  */
-function generateSitesRows(selectedCountries) {
-    const sitesTableBody = document.getElementById('sites-table-body');
-    if (!sitesTableBody) return;
+function generateCountryPanels(selectedCountries) {
+    const countriesAccordion = document.getElementById('countriesAccordion');
+    if (!countriesAccordion) return;
 
-    sitesTableBody.innerHTML = '';
+    countriesAccordion.innerHTML = '';
 
-    // Get the maximum number of sites across all countries
-    let maxSites = 0;
-    const countrySiteCounts = {};
-    
-    selectedCountries.forEach(country => {
-        const select = document.querySelector(`.country-sites-select[data-country="${country}"]`);
-        const siteCount = select ? parseInt(select.value) : 3;
-        countrySiteCounts[country] = siteCount;
-        maxSites = Math.max(maxSites, siteCount);
-    });
+    // Country configuration data
+    const countryData = {
+        'CAN': { name: 'Canada', flag: '🇨🇦', sites: [
+            { value: 'montreal', text: 'Montreal' },
+            { value: 'toronto-02', text: 'Toronto 02' }
+        ]},
+        'COL': { name: 'Colombia', flag: '🇨🇴', sites: [
+            { value: 'medellin', text: 'Medellin' }
+        ]},
+        'HKG': { name: 'Hong Kong', flag: '🇭🇰', sites: [
+            { value: 'hong-kong', text: 'Hong Kong' }
+        ]},
+        'IND': { name: 'India', flag: '🇮🇳', sites: [
+            { value: 'noida', text: 'Noida' },
+            { value: 'noida-02', text: 'Noida 02' }
+        ]},
+        'MEX': { name: 'Mexico', flag: '🇲🇽', sites: [
+            { value: 'mexico-city-02', text: 'Mexico City 02' },
+            { value: 'mexico-city-03', text: 'Mexico City 03' }
+        ]},
+        'PAN': { name: 'Panama', flag: '🇵🇦', sites: [
+            { value: 'panama-city', text: 'Panama City' }
+        ]},
+        'PHL': { name: 'Philippines', flag: '🇵🇭', sites: [
+            { value: 'bacolod-city', text: 'Bacolod City' },
+            { value: 'clark-01', text: 'Clark 01' },
+            { value: 'clark-02', text: 'Clark 02' },
+            { value: 'clark-03', text: 'Clark 03' },
+            { value: 'clark-05', text: 'Clark 05' },
+            { value: 'dasmarinas-01', text: 'Dasmarinas 01' },
+            { value: 'dasmarinas-02', text: 'Dasmarinas 02' },
+            { value: 'davao', text: 'Davao' },
+            { value: 'davao-02', text: 'Davao 02' },
+            { value: 'fairview', text: 'Fairview' },
+            { value: 'fairview-02', text: 'Fairview 02' },
+            { value: 'iloilo', text: 'Iloilo' },
+            { value: 'iloilo-02', text: 'Iloilo 02' },
+            { value: 'iloilo-03', text: 'Iloilo 03' },
+            { value: 'santa-rosa', text: 'Santa Rosa' },
+            { value: 'santa-rosa-02', text: 'Santa Rosa 02' },
+            { value: 'talisay-city', text: 'Talisay City' }
+        ]},
+        'POL': { name: 'Poland', flag: '🇵🇱', sites: [
+            { value: 'warsaw', text: 'Warsaw' }
+        ]},
+        'TTO': { name: 'Trinidad and Tobago', flag: '🇹🇹', sites: [
+            { value: 'barataria', text: 'Barataria' },
+            { value: 'chaguanas', text: 'Chaguanas' },
+            { value: 'waterfield', text: 'Waterfield' }
+        ]},
+        'USA': { name: 'United States', flag: '🇺🇸', sites: [
+            { value: 'allentown', text: 'Allentown' },
+            { value: 'atlanta', text: 'Atlanta' },
+            { value: 'buffalo', text: 'Buffalo' },
+            { value: 'charlotte', text: 'Charlotte' },
+            { value: 'east-hartford', text: 'East Hartford' },
+            { value: 'fort-lauderdale-02', text: 'Fort Lauderdale 02' },
+            { value: 'houston-01', text: 'Houston 01' },
+            { value: 'meridian', text: 'Meridian' },
+            { value: 'naperville', text: 'Naperville' },
+            { value: 'phoenix', text: 'Phoenix' },
+            { value: 'richfield', text: 'Richfield' },
+            { value: 'tempe', text: 'Tempe' },
+            { value: 'west-des-moines', text: 'West Des Moines' }
+        ]}
+    };
 
-    // Generate rows for each site
-    for (let siteIndex = 1; siteIndex <= maxSites; siteIndex++) {
-        const row = document.createElement('tr');
-        
-        // Metrics column
-        const metricsCell = document.createElement('td');
-        metricsCell.className = 'site-metrics-cell';
-        metricsCell.innerHTML = `
-            <div class="d-flex align-items-center justify-content-center">
-                <i class="fas fa-building me-1" style="color: #3b82f6; font-size: 0.7rem;"></i>
-                <span>Site ${siteIndex}</span>
-            </div>
-        `;
-        row.appendChild(metricsCell);
-        
-        // Country columns
-        ['CAN', 'COL', 'HKG', 'IND', 'MEX', 'PAN', 'PHL', 'POL', 'TTO', 'USA'].forEach(country => {
-            const cell = document.createElement('td');
-            cell.className = 'text-center';
-            
-            if (selectedCountries.includes(country)) {
-                cell.style.display = 'table-cell';
-                if (siteIndex <= countrySiteCounts[country]) {
-                    // Get country-specific sites
-                    const countrySites = {
-                        'CAN': [
-                            { value: '', text: 'Select Site' },
-                            { value: 'montreal', text: 'Montreal' },
-                            { value: 'toronto-02', text: 'Toronto 02' }
-                        ],
-                        'COL': [
-                            { value: '', text: 'Select Site' },
-                            { value: 'medellin', text: 'Medellin' }
-                        ],
-                        'HKG': [
-                            { value: '', text: 'Select Site' },
-                            { value: 'hong-kong', text: 'Hong Kong' }
-                        ],
-                        'IND': [
-                            { value: '', text: 'Select Site' },
-                            { value: 'noida', text: 'Noida' },
-                            { value: 'noida-02', text: 'Noida 02' }
-                        ],
-                        'MEX': [
-                            { value: '', text: 'Select Site' },
-                            { value: 'mexico-city-02', text: 'Mexico City 02' },
-                            { value: 'mexico-city-03', text: 'Mexico City 03' }
-                        ],
-                        'PAN': [
-                            { value: '', text: 'Select Site' },
-                            { value: 'panama-city', text: 'Panama City' }
-                        ],
-                        'PHL': [
-                            { value: '', text: 'Select Site' },
-                            { value: 'bacolod-city', text: 'Bacolod City' },
-                            { value: 'clark-01', text: 'Clark 01' },
-                            { value: 'clark-02', text: 'Clark 02' },
-                            { value: 'clark-03', text: 'Clark 03' },
-                            { value: 'clark-05', text: 'Clark 05' },
-                            { value: 'dasmarinas-01', text: 'Dasmarinas 01' },
-                            { value: 'dasmarinas-02', text: 'Dasmarinas 02' },
-                            { value: 'davao', text: 'Davao' },
-                            { value: 'davao-02', text: 'Davao 02' },
-                            { value: 'fairview', text: 'Fairview' },
-                            { value: 'fairview-02', text: 'Fairview 02' },
-                            { value: 'iloilo', text: 'Iloilo' },
-                            { value: 'iloilo-02', text: 'Iloilo 02' },
-                            { value: 'iloilo-03', text: 'Iloilo 03' },
-                            { value: 'iloilo-03b', text: 'Iloilo 03B' },
-                            { value: 'iloilo-04', text: 'Iloilo 04' },
-                            { value: 'santa-rosa', text: 'Santa Rosa' },
-                            { value: 'santa-rosa-02', text: 'Santa Rosa 02' },
-                            { value: 'talisay-city', text: 'Talisay City' }
-                        ],
-                        'POL': [
-                            { value: '', text: 'Select Site' },
-                            { value: 'warsaw', text: 'Warsaw' }
-                        ],
-                        'TTO': [
-                            { value: '', text: 'Select Site' },
-                            { value: 'barataria', text: 'Barataria' },
-                            { value: 'chaguanas', text: 'Chaguanas' },
-                            { value: 'waterfield', text: 'Waterfield' }
-                        ],
-                        'USA': [
-                            { value: '', text: 'Select Site' },
-                            { value: 'allentown', text: 'Allentown' },
-                            { value: 'atlanta', text: 'Atlanta' },
-                            { value: 'buffalo', text: 'Buffalo' },
-                            { value: 'charlotte', text: 'Charlotte' },
-                            { value: 'east-hartford', text: 'East Hartford' },
-                            { value: 'fort-lauderdale-02', text: 'Fort Lauderdale 02' },
-                            { value: 'houston-01', text: 'Houston 01' },
-                            { value: 'meridian', text: 'Meridian' },
-                            { value: 'naperville', text: 'Naperville' },
-                            { value: 'phoenix', text: 'Phoenix' },
-                            { value: 'richfield', text: 'Richfield' },
-                            { value: 'tempe', text: 'Tempe' },
-                            { value: 'west-des-moines', text: 'West Des Moines' }
-                        ]
-                    };
-                    
-                    const siteOptions = countrySites[country] || [{ value: '', text: 'Select Site' }];
-                    
-                    let selectOptions = '';
-                    siteOptions.forEach(option => {
-                        selectOptions += `<option value="${option.value}">${option.text}</option>`;
-                    });
-                    
-                    cell.innerHTML = `
-                        <div class="d-flex flex-column gap-2" style="align-items: center; padding: 0.8rem;">
-                            <!-- Selection Parameters Section -->
-                            <div class="parameter-section selection-section">
-                                <div class="section-header">
-                                    <i class="fas fa-list-ul me-1"></i>
-                                    <span class="section-title">Selections</span>
-                                </div>
-                                <div class="input-group-sm mb-2" style="width: 140px;">
-                                    <small class="site-field-label">Site Location</small>
-                                    <select class="form-select form-select-sm site-selector" data-country="${country}" data-site="${siteIndex}" style="width: 100%;">${selectOptions}</select>
-                                </div>
-                                <div class="input-group-sm" style="width: 140px;">
-                                    <small class="site-field-label">Agent Profile</small>
-                                    <select class="form-select form-select-sm agent-profile-input" style="width: 100%;" data-field="agent-profile">
-                                        <option value="">Select Tier</option>
-                                        <option value="tier1">Tier 1</option>
-                                        <option value="tier2">Tier 2</option>
-                                        <option value="tier3">Tier 3</option>
-                                    </select>
-                                </div>
-                            </div>
+    selectedCountries.forEach((country, index) => {
+        if (!countryData[country]) return;
 
-                            <!-- Capacity Planning Section -->
-                            <div class="parameter-section capacity-section">
-                                <div class="section-header">
-                                    <i class="fas fa-calculator me-1"></i>
-                                    <span class="section-title">Capacity Planning</span>
-                                </div>
-                                <div class="input-group-sm mb-1" style="width: 140px;">
-                                    <small class="site-field-label">Lead Time (Days)</small>
-                                    <input type="number" class="form-control form-control-sm lead-time-input" min="0" placeholder="0" style="width: 100%;" data-field="lead-time">
-                                </div>
-                                <div class="input-group-sm mb-1" style="width: 140px;">
-                                    <small class="site-field-label">Weekly Capacity</small>
-                                    <input type="number" class="form-control form-control-sm weekly-capacity-input" min="0" placeholder="0" style="width: 100%;" data-field="weekly-capacity">
-                                </div>
-                                <div class="input-group-sm" style="width: 140px;">
-                                    <small class="site-field-label">Monthly Capacity</small>
-                                    <input type="number" class="form-control form-control-sm monthly-capacity-input" min="0" placeholder="0" style="width: 100%;" data-field="monthly-capacity">
-                                </div>
+        const countryInfo = countryData[country];
+        const isFirstPanel = index === 0;
+
+        const accordionItem = document.createElement('div');
+        accordionItem.className = 'accordion-item';
+        accordionItem.innerHTML = `
+            <h2 class="accordion-header" id="heading${country}">
+                <button class="accordion-button ${isFirstPanel ? '' : 'collapsed'}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${country}" aria-expanded="${isFirstPanel}" aria-controls="collapse${country}">
+                    <div class="country-accordion-header">
+                        <div class="country-info">
+                            <span class="country-flag">${countryInfo.flag}</span>
+                            <div class="country-details">
+                                <h6>${countryInfo.name}</h6>
+                                <div class="text-muted">${country}</div>
                             </div>
                         </div>
-                    `;
-                } else {
-                    cell.textContent = '-';
-                    cell.classList.add('text-muted');
-                }
-            } else {
-                cell.style.display = 'none';
-            }
+                        <div class="country-controls">
+                            <select class="form-select site-count-selector" data-country="${country}" onclick="event.stopPropagation();">
+                                <option value="1">1 Site</option>
+                                <option value="2">2 Sites</option>
+                                <option value="3" selected>3 Sites</option>
+                            </select>
+                            <div class="country-summary-badges">
+                                <span class="summary-badge" id="sites-badge-${country}">3 Sites</span>
+                                <span class="summary-badge" id="capacity-badge-${country}">0/0</span>
+                            </div>
+                        </div>
+                    </div>
+                </button>
+            </h2>
+            <div id="collapse${country}" class="accordion-collapse collapse ${isFirstPanel ? 'show' : ''}" aria-labelledby="heading${country}" data-bs-parent="#countriesAccordion">
+                <div class="accordion-body">
+                    <div class="sites-grid" id="sites-grid-${country}">
+                        <!-- Site cards will be generated here -->
+                    </div>
+                </div>
+            </div>
+        `;
+
+        countriesAccordion.appendChild(accordionItem);
+
+        // Generate site cards for this country
+        generateSiteCards(country, 3, countryInfo.sites);
+
+        // Add event listener for site count selector
+        const siteCountSelector = accordionItem.querySelector('.site-count-selector');
+        siteCountSelector.addEventListener('change', function(e) {
+            e.stopPropagation();
+            const newSiteCount = parseInt(this.value);
+            generateSiteCards(country, newSiteCount, countryInfo.sites);
+            updateCountrySummary(country);
+            updateSitesTotals();
+        });
+    });
+}
+
+/**
+ * Generate site cards for a country
+ */
+function generateSiteCards(country, siteCount, availableSites) {
+    const sitesGrid = document.getElementById(`sites-grid-${country}`);
+    if (!sitesGrid) return;
+
+    sitesGrid.innerHTML = '';
+
+    for (let i = 1; i <= siteCount; i++) {
+        const siteCard = document.createElement('div');
+        siteCard.className = 'site-card';
+        siteCard.innerHTML = `
+            <div class="site-card-header">
+                <div class="site-title">
+                    <i class="fas fa-building"></i>
+                    Site ${i}
+                </div>
+                <div class="site-actions">
+                    <button type="button" class="site-action-btn" onclick="copySiteData('${country}', ${i})" title="Copy from previous">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                    <button type="button" class="site-action-btn" onclick="resetSiteData('${country}', ${i})" title="Reset site">
+                        <i class="fas fa-undo"></i>
+                    </button>
+                </div>
+            </div>
             
-            row.appendChild(cell);
+            <div class="site-section">
+                <div class="site-section-header selections">
+                    <i class="fas fa-list-check"></i>
+                    Selections
+                </div>
+                <div class="site-field">
+                    <label class="site-field-label">Site Location</label>
+                    <select class="form-select site-location-select" data-country="${country}" data-site="${i}" name="site_location_${country}_${i}">
+                        <option value="">Select Site</option>
+                        ${availableSites.map(site => `<option value="${site.value}">${site.text}</option>`).join('')}
+                    </select>
+                </div>
+                <div class="site-field">
+                    <label class="site-field-label">Agent Profile</label>
+                    <select class="form-select agent-profile-select" data-country="${country}" data-site="${i}" name="agent_profile_${country}_${i}">
+                        <option value="">Select Tier</option>
+                        <option value="tier1">Tier 1</option>
+                        <option value="tier2">Tier 2</option>
+                        <option value="tier3">Tier 3</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="site-section">
+                <div class="site-section-header capacity">
+                    <i class="fas fa-calculator"></i>
+                    Capacity Planning
+                </div>
+                <div class="site-field">
+                    <label class="site-field-label">Lead Time (Days)</label>
+                    <input type="number" class="form-control lead-time-input" data-country="${country}" data-site="${i}" name="lead_time_${country}_${i}" placeholder="0" min="0">
+                </div>
+                <div class="site-field">
+                    <label class="site-field-label">Weekly Capacity</label>
+                    <input type="number" class="form-control weekly-capacity-input" data-country="${country}" data-site="${i}" name="weekly_capacity_${country}_${i}" placeholder="0" min="0">
+                </div>
+                <div class="site-field">
+                    <label class="site-field-label">Monthly Capacity</label>
+                    <input type="number" class="form-control monthly-capacity-input" data-country="${country}" data-site="${i}" name="monthly_capacity_${country}_${i}" placeholder="0" min="0">
+                </div>
+            </div>
+        `;
+        
+        sitesGrid.appendChild(siteCard);
+        
+        // Add event listeners for capacity inputs to update totals
+        const capacityInputs = siteCard.querySelectorAll('.weekly-capacity-input, .monthly-capacity-input');
+        capacityInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                updateCountrySummary(country);
+                updateSitesTotals();
+            });
+        });
+    }
+}
+
+/**
+ * Update country filter chips
+ */
+function updateCountryFilterChips(selectedCountries) {
+    const filterChipsContainer = document.getElementById('country-filter-chips');
+    if (!filterChipsContainer) return;
+
+    filterChipsContainer.innerHTML = '';
+
+    selectedCountries.forEach(country => {
+        const chip = document.createElement('div');
+        chip.className = 'country-filter-chip active';
+        chip.innerHTML = `
+            <span>${country}</span>
+            <i class="fas fa-check"></i>
+        `;
+        filterChipsContainer.appendChild(chip);
+    });
+}
+
+/**
+ * Update country summary badges
+ */
+function updateCountrySummary(country) {
+    const sitesGrid = document.getElementById(`sites-grid-${country}`);
+    if (!sitesGrid) return;
+
+    const siteCards = sitesGrid.querySelectorAll('.site-card');
+    const siteCount = siteCards.length;
+    
+    let totalWeekly = 0;
+    let totalMonthly = 0;
+    
+    siteCards.forEach(card => {
+        const weeklyInput = card.querySelector('.weekly-capacity-input');
+        const monthlyInput = card.querySelector('.monthly-capacity-input');
+        
+        totalWeekly += parseInt(weeklyInput.value) || 0;
+        totalMonthly += parseInt(monthlyInput.value) || 0;
+    });
+
+    // Update badges
+    const sitesBadge = document.getElementById(`sites-badge-${country}`);
+    const capacityBadge = document.getElementById(`capacity-badge-${country}`);
+    
+    if (sitesBadge) {
+        sitesBadge.textContent = `${siteCount} Sites`;
+    }
+    
+    if (capacityBadge) {
+        capacityBadge.textContent = `${totalWeekly}/${totalMonthly}`;
+    }
+}
+
+/**
+ * Update total sites summary
+ */
+function updateSitesTotals() {
+    const totalSitesElement = document.getElementById('total-sites-count');
+    const totalWeeklyElement = document.getElementById('total-weekly-capacity');
+    const totalMonthlyElement = document.getElementById('total-monthly-capacity');
+
+    let totalSites = 0;
+    let totalWeekly = 0;
+    let totalMonthly = 0;
+
+    // Sum up all site cards across all countries
+    const allSiteCards = document.querySelectorAll('.site-card');
+    allSiteCards.forEach(card => {
+        totalSites++;
+        
+        const weeklyInput = card.querySelector('.weekly-capacity-input');
+        const monthlyInput = card.querySelector('.monthly-capacity-input');
+        
+        totalWeekly += parseInt(weeklyInput.value) || 0;
+        totalMonthly += parseInt(monthlyInput.value) || 0;
+    });
+
+    if (totalSitesElement) totalSitesElement.textContent = totalSites;
+    if (totalWeeklyElement) totalWeeklyElement.textContent = totalWeekly;
+    if (totalMonthlyElement) totalMonthlyElement.textContent = totalMonthly;
+}
+
+/**
+ * Copy site data from previous site
+ */
+function copySiteData(country, siteIndex) {
+    if (siteIndex <= 1) return; // Can't copy from previous if this is the first site
+    
+    const currentSite = document.querySelector(`[data-country="${country}"][data-site="${siteIndex}"]`).closest('.site-card');
+    const previousSite = document.querySelector(`[data-country="${country}"][data-site="${siteIndex - 1}"]`).closest('.site-card');
+    
+    if (!currentSite || !previousSite) return;
+    
+    // Copy all form values
+    const previousInputs = previousSite.querySelectorAll('select, input');
+    previousInputs.forEach(input => {
+        const fieldName = input.className.split(' ').find(cls => cls.includes('-select') || cls.includes('-input'));
+        if (fieldName) {
+            const currentInput = currentSite.querySelector(`.${fieldName}`);
+            if (currentInput) {
+                currentInput.value = input.value;
+            }
+        }
+    });
+    
+    updateCountrySummary(country);
+    updateSitesTotals();
+}
+
+/**
+ * Reset site data
+ */
+function resetSiteData(country, siteIndex) {
+    const siteCard = document.querySelector(`[data-country="${country}"][data-site="${siteIndex}"]`).closest('.site-card');
+    if (!siteCard) return;
+    
+    // Reset all form values
+    const inputs = siteCard.querySelectorAll('select, input');
+    inputs.forEach(input => {
+        if (input.type === 'number') {
+            input.value = '';
+        } else {
+            input.selectedIndex = 0;
+        }
+    });
+    
+    updateCountrySummary(country);
+    updateSitesTotals();
+}
+
+/**
+ * Reset all sites
+ */
+function resetAllSites() {
+    if (confirm('Are you sure you want to reset all site configurations? This will clear all site data.')) {
+        const allInputs = document.querySelectorAll('.site-card select, .site-card input');
+        allInputs.forEach(input => {
+            if (input.type === 'number') {
+                input.value = '';
+            } else {
+                input.selectedIndex = 0;
+            }
         });
         
-        sitesTableBody.appendChild(row);
+        // Update all summaries
+        const countryGrids = document.querySelectorAll('[id^="sites-grid-"]');
+        countryGrids.forEach(grid => {
+            const country = grid.id.replace('sites-grid-', '');
+            updateCountrySummary(country);
+        });
+        
+        updateSitesTotals();
+    }
+}
+
+/**
+ * Validate all sites
+ */
+function validateAllSites() {
+    const allSiteCards = document.querySelectorAll('.site-card');
+    let isValid = true;
+    let issues = [];
+    
+    allSiteCards.forEach((card, index) => {
+        const siteLocation = card.querySelector('.site-location-select');
+        const agentProfile = card.querySelector('.agent-profile-select');
+        
+        if (!siteLocation.value) {
+            issues.push(`Site ${index + 1}: Missing site location`);
+            isValid = false;
+        }
+        
+        if (!agentProfile.value) {
+            issues.push(`Site ${index + 1}: Missing agent profile`);
+            isValid = false;
+        }
+    });
+    
+    if (isValid) {
+        alert('✓ All sites are properly configured!');
+    } else {
+        alert('⚠ Issues found:\n' + issues.join('\n'));
     }
 }
 
