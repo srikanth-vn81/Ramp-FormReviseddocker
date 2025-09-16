@@ -30,14 +30,27 @@
                         <div class="card-body p-4">
                             <div class="row g-3">
                                 <div class="col-12">
-                                    <label class="form-label fw-bold text-dark mb-2">
+                                    <label class="form-label fw-bold text-dark mb-3">
                                         Do you have Location Details?
                                     </label>
-                                    <select class="form-select" id="location-availability" onchange="toggleLocationDetails()">
-                                        <option value="">Select Availability</option>
-                                        <option value="available">Available</option>
-                                        <option value="unavailable">Currently Unavailable</option>
-                                    </select>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="form-check form-check-inline p-3 border rounded bg-white shadow-sm">
+                                                <input class="form-check-input" type="radio" name="location-availability" id="location-available" value="available" onchange="toggleLocationDetails()">
+                                                <label class="form-check-label fw-bold text-success ms-2" for="location-available">
+                                                    <i class="fas fa-check-circle me-2"></i>Available
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check form-check-inline p-3 border rounded bg-white shadow-sm">
+                                                <input class="form-check-input" type="radio" name="location-availability" id="location-unavailable" value="unavailable" onchange="toggleLocationDetails()">
+                                                <label class="form-check-label fw-bold text-secondary ms-2" for="location-unavailable">
+                                                    <i class="fas fa-times-circle me-2"></i>Currently Unavailable
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -390,7 +403,8 @@
 <script>
 // Toggle Location Details based on availability selection
 function toggleLocationDetails() {
-    const availability = document.getElementById('location-availability').value;
+    const selectedRadio = document.querySelector('input[name="location-availability"]:checked');
+    const availability = selectedRadio ? selectedRadio.value : '';
     const content = document.getElementById('location-details-content');
     
     if (availability === 'available') {
