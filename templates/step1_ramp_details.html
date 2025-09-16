@@ -37,6 +37,13 @@
                 </div>
                 
                 <div class="row g-3 mb-4">
+                    <!-- Lead Time Selection -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold required">Lead Time Selection</label>
+                        {{ form.lead_time_selection(class="form-select", id="lead-time-selection") }}
+                        <small class="form-text text-muted">Days before ramp start date</small>
+                    </div>
+                    
                     <!-- Ramp Start Date -->
                     <div class="col-md-6">
                         <label class="form-label fw-semibold required">Ramp Start Date</label>
@@ -45,10 +52,13 @@
                                 {{ form.ramp_start_availability(class="form-select") }}
                             </div>
                             <div class="flex-grow-1 date-input-container" id="ramp-start-date-container" style="display: none;">
-                                {{ form.ramp_start_date(class="form-control") }}
+                                {{ form.ramp_start_date(class="form-control", id="ramp-start-date") }}
                             </div>
                         </div>
                     </div>
+                </div>
+                
+                <div class="row g-3 mb-4">
                     
                     <!-- Ramp End Date -->
                     <div class="col-md-6">
@@ -58,7 +68,7 @@
                                 {{ form.ramp_end_availability(class="form-select") }}
                             </div>
                             <div class="flex-grow-1 date-input-container" id="ramp-end-date-container" style="display: none;">
-                                {{ form.ramp_end_date(class="form-control") }}
+                                {{ form.ramp_end_date(class="form-control", id="ramp-end-date") }}
                             </div>
                         </div>
                     </div>
@@ -118,6 +128,108 @@ document.addEventListener('DOMContentLoaded', function() {
     
     setupDateAvailability('ramp_start_availability', 'ramp-start-date-container');
     setupDateAvailability('ramp_end_availability', 'ramp-end-date-container');
+    
+    // Get current date and date utilities
+    function getCurrentDate() {
+        const today = new Date();
+        return today;
+    }
+    
+    // Format date for input field (YYYY-MM-DD)
+    function formatDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+    
+    // Calculate minimum date based on lead time
+    function calculateMinDate(leadTimeDays) {
+        const currentDate = getCurrentDate();
+        const minDate = new Date(currentDate);
+        minDate.setDate(currentDate.getDate() + parseInt(leadTimeDays));
+        return minDate;
+    }
+    
+    // Lead time selection logic
+    const leadTimeSelect = document.getElementById('lead-time-selection');
+    const rampStartDateInput = document.getElementById('ramp-start-date');
+    const rampEndDateInput = document.getElementById('ramp-end-date');
+    
+    if (leadTimeSelect && rampStartDateInput) {
+        leadTimeSelect.addEventListener('change', function() {
+            if (this.value) {
+                const minDate = calculateMinDate(this.value);
+                const formattedDate = formatDate(minDate);
+                
+                // Set minimum date for ramp start date
+                rampStartDateInput.min = formattedDate;
+                
+                // Auto-set the ramp start date to the minimum date
+                if (!rampStartDateInput.value || new Date(rampStartDateInput.value) < minDate) {
+                    rampStartDateInput.value = formattedDate;
+                }
+                
+                // Update ramp end date minimum when start date changes
+                updateEndDateMin();
+            }
+        });
+    }
+    
+    // Validate ramp end date
+    function updateEndDateMin() {
+        if (rampStartDateInput && rampEndDateInput && rampStartDateInput.value) {
+            rampEndDateInput.min = rampStartDateInput.value;
+            
+            // If end date is less than start date, clear it
+            if (rampEndDateInput.value && rampEndDateInput.value < rampStartDateInput.value) {
+                rampEndDateInput.value = '';
+                showDateValidationError('Ramp End Date cannot be earlier than Ramp Start Date');
+            }
+        }
+    }
+    
+    // Show validation error
+    function showDateValidationError(message) {
+        // Remove existing error
+        const existingError = document.getElementById('date-validation-error');
+        if (existingError) {
+            existingError.remove();
+        }
+        
+        // Add new error message
+        const errorDiv = document.createElement('div');
+        errorDiv.id = 'date-validation-error';
+        errorDiv.className = 'alert alert-danger mt-2';
+        errorDiv.innerHTML = `<i class="fas fa-exclamation-triangle me-2"></i>${message}`;
+        
+        const endDateContainer = rampEndDateInput.closest('.col-md-6');
+        if (endDateContainer) {
+            endDateContainer.appendChild(errorDiv);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (errorDiv.parentNode) {
+                    errorDiv.remove();
+                }
+            }, 5000);
+        }
+    }
+    
+    // Add event listener for start date changes
+    if (rampStartDateInput) {
+        rampStartDateInput.addEventListener('change', updateEndDateMin);
+    }
+    
+    // Add event listener for end date validation
+    if (rampEndDateInput) {
+        rampEndDateInput.addEventListener('change', function() {
+            if (this.value && rampStartDateInput.value && this.value < rampStartDateInput.value) {
+                this.value = '';
+                showDateValidationError('Ramp End Date cannot be earlier than Ramp Start Date');
+            }
+        });
+    }
     
     // Show/hide FTE/HC dropdown based on ramp requirement input
     function setupRequirementTypeDropdown() {
