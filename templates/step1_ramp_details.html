@@ -44,6 +44,15 @@
                         <small class="form-text text-muted">Days before ramp start date</small>
                     </div>
                     
+                    <!-- Date Availability Option -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold required">Date Availability</label>
+                        {{ form.date_availability_option(class="form-select", id="date-availability-option") }}
+                        <small class="form-text text-muted">Control date selection availability</small>
+                    </div>
+                </div>
+                
+                <div class="row g-3 mb-4">
                     <!-- Ramp Start Date -->
                     <div class="col-md-6">
                         <label class="form-label fw-semibold required">Ramp Start Date</label>
@@ -56,7 +65,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
                 
                 <div class="row g-3 mb-4">
                     
@@ -151,18 +159,56 @@ document.addEventListener('DOMContentLoaded', function() {
         return minDate;
     }
     
-    // Lead time selection logic
+    // Lead time and date availability logic
     const leadTimeSelect = document.getElementById('lead-time-selection');
+    const dateAvailabilitySelect = document.getElementById('date-availability-option');
     const rampStartDateInput = document.getElementById('ramp-start-date');
     const rampEndDateInput = document.getElementById('ramp-end-date');
+    const rampStartAvailability = document.getElementById('ramp_start_availability');
+    const rampEndAvailability = document.getElementById('ramp_end_availability');
     
-    if (leadTimeSelect && rampStartDateInput) {
-        leadTimeSelect.addEventListener('change', function() {
-            if (this.value) {
-                const minDate = calculateMinDate(this.value);
-                const formattedDate = formatDate(minDate);
+    function updateDateAvailability() {
+        const leadTime = leadTimeSelect ? leadTimeSelect.value : '';
+        const dateAvailability = dateAvailabilitySelect ? dateAvailabilitySelect.value : '';
+        
+        if (dateAvailability === 'not_available') {
+            // Disable all date selections
+            if (rampStartAvailability) {
+                rampStartAvailability.value = 'not-available';
+                rampStartAvailability.disabled = true;
+            }
+            if (rampEndAvailability) {
+                rampEndAvailability.value = 'not-available';
+                rampEndAvailability.disabled = true;
+            }
+            // Hide date containers
+            const startContainer = document.getElementById('ramp-start-date-container');
+            const endContainer = document.getElementById('ramp-end-date-container');
+            if (startContainer) startContainer.style.display = 'none';
+            if (endContainer) endContainer.style.display = 'none';
+            
+        } else if (dateAvailability === 'current_date') {
+            // Enable date selections
+            if (rampStartAvailability) {
+                rampStartAvailability.disabled = false;
+                rampStartAvailability.value = 'available';
+            }
+            if (rampEndAvailability) {
+                rampEndAvailability.disabled = false;
+            }
+            
+            // Set date logic based on lead time
+            if (leadTime && rampStartDateInput) {
+                let minDate;
+                if (leadTime === '30' || leadTime === '60') {
+                    // Use lead time calculation
+                    minDate = calculateMinDate(leadTime);
+                } else {
+                    // Use current date
+                    minDate = getCurrentDate();
+                }
                 
-                // Set minimum date for ramp start date
+                const formattedDate = formatDate(minDate);
                 rampStartDateInput.min = formattedDate;
                 
                 // Auto-set the ramp start date to the minimum date
@@ -170,10 +216,32 @@ document.addEventListener('DOMContentLoaded', function() {
                     rampStartDateInput.value = formattedDate;
                 }
                 
-                // Update ramp end date minimum when start date changes
                 updateEndDateMin();
             }
-        });
+            
+            // Show start date container
+            const startContainer = document.getElementById('ramp-start-date-container');
+            if (startContainer) startContainer.style.display = 'block';
+            
+        } else {
+            // Reset to default state when no option selected
+            if (rampStartAvailability) {
+                rampStartAvailability.disabled = false;
+                rampStartAvailability.value = '';
+            }
+            if (rampEndAvailability) {
+                rampEndAvailability.disabled = false;
+                rampEndAvailability.value = '';
+            }
+        }
+    }
+    
+    if (leadTimeSelect) {
+        leadTimeSelect.addEventListener('change', updateDateAvailability);
+    }
+    
+    if (dateAvailabilitySelect) {
+        dateAvailabilitySelect.addEventListener('change', updateDateAvailability);
     }
     
     // Validate ramp end date

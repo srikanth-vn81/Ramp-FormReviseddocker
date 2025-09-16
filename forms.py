@@ -16,6 +16,11 @@ class RampInputForm(FlaskForm):
         choices=[('', 'Select Lead Time'), ('30', '30 Days'), ('60', '60 Days')],
         validators=[Optional()]
     )
+    date_availability_option = SelectField(
+        'Date Availability',
+        choices=[('', 'Select Option'), ('current_date', 'From Current Date'), ('not_available', 'Currently Not Available')],
+        validators=[Optional()]
+    )
     ramp_start_date = DateField('Ramp Start Date', validators=[Optional()])
     ramp_end_date = DateField('Ramp End Date', validators=[Optional()])
     ramp_requirement = IntegerField('Ramp Requirement', validators=[Optional(), NumberRange(min=1)])
