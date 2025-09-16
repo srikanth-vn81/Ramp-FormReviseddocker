@@ -162,12 +162,12 @@ def ramp_form_step(step):
         'is_last_step': step == len(FORM_STEPS)
     }
     
-    # For step 5, pass the selected countries to prevent auto-checking all
-    if step == 5:
+    # For step 2 (Location Planning), pass the selected countries to prevent auto-checking all
+    if step == 2:
         context['preselected_countries'] = form.geo_country.data or []
     
     # For submit step, include form data for summary
-    if step == 7:
+    if step == 6:
         context['form_data'] = session.get('form_data', {})
     
     return render_template(FORM_STEPS[step]['template'], **context)
