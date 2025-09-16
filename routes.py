@@ -41,7 +41,7 @@ def generate_date_choices():
 # Multi-step form configuration
 FORM_STEPS = {
     1: {'name': 'Ramp Details', 'template': 'step1_ramp_details.html'},
-    2: {'name': 'Location Planning', 'template': 'step5_location_planning.html'},
+    2: {'name': 'Location Details', 'template': 'step5_location_planning.html'},
     3: {'name': 'Recruitment', 'template': 'step6_recruitment.html'},
     4: {'name': 'Program Details', 'template': 'step4_language_channel.html'},
     5: {'name': 'Training Support', 'template': 'step2_training_schedule.html'},
