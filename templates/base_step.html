@@ -52,9 +52,9 @@
                                         <div class="progress bg-dark" style="width: 250px; height: 10px; border-radius: 10px;">
                                             <div class="progress-bar bg-success" role="progressbar" 
                                                  style="width: {{ (current_step / 7 * 100) }}%; border-radius: 10px;" 
-                                                 aria-valuenow="{{ (current_step / 6 * 100) }}" 
+                                                 aria-valuenow="{{ (current_step / 7 * 100) }}" 
                                                  aria-valuemin="0" aria-valuemax="100">
-                                                <span class="visually-hidden">{{ (current_step / 6 * 100) }}% Complete</span>
+                                                <span class="visually-hidden">{{ (current_step / 7 * 100) }}% Complete</span>
                                             </div>
                                         </div>
                                     </div>
@@ -95,24 +95,33 @@
                                     <li class="breadcrumb-item {{ 'active fw-bold' if current_step == 4 else 'text-primary' }}">
                                         {% if current_step != 4 %}
                                             <a href="{{ url_for('ramp_form_step', step=4) }}" class="text-decoration-none text-primary">
+                                                <i class="fas fa-clipboard-list me-1"></i>Program Details
+                                            </a>
+                                        {% else %}
+                                            <i class="fas fa-clipboard-list me-1"></i>Program Details
+                                        {% endif %}
+                                    </li>
+                                    <li class="breadcrumb-item {{ 'active fw-bold' if current_step == 5 else 'text-primary' }}">
+                                        {% if current_step != 5 %}
+                                            <a href="{{ url_for('ramp_form_step', step=5) }}" class="text-decoration-none text-primary">
                                                 <i class="fas fa-calendar-alt me-1"></i>Training Support
                                             </a>
                                         {% else %}
                                             <i class="fas fa-calendar-alt me-1"></i>Training Support
                                         {% endif %}
                                     </li>
-                                    <li class="breadcrumb-item {{ 'active fw-bold' if current_step == 5 else 'text-primary' }}">
-                                        {% if current_step != 5 %}
-                                            <a href="{{ url_for('ramp_form_step', step=5) }}" class="text-decoration-none text-primary">
+                                    <li class="breadcrumb-item {{ 'active fw-bold' if current_step == 6 else 'text-primary' }}">
+                                        {% if current_step != 6 %}
+                                            <a href="{{ url_for('ramp_form_step', step=6) }}" class="text-decoration-none text-primary">
                                                 <i class="fas fa-cogs me-1"></i>Operational Assumptions
                                             </a>
                                         {% else %}
                                             <i class="fas fa-cogs me-1"></i>Operational Assumptions
                                         {% endif %}
                                     </li>
-                                    <li class="breadcrumb-item {{ 'active fw-bold' if current_step == 6 else 'text-primary' }}">
-                                        {% if current_step != 6 %}
-                                            <a href="{{ url_for('ramp_form_step', step=6) }}" class="text-decoration-none text-primary">
+                                    <li class="breadcrumb-item {{ 'active fw-bold' if current_step == 7 else 'text-primary' }}">
+                                        {% if current_step != 7 %}
+                                            <a href="{{ url_for('ramp_form_step', step=7) }}" class="text-decoration-none text-primary">
                                                 <i class="fas fa-paper-plane me-1"></i>Submit
                                             </a>
                                         {% else %}
