@@ -18,7 +18,7 @@ class RampInputForm(FlaskForm):
             ('30', '30 Days'), 
             ('60', '60 Days'),
             ('current_date', 'From Current Date'),
-            ('not_available', 'Currently Not Available')
+            ('not_available', 'Currently Unavailable')
         ],
         validators=[Optional()]
     )
