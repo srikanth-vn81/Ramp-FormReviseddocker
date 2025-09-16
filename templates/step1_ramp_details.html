@@ -38,14 +38,15 @@
                 
                 <div class="row g-3 mb-4">
                     <!-- Lead Time Selection -->
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <label class="form-label fw-semibold required">Lead Time Selection</label>
                         {{ form.lead_time_selection(class="form-select", id="lead-time-selection") }}
                         <small class="form-text text-muted">Select days before ramp start or date availability</small>
                     </div>
                 </div>
                 
-                <div class="row g-3 mb-4">
+                <!-- Date Selection Row (Hidden by default) -->
+                <div class="row g-3 mb-4" id="date-selection-row" style="display: none;">
                     <!-- Ramp Start Date -->
                     <div class="col-md-6">
                         <label class="form-label fw-semibold required">Ramp Start Date</label>
@@ -58,8 +59,6 @@
                             </div>
                         </div>
                     </div>
-                
-                <div class="row g-3 mb-4">
                     
                     <!-- Ramp End Date -->
                     <div class="col-md-6">
@@ -161,24 +160,20 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function updateDateAvailability() {
         const selection = leadTimeSelect ? leadTimeSelect.value : '';
+        const dateSelectionRow = document.getElementById('date-selection-row');
         
         if (selection === 'not_available') {
-            // Disable all date selections
-            if (rampStartAvailability) {
-                rampStartAvailability.value = 'not-available';
-                rampStartAvailability.disabled = true;
+            // Hide entire date selection row
+            if (dateSelectionRow) {
+                dateSelectionRow.style.display = 'none';
             }
-            if (rampEndAvailability) {
-                rampEndAvailability.value = 'not-available';
-                rampEndAvailability.disabled = true;
-            }
-            // Hide date containers
-            const startContainer = document.getElementById('ramp-start-date-container');
-            const endContainer = document.getElementById('ramp-end-date-container');
-            if (startContainer) startContainer.style.display = 'none';
-            if (endContainer) endContainer.style.display = 'none';
             
         } else if (selection === 'current_date' || selection === '30' || selection === '60') {
+            // Show date selection row
+            if (dateSelectionRow) {
+                dateSelectionRow.style.display = 'block';
+            }
+            
             // Enable date selections
             if (rampStartAvailability) {
                 rampStartAvailability.disabled = false;
@@ -191,31 +186,44 @@ document.addEventListener('DOMContentLoaded', function() {
             // Set date logic based on selection
             if (rampStartDateInput) {
                 let minDate;
-                if (selection === '30' || selection === '60') {
-                    // Use lead time calculation
-                    minDate = calculateMinDate(selection);
+                if (selection === '30') {
+                    // Current date + 30 days
+                    minDate = calculateMinDate('30');
+                } else if (selection === '60') {
+                    // Current date + 60 days
+                    minDate = calculateMinDate('60');
                 } else if (selection === 'current_date') {
-                    // Use current date
+                    // From today
                     minDate = getCurrentDate();
                 }
                 
                 const formattedDate = formatDate(minDate);
                 rampStartDateInput.min = formattedDate;
                 
-                // Auto-set the ramp start date to the minimum date
-                if (!rampStartDateInput.value || new Date(rampStartDateInput.value) < minDate) {
+                // Auto-set the ramp start date to the minimum date for lead time selections
+                if (selection === '30' || selection === '60') {
                     rampStartDateInput.value = formattedDate;
+                } else if (selection === 'current_date') {
+                    // For current date, only set if no value exists
+                    if (!rampStartDateInput.value) {
+                        rampStartDateInput.value = formattedDate;
+                    }
                 }
                 
                 updateEndDateMin();
             }
             
-            // Show start date container
+            // Show date containers
             const startContainer = document.getElementById('ramp-start-date-container');
             if (startContainer) startContainer.style.display = 'block';
             
         } else {
-            // Reset to default state when no option selected
+            // Hide date selection row when no valid option selected
+            if (dateSelectionRow) {
+                dateSelectionRow.style.display = 'none';
+            }
+            
+            // Reset to default state
             if (rampStartAvailability) {
                 rampStartAvailability.disabled = false;
                 rampStartAvailability.value = '';
