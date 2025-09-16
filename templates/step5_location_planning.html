@@ -301,35 +301,37 @@
                     <h6 class="fw-bold text-success mb-3">
                         <i class="fas fa-chart-pie me-2"></i>Resource Summary
                     </h6>
-                    <div class="bg-light p-3 rounded">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="d-flex justify-content-between">
-                                            <span><strong>Total Allocated:</strong></span>
-                                            <span id="total-allocated">0</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="d-flex justify-content-between">
-                                            <span><strong>Required:</strong></span>
-                                            <span id="total-required">100</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="d-flex justify-content-between">
-                                            <span><strong>Balance:</strong></span>
-                                            <span id="balance" class="fw-bold">100</span>
-                                        </div>
-                                    </div>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-12">
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 0%" id="allocation-progress">
-                                        0%
-                                    </div>
+                    <div class="resource-summary bg-white border border-light rounded-3 shadow-sm p-3 p-md-4">
+                        <!-- KPI Metrics Row -->
+                        <div class="row row-cols-1 row-cols-md-3 g-3 mb-4">
+                            <div class="col">
+                                <div class="d-flex flex-column h-100 text-center">
+                                    <div class="kpi-label small text-uppercase text-muted fw-semibold mb-1">Total Allocated</div>
+                                    <div class="kpi-value h4 fw-semibold text-dark numeric" id="total-allocated">0</div>
                                 </div>
-                                <small class="text-muted">Allocation Progress</small>
+                            </div>
+                            <div class="col">
+                                <div class="d-flex flex-column h-100 text-center">
+                                    <div class="kpi-label small text-uppercase text-muted fw-semibold mb-1">Required</div>
+                                    <div class="kpi-value h4 fw-semibold text-dark numeric" id="total-required">0</div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="d-flex flex-column h-100 text-center">
+                                    <div class="kpi-label small text-uppercase text-muted fw-semibold mb-1">Balance</div>
+                                    <div class="kpi-value h4 fw-semibold numeric" id="balance">0</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Progress Bar Section -->
+                        <div class="progress-section">
+                            <div class="progress progress-thin mb-2" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                <div class="progress-bar bg-primary" style="width: 0%" id="allocation-progress"></div>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <small class="text-muted fw-medium">Allocation Progress</small>
+                                <small class="text-muted fw-medium numeric" id="allocation-percent">0%</small>
                             </div>
                         </div>
                     </div>
@@ -395,6 +397,42 @@
     background: #f8f9fa;
     color: #6c757d;
     font-weight: 500;
+}
+
+/* Corporate Resource Summary Styling */
+.resource-summary {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: .75rem;
+}
+
+.kpi-label {
+    font-size: .75rem;
+    text-transform: uppercase;
+    color: #6c757d;
+    letter-spacing: .04em;
+}
+
+.kpi-value {
+    font-size: 1.5rem;
+    line-height: 1.2;
+}
+
+.progress-thin {
+    height: 10px;
+    background: #eef2f6;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.progress-thin .progress-bar {
+    border-radius: 999px;
+    transition: width .3s ease;
+}
+
+.numeric {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: .02em;
 }
 </style>
 {% endblock %}
@@ -500,34 +538,45 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const balance = totalRequired - totalAllocated;
         
-        document.getElementById('total-required').textContent = totalRequired;
-        document.getElementById('total-allocated').textContent = totalAllocated;
-        document.getElementById('balance').textContent = balance;
+        // Format numbers with thousands separator for professional look
+        document.getElementById('total-required').textContent = totalRequired.toLocaleString();
+        document.getElementById('total-allocated').textContent = totalAllocated.toLocaleString();
+        document.getElementById('balance').textContent = Math.abs(balance).toLocaleString() + (balance < 0 ? ' Over' : '');
         
-        // Style balance based on value
+        // Style balance based on value with corporate colors
         const balanceElement = document.getElementById('balance');
-        balanceElement.className = 'fw-bold';
-        if (balance === 0) {
+        balanceElement.className = 'kpi-value h4 fw-semibold numeric';
+        if (balance >= 0) {
             balanceElement.classList.add('text-success');
-        } else if (balance < 0) {
-            balanceElement.classList.add('text-danger');
         } else {
-            balanceElement.classList.add('text-warning');
+            balanceElement.classList.add('text-danger');
         }
         
-        const percentage = totalRequired > 0 ? Math.min((totalAllocated / totalRequired) * 100, 100) : 0;
-        const progressBar = document.getElementById('allocation-progress');
-        progressBar.style.width = `${percentage}%`;
-        progressBar.textContent = `${Math.round(percentage)}%`;
+        // Calculate percentage for progress bar
+        const actualPercentage = totalRequired > 0 ? (totalAllocated / totalRequired) * 100 : 0;
+        const displayPercentage = Math.min(actualPercentage, 100);
         
-        // Change color based on allocation status
+        // Update progress bar
+        const progressBar = document.getElementById('allocation-progress');
+        const progressContainer = progressBar.closest('.progress');
+        const percentElement = document.getElementById('allocation-percent');
+        
+        progressBar.style.width = `${displayPercentage}%`;
+        percentElement.textContent = `${Math.round(actualPercentage)}%`;
+        
+        // Update ARIA attributes
+        progressContainer.setAttribute('aria-valuenow', Math.round(actualPercentage));
+        
+        // Corporate color coding for progress bar
         progressBar.className = 'progress-bar';
-        if (percentage >= 100) {
-            progressBar.classList.add('bg-success');
-        } else if (percentage >= 80) {
-            progressBar.classList.add('bg-warning');
+        if (actualPercentage > 100) {
+            progressBar.classList.add('bg-danger'); // Over-allocated
+        } else if (actualPercentage >= 90) {
+            progressBar.classList.add('bg-success'); // Near complete
+        } else if (actualPercentage >= 50) {
+            progressBar.classList.add('bg-primary'); // Good progress
         } else {
-            progressBar.classList.add('bg-info');
+            progressBar.classList.add('bg-info'); // Starting
         }
     }
     
