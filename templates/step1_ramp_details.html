@@ -41,14 +41,7 @@
                     <div class="col-md-6">
                         <label class="form-label fw-semibold required">Lead Time Selection</label>
                         {{ form.lead_time_selection(class="form-select", id="lead-time-selection") }}
-                        <small class="form-text text-muted">Days before ramp start date</small>
-                    </div>
-                    
-                    <!-- Date Availability Option -->
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold required">Date Availability</label>
-                        {{ form.date_availability_option(class="form-select", id="date-availability-option") }}
-                        <small class="form-text text-muted">Control date selection availability</small>
+                        <small class="form-text text-muted">Select days before ramp start or date availability</small>
                     </div>
                 </div>
                 
@@ -159,19 +152,17 @@ document.addEventListener('DOMContentLoaded', function() {
         return minDate;
     }
     
-    // Lead time and date availability logic
+    // Lead time selection logic
     const leadTimeSelect = document.getElementById('lead-time-selection');
-    const dateAvailabilitySelect = document.getElementById('date-availability-option');
     const rampStartDateInput = document.getElementById('ramp-start-date');
     const rampEndDateInput = document.getElementById('ramp-end-date');
     const rampStartAvailability = document.getElementById('ramp_start_availability');
     const rampEndAvailability = document.getElementById('ramp_end_availability');
     
     function updateDateAvailability() {
-        const leadTime = leadTimeSelect ? leadTimeSelect.value : '';
-        const dateAvailability = dateAvailabilitySelect ? dateAvailabilitySelect.value : '';
+        const selection = leadTimeSelect ? leadTimeSelect.value : '';
         
-        if (dateAvailability === 'not_available') {
+        if (selection === 'not_available') {
             // Disable all date selections
             if (rampStartAvailability) {
                 rampStartAvailability.value = 'not-available';
@@ -187,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (startContainer) startContainer.style.display = 'none';
             if (endContainer) endContainer.style.display = 'none';
             
-        } else if (dateAvailability === 'current_date') {
+        } else if (selection === 'current_date' || selection === '30' || selection === '60') {
             // Enable date selections
             if (rampStartAvailability) {
                 rampStartAvailability.disabled = false;
@@ -197,13 +188,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 rampEndAvailability.disabled = false;
             }
             
-            // Set date logic based on lead time
-            if (leadTime && rampStartDateInput) {
+            // Set date logic based on selection
+            if (rampStartDateInput) {
                 let minDate;
-                if (leadTime === '30' || leadTime === '60') {
+                if (selection === '30' || selection === '60') {
                     // Use lead time calculation
-                    minDate = calculateMinDate(leadTime);
-                } else {
+                    minDate = calculateMinDate(selection);
+                } else if (selection === 'current_date') {
                     // Use current date
                     minDate = getCurrentDate();
                 }
@@ -238,10 +229,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (leadTimeSelect) {
         leadTimeSelect.addEventListener('change', updateDateAvailability);
-    }
-    
-    if (dateAvailabilitySelect) {
-        dateAvailabilitySelect.addEventListener('change', updateDateAvailability);
     }
     
     // Validate ramp end date
