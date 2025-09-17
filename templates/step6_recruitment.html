@@ -76,16 +76,19 @@
                 <!-- Sites Configuration for Recruitment -->
                 <div class="mb-5" id="sites-configuration-section" style="display: none;">
                     <h6 class="fw-bold text-dark mb-4">
-                        <i class="fas fa-building me-2"></i>Sites Configuration for Recruitment
+                        <i class="fas fa-building me-2"></i>Sites Configuration
                     </h6>
                     <!-- Sites Configuration Table -->
                     <div class="sites-table-container">
-                        <table class="sites-config-table table table-bordered" id="sites-config-table">
-                            <thead id="sites-table-head">
-                                <!-- Table headers will be dynamically generated here -->
+                        <table class="table table-bordered sites-table mb-0" id="sites-config-table">
+                            <thead>
+                                <tr id="sites-header-row">
+                                    <th class="metrics-header text-center">Metrics</th>
+                                    <!-- Country headers will be populated dynamically -->
+                                </tr>
                             </thead>
                             <tbody id="sites-table-body">
-                                <!-- Site rows will be dynamically generated here -->
+                                <!-- Site configuration rows will be populated dynamically -->
                             </tbody>
                         </table>
                     </div>
@@ -728,107 +731,134 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Build sites configuration table with country headcount data
     function buildSitesConfigurationTable(countryHeadcounts) {
-        const tableContainer = document.querySelector('.sites-table-container');
-        if (!tableContainer) return;
+        const headerRow = document.getElementById('sites-header-row');
+        const tableBody = document.getElementById('sites-table-body');
+        
+        if (!headerRow || !tableBody) return;
         
         // Country names mapping
         const countryNames = {
-            'CAN': 'Canada', 'COL': 'Colombia', 'HKG': 'Hong Kong', 'IND': 'India',
-            'MEX': 'Mexico', 'PAN': 'Panama', 'PHL': 'Philippines', 'POL': 'Poland',
-            'TTO': 'Trinidad and Tobago', 'USA': 'United States'
+            'CAN': 'CAN', 'COL': 'COL', 'HKG': 'HKG', 'IND': 'IND',
+            'MEX': 'MEX', 'PAN': 'PAN', 'PHL': 'PHL', 'POL': 'POL',
+            'TTO': 'TTO', 'USA': 'USA'
         };
         
-        // Clear existing table
-        tableContainer.innerHTML = '';
+        // Clear existing content
+        headerRow.innerHTML = '<th class="metrics-header text-center">Metrics</th>';
+        tableBody.innerHTML = '';
         
-        // Create countries sections
-        Object.entries(countryHeadcounts).forEach(([countryCode, headcount]) => {
-            const countryName = countryNames[countryCode] || countryCode;
-            
-            const countrySection = document.createElement('div');
-            countrySection.className = 'country-section mb-4 border rounded p-3';
-            countrySection.innerHTML = `
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h6 class="mb-0 fw-bold text-primary">
-                        <i class="fas fa-flag me-2"></i>${countryName} (${countryCode})
-                    </h6>
-                    <div class="badge-group">
-                        <span class="badge bg-info me-2">Total Required: ${headcount}</span>
-                        <span class="badge bg-secondary" id="remaining-${countryCode}">Remaining: ${headcount}</span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label class="form-label">Lead Time to Hire (Days)</label>
-                        <input type="number" class="form-control" id="lead_time_${countryCode}" min="1" placeholder="Enter days">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Weekly Hiring Capacity</label>
-                        <input type="number" class="form-control country-allocation" 
-                               id="weekly_capacity_${countryCode}" 
-                               data-country="${countryCode}" 
-                               data-total="${headcount}"
-                               min="0" max="${headcount}" 
-                               placeholder="Enter weekly capacity">
-                    </div>
-                </div>
-                <div class="mt-2">
-                    <small class="text-muted">
-                        <i class="fas fa-info-circle me-1"></i>
-                        Weekly capacity cannot exceed total required headcount of ${headcount}
-                    </small>
-                </div>
-            `;
-            
-            tableContainer.appendChild(countrySection);
+        // Get country codes and build headers
+        const countryCodes = Object.keys(countryHeadcounts);
+        countryCodes.forEach(countryCode => {
+            const countryHeader = document.createElement('th');
+            countryHeader.className = 'country-header text-center';
+            countryHeader.textContent = countryNames[countryCode] || countryCode;
+            headerRow.appendChild(countryHeader);
         });
         
-        // Add event listeners for real-time validation
-        addAllocationValidation(countryHeadcounts);
+        // Build table rows
+        const metrics = [
+            { 
+                label: 'SITE LOCATION', 
+                type: 'select',
+                options: ['Select Site', '3 Sites', '5 Sites', '10 Sites'],
+                id: 'site_location'
+            },
+            { 
+                label: 'AGENT PROFILE', 
+                type: 'select',
+                options: ['Select Tier', 'Tier 1', 'Tier 2', 'Tier 3'],
+                id: 'agent_profile'
+            },
+            { 
+                label: 'LEAD TIME (DAYS)', 
+                type: 'number',
+                placeholder: '0',
+                id: 'lead_time'
+            },
+            { 
+                label: 'WEEKLY CAPACITY', 
+                type: 'number',
+                placeholder: '0',
+                id: 'weekly_capacity'
+            },
+            { 
+                label: 'MONTHLY CAPACITY', 
+                type: 'number',
+                placeholder: '0',
+                id: 'monthly_capacity'
+            }
+        ];
+        
+        metrics.forEach(metric => {
+            const row = document.createElement('tr');
+            
+            // Metrics column (leftmost)
+            const metricsCell = document.createElement('td');
+            metricsCell.className = 'text-center fw-semibold bg-light';
+            metricsCell.innerHTML = `
+                <div class="d-flex align-items-center justify-content-center">
+                    <i class="fas fa-building me-2" style="color: #6c757d;"></i>
+                    <div>
+                        <small class="d-block fw-bold text-uppercase" style="font-size: 0.65rem; line-height: 1.2;">
+                            ${metric.label}
+                        </small>
+                        ${metric.label.includes('SITE') ? '<span class="badge bg-primary mt-1">Site 1</span>' : ''}
+                    </div>
+                </div>
+            `;
+            row.appendChild(metricsCell);
+            
+            // Country columns
+            countryCodes.forEach(countryCode => {
+                const countryCell = document.createElement('td');
+                countryCell.className = 'text-center p-2';
+                
+                if (metric.type === 'select') {
+                    const optionsHtml = metric.options.map(option => 
+                        `<option value="${option}" ${option === metric.options[0] ? 'selected' : ''}>${option}</option>`
+                    ).join('');
+                    
+                    countryCell.innerHTML = `
+                        <select class="form-select form-select-sm" name="${metric.id}_${countryCode}" style="min-width: 120px;">
+                            ${optionsHtml}
+                        </select>
+                    `;
+                } else if (metric.type === 'number') {
+                    countryCell.innerHTML = `
+                        <input type="number" 
+                               class="form-control form-control-sm text-center" 
+                               name="${metric.id}_${countryCode}"
+                               placeholder="${metric.placeholder}"
+                               min="0"
+                               value="0"
+                               style="min-width: 80px;">
+                    `;
+                }
+                
+                row.appendChild(countryCell);
+            });
+            
+            tableBody.appendChild(row);
+        });
     }
     
     // Show message when no countries are selected
     function showNoCountriesMessage() {
-        const tableContainer = document.querySelector('.sites-table-container');
-        if (!tableContainer) return;
+        const tableBody = document.getElementById('sites-table-body');
+        if (!tableBody) return;
         
-        tableContainer.innerHTML = `
-            <div class="alert alert-warning text-center">
-                <i class="fas fa-exclamation-triangle me-2"></i>
-                <strong>No Countries Selected</strong><br>
-                Please go back to <strong>Location Details</strong> step and select countries with headcount distribution first.
-            </div>
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="100%" class="text-center p-4">
+                    <div class="alert alert-warning mb-0">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>No Countries Selected</strong><br>
+                        Please go back to <strong>Location Details</strong> step and select countries with headcount distribution first.
+                    </div>
+                </td>
+            </tr>
         `;
-    }
-    
-    // Add validation for allocation inputs
-    function addAllocationValidation(countryHeadcounts) {
-        document.querySelectorAll('.country-allocation').forEach(input => {
-            input.addEventListener('input', function() {
-                const countryCode = this.getAttribute('data-country');
-                const totalRequired = parseInt(this.getAttribute('data-total'));
-                const allocated = parseInt(this.value) || 0;
-                const remaining = totalRequired - allocated;
-                
-                const remainingBadge = document.getElementById(`remaining-${countryCode}`);
-                if (remainingBadge) {
-                    remainingBadge.textContent = `Remaining: ${remaining}`;
-                    
-                    // Update badge color based on remaining
-                    remainingBadge.className = 'badge';
-                    if (remaining < 0) {
-                        remainingBadge.classList.add('bg-danger');
-                        this.classList.add('is-invalid');
-                    } else if (remaining === 0) {
-                        remainingBadge.classList.add('bg-success');
-                        this.classList.remove('is-invalid');
-                    } else {
-                        remainingBadge.classList.add('bg-secondary');
-                        this.classList.remove('is-invalid');
-                    }
-                }
-            });
-        });
     }
     
     // Update sites table based on selected countries (recruitment specific)
