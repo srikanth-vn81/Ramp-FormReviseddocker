@@ -934,34 +934,99 @@ document.addEventListener('DOMContentLoaded', function() {
         // Build all HTML content at once
         let htmlContent = '';
         
-        for (let siteNum = 1; siteNum <= sitesCount; siteNum++) {
-            // Site header row
-            htmlContent += `
-                <tr>
-                    <td colspan="${countryCodes.length + 1}" class="text-center fw-semibold bg-info text-white">
-                        <div class="d-flex align-items-center justify-content-center">
-                            <i class="fas fa-building me-2"></i>
-                            <span class="fw-bold">Site ${siteNum}</span>
-                        </div>
-                    </td>
-                </tr>
-            `;
-            
-            // Metrics rows - FIXED: Filter based on fullConfig parameter
-            const allMetrics = [
-                { label: 'SITE LOCATION', type: 'site_location' },
-                { label: 'AGENT PROFILE', type: 'agent_profile' },
+        if (fullConfig) {
+            // When "Yes" is selected, show full site configuration with site headers
+            for (let siteNum = 1; siteNum <= sitesCount; siteNum++) {
+                // Site header row
+                htmlContent += `
+                    <tr>
+                        <td colspan="${countryCodes.length + 1}" class="text-center fw-semibold bg-info text-white">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <i class="fas fa-building me-2"></i>
+                                <span class="fw-bold">Site ${siteNum}</span>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                
+                // Metrics rows - FIXED: Filter based on fullConfig parameter
+                const allMetrics = [
+                    { label: 'SITE LOCATION', type: 'site_location' },
+                    { label: 'AGENT PROFILE', type: 'agent_profile' },
+                    { label: 'LEAD TIME (DAYS)', type: 'lead_time' },
+                    { label: 'WEEKLY CAPACITY', type: 'weekly_capacity' },
+                    { label: 'MONTHLY CAPACITY', type: 'monthly_capacity' }
+                ];
+                
+                // When fullConfig is false (No selected), only show capacity fields
+                const metrics = fullConfig ? allMetrics : allMetrics.filter(m => 
+                    m.type !== 'site_location' && m.type !== 'agent_profile'
+                );
+                
+                metrics.forEach(metric => {
+                    htmlContent += `
+                        <tr>
+                            <td class="text-center fw-semibold bg-light">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-tag me-2" style="color: #6c757d; font-size: 0.8rem;"></i>
+                                    <div>
+                                        <small class="d-block fw-bold text-uppercase" style="font-size: 0.65rem; line-height: 1.2;">
+                                            ${metric.label}
+                                        </small>
+                                    </div>
+                                </div>
+                            </td>
+                    `;
+                    
+                    // Country columns
+                    countryCodes.forEach(countryCode => {
+                        if (metric.type === 'site_location') {
+                            htmlContent += `
+                                <td class="text-center p-2">
+                                    <select class="form-select form-select-sm" 
+                                            name="site_location_${countryCode}_site${siteNum}" 
+                                            style="min-width: 120px;">
+                                        ${siteOptionsCache[countryCode]}
+                                    </select>
+                                </td>
+                            `;
+                        } else if (metric.type === 'agent_profile') {
+                            htmlContent += `
+                                <td class="text-center p-2">
+                                    <select class="form-select form-select-sm" 
+                                            name="agent_profile_${countryCode}_site${siteNum}" 
+                                            style="min-width: 120px;">
+                                        ${agentProfileOptions}
+                                    </select>
+                                </td>
+                            `;
+                        } else {
+                            htmlContent += `
+                                <td class="text-center p-2">
+                                    <input type="number" 
+                                           class="form-control form-control-sm text-center" 
+                                           name="${metric.type}_${countryCode}_site${siteNum}"
+                                           placeholder="0"
+                                           min="0"
+                                           value="0"
+                                           style="min-width: 80px;">
+                                </td>
+                            `;
+                        }
+                    });
+                    
+                    htmlContent += '</tr>';
+                });
+            }
+        } else {
+            // When "No" is selected, show only capacity fields WITHOUT site headers
+            const capacityMetrics = [
                 { label: 'LEAD TIME (DAYS)', type: 'lead_time' },
                 { label: 'WEEKLY CAPACITY', type: 'weekly_capacity' },
                 { label: 'MONTHLY CAPACITY', type: 'monthly_capacity' }
             ];
             
-            // When fullConfig is false (No selected), only show capacity fields
-            const metrics = fullConfig ? allMetrics : allMetrics.filter(m => 
-                m.type !== 'site_location' && m.type !== 'agent_profile'
-            );
-            
-            metrics.forEach(metric => {
+            capacityMetrics.forEach(metric => {
                 htmlContent += `
                     <tr>
                         <td class="text-center fw-semibold bg-light">
@@ -978,39 +1043,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Country columns
                 countryCodes.forEach(countryCode => {
-                    if (metric.type === 'site_location') {
-                        htmlContent += `
-                            <td class="text-center p-2">
-                                <select class="form-select form-select-sm" 
-                                        name="site_location_${countryCode}_site${siteNum}" 
-                                        style="min-width: 120px;">
-                                    ${siteOptionsCache[countryCode]}
-                                </select>
-                            </td>
-                        `;
-                    } else if (metric.type === 'agent_profile') {
-                        htmlContent += `
-                            <td class="text-center p-2">
-                                <select class="form-select form-select-sm" 
-                                        name="agent_profile_${countryCode}_site${siteNum}" 
-                                        style="min-width: 120px;">
-                                    ${agentProfileOptions}
-                                </select>
-                            </td>
-                        `;
-                    } else {
-                        htmlContent += `
-                            <td class="text-center p-2">
-                                <input type="number" 
-                                       class="form-control form-control-sm text-center" 
-                                       name="${metric.type}_${countryCode}_site${siteNum}"
-                                       placeholder="0"
-                                       min="0"
-                                       value="0"
-                                       style="min-width: 80px;">
-                            </td>
-                        `;
-                    }
+                    htmlContent += `
+                        <td class="text-center p-2">
+                            <input type="number" 
+                                   class="form-control form-control-sm text-center" 
+                                   name="${metric.type}_${countryCode}"
+                                   placeholder="0"
+                                   min="0"
+                                   value="0"
+                                   style="min-width: 80px;">
+                        </td>
+                    `;
                 });
                 
                 htmlContent += '</tr>';
@@ -1145,45 +1188,63 @@ document.addEventListener('DOMContentLoaded', function() {
                 sites.map(s => `<option value="${s.value}">${s.text}</option>`).join('');
         };
         
-        // Build lightweight table
-        for (let site = 1; site <= maxSites; site++) {
-            // Site header
-            html += `<tr><td colspan="${countryCodes.length + 1}" class="bg-info text-white text-center fw-bold">Site ${site}</td></tr>`;
-            
-            // Simple rows - FIXED: Filter based on fullConfig parameter
-            const allRows = [
-                {label: 'Location', field: 'site_location', type: 'select'},
-                {label: 'Profile', field: 'agent_profile', type: 'profile'},
+        if (fullConfig) {
+            // Build full table with site headers when "Yes" is selected
+            for (let site = 1; site <= maxSites; site++) {
+                // Site header
+                html += `<tr><td colspan="${countryCodes.length + 1}" class="bg-info text-white text-center fw-bold">Site ${site}</td></tr>`;
+                
+                // Simple rows - FIXED: Filter based on fullConfig parameter
+                const allRows = [
+                    {label: 'Location', field: 'site_location', type: 'select'},
+                    {label: 'Profile', field: 'agent_profile', type: 'profile'},
+                    {label: 'Lead Time', field: 'lead_time', type: 'number'},
+                    {label: 'Weekly', field: 'weekly_capacity', type: 'number'},
+                    {label: 'Monthly', field: 'monthly_capacity', type: 'number'}
+                ];
+                
+                // When fullConfig is false (No selected), only show capacity fields
+                const rows = fullConfig ? allRows : allRows.filter(r => 
+                    r.field !== 'site_location' && r.field !== 'agent_profile'
+                );
+                
+                rows.forEach(row => {
+                    html += `<tr><td class="bg-light fw-semibold">${row.label}</td>`;
+                    
+                    countryCodes.forEach(code => {
+                        const count = countrySiteCounts[code] || 1;
+                        if (site <= count) {
+                            // Active site
+                            if (row.type === 'select') {
+                                html += `<td><select name="${row.field}_${code}_site${site}" class="form-select form-select-sm">${getSiteOptions(code)}</select></td>`;
+                            } else if (row.type === 'profile') {
+                                html += `<td><select name="${row.field}_${code}_site${site}" class="form-select form-select-sm">
+                                    <option>Select Tier</option><option>Tier 1</option><option>Tier 2</option><option>Tier 3</option>
+                                </select></td>`;
+                            } else {
+                                html += `<td><input type="number" name="${row.field}_${code}_site${site}" class="form-control form-control-sm" placeholder="0" min="0"></td>`;
+                            }
+                        } else {
+                            // Blank site
+                            html += '<td class="bg-light text-muted text-center">-</td>';
+                        }
+                    });
+                    html += '</tr>';
+                });
+            }
+        } else {
+            // Build simplified table WITHOUT site headers when "No" is selected
+            const capacityRows = [
                 {label: 'Lead Time', field: 'lead_time', type: 'number'},
                 {label: 'Weekly', field: 'weekly_capacity', type: 'number'},
                 {label: 'Monthly', field: 'monthly_capacity', type: 'number'}
             ];
             
-            // When fullConfig is false (No selected), only show capacity fields
-            const rows = fullConfig ? allRows : allRows.filter(r => 
-                r.field !== 'site_location' && r.field !== 'agent_profile'
-            );
-            
-            rows.forEach(row => {
+            capacityRows.forEach(row => {
                 html += `<tr><td class="bg-light fw-semibold">${row.label}</td>`;
                 
                 countryCodes.forEach(code => {
-                    const count = countrySiteCounts[code] || 1;
-                    if (site <= count) {
-                        // Active site
-                        if (row.type === 'select') {
-                            html += `<td><select name="${row.field}_${code}_site${site}" class="form-select form-select-sm">${getSiteOptions(code)}</select></td>`;
-                        } else if (row.type === 'profile') {
-                            html += `<td><select name="${row.field}_${code}_site${site}" class="form-select form-select-sm">
-                                <option>Select Tier</option><option>Tier 1</option><option>Tier 2</option><option>Tier 3</option>
-                            </select></td>`;
-                        } else {
-                            html += `<td><input type="number" name="${row.field}_${code}_site${site}" class="form-control form-control-sm" placeholder="0" min="0"></td>`;
-                        }
-                    } else {
-                        // Blank site
-                        html += '<td class="bg-light text-muted text-center">-</td>';
-                    }
+                    html += `<td><input type="number" name="${row.field}_${code}" class="form-control form-control-sm" placeholder="0" min="0"></td>`;
                 });
                 html += '</tr>';
             });
