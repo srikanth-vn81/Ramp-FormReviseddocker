@@ -1,0 +1,51 @@
+<h5 class="mb-3"><i class="fas fa-users me-2"></i>Recruitment</h5>
+
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <label for="recruitment_lead_time" class="form-label fw-semibold">Lead Time to Hire (Days)</label>
+        {{ form.recruitment_lead_time(class="form-control") }}
+    </div>
+    
+    <div class="col-md-4 mb-3">
+        <label for="hiring_capacity_weekly" class="form-label fw-semibold">Weekly Hiring Capacity</label>
+        {{ form.hiring_capacity_weekly(class="form-control") }}
+    </div>
+    
+    <div class="col-md-4 mb-3">
+        <label for="hiring_capacity_monthly" class="form-label fw-semibold">Monthly Hiring Capacity</label>
+        {{ form.hiring_capacity_monthly(class="form-control") }}
+    </div>
+</div>
+
+<!-- Country Headcount Summary -->
+<div class="card border-0 shadow-sm mt-4">
+    <div class="card-header bg-primary text-white">
+        <h6 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Country Headcount Summary</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Country</th>
+                        <th class="text-center">Headcount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>India</td>
+                        <td class="text-center"><span class="badge bg-primary">100</span></td>
+                    </tr>
+                    <tr>
+                        <td>Philippines</td>
+                        <td class="text-center"><span class="badge bg-primary">50</span></td>
+                    </tr>
+                    <tr>
+                        <td>Trinidad and Tobago</td>
+                        <td class="text-center"><span class="badge bg-primary">50</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+<h5 class="mb-3"><i class="fas fa-graduation-cap me-2"></i>Training Support</h5>
+
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <label for="client_trainer" class="form-label fw-semibold">Client Trainers</label>
+        {{ form.client_trainer(class="form-control") }}
+    </div>
+    
+    <div class="col-md-4 mb-3">
+        <label for="internal_trainer" class="form-label fw-semibold">Internal Trainers</label>
+        {{ form.internal_trainer(class="form-control") }}
+    </div>
+    
+    <div class="col-md-4 mb-3">
+        <label for="total_trainers" class="form-label fw-semibold">Total Trainers</label>
+        {{ form.total_trainers(class="form-control", readonly=true) }}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <label for="training_duration" class="form-label fw-semibold">Training Duration</label>
+        <select class="form-select" name="training_duration">
+            <option value="">Select Duration</option>
+            <option value="1-week">1 Week</option>
+            <option value="2-weeks">2 Weeks</option>
+            <option value="3-weeks">3 Weeks</option>
+            <option value="4-weeks">4 Weeks</option>
+        </select>
+    </div>
+    
+    <div class="col-md-6 mb-3">
+        <label for="batch_size" class="form-label fw-semibold">Batch Size</label>
+        {{ form.batch_size(class="form-control") }}
+    </div>
+</div>

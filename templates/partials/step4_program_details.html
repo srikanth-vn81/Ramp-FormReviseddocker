@@ -1,0 +1,61 @@
+<h5 class="mb-3"><i class="fas fa-cogs me-2"></i>Program Details</h5>
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <label for="lob_count" class="form-label fw-semibold">Number of LOBs</label>
+        {{ form.lob_count(class="form-control") }}
+    </div>
+    
+    <div class="col-md-6 mb-3">
+        <label for="languages_supported" class="form-label fw-semibold">Languages Supported</label>
+        <select class="form-select" name="languages_supported">
+            <option value="">Select Language Support</option>
+            <option value="english">English Only</option>
+            <option value="multilingual">Multilingual</option>
+        </select>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 mb-3">
+        <label class="form-label fw-semibold">Channel Support</label>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="voice_inbound" id="voice_inbound">
+                    <label class="form-check-label" for="voice_inbound">Voice Inbound</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="voice_outbound" id="voice_outbound">
+                    <label class="form-check-label" for="voice_outbound">Voice Outbound</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="chat" id="chat">
+                    <label class="form-check-label" for="chat">Chat</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="email" id="email">
+                    <label class="form-check-label" for="email">Email</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="back_office" id="back_office">
+                    <label class="form-check-label" for="back_office">Back Office</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="social_sms" id="social_sms">
+                    <label class="form-check-label" for="social_sms">Social/SMS</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

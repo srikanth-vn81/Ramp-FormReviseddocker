@@ -1,0 +1,18 @@
+<h5 class="mb-3"><i class="fas fa-calculator me-2"></i>Operational Assumptions</h5>
+
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <label for="supervisor_ratio" class="form-label fw-semibold">Supervisor Ratio</label>
+        {{ form.supervisor_ratio(class="form-control", placeholder="1:15") }}
+    </div>
+    
+    <div class="col-md-4 mb-3">
+        <label for="qa_ratio" class="form-label fw-semibold">QA Ratio</label>
+        {{ form.qa_ratio(class="form-control", placeholder="1:20") }}
+    </div>
+    
+    <div class="col-md-4 mb-3">
+        <label for="trainer_ratio" class="form-label fw-semibold">Trainer Ratio</label>
+        {{ form.trainer_ratio(class="form-control", placeholder="1:12") }}
+    </div>
+</div>
