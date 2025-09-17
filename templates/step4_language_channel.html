@@ -170,25 +170,17 @@
             <div class="card-body p-4">
                 
                 <!-- Language Support Section -->
-                <div class="row mb-4">
-                    <div class="col-12">
-                        <div class="card border shadow-sm">
-                            <div class="card-header border-bottom py-2">
-                                <h6 class="card-title mb-0">
-                                    <i class="fas fa-globe me-2"></i>Languages Supported
-                                </h6>
-                            </div>
-                            <div class="card-body py-3">
-                                <div class="row g-3">
-                                    <div class="col-md-6" style="padding-left: 0.75rem;">
-                                        {{ form.languages_supported(class="form-select", id="languages-supported") }}
-                                    </div>
-                                    <div class="col-md-6" id="specify-languages-container" style="display: none;">
-                                        <label class="form-label mb-2">Specify the Languages</label>
-                                        {{ form.specify_languages(class="form-control", id="specify-languages", placeholder="e.g., English, Spanish, French") }}
-                                    </div>
-                                </div>
-                            </div>
+                <div class="mb-4">
+                    <h6 class="mb-3 fw-bold text-dark">
+                        <i class="fas fa-globe me-2"></i>Languages Supported
+                    </h6>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            {{ form.languages_supported(class="form-select", id="languages-supported") }}
+                        </div>
+                        <div class="col-md-6" id="specify-languages-container" style="display: none;">
+                            <label class="form-label mb-2">Specify the Languages</label>
+                            {{ form.specify_languages(class="form-control", id="specify-languages", placeholder="e.g., English, Spanish, French") }}
                         </div>
                     </div>
                 </div>
@@ -199,99 +191,77 @@
                 <div class="channel-support">
                     
                     <!-- Voice Channels -->
-                    <div class="row mb-4">
-                        <div class="col-12">
-                            <div class="card border shadow-sm">
-                                <div class="card-header border-bottom py-2">
-                                    <h6 class="card-title mb-0">
-                                        <i class="fas fa-phone me-2"></i>Voice Channels
-                                    </h6>
+                    <div class="mb-4">
+                        <h6 class="mb-3 fw-bold text-dark">
+                            <i class="fas fa-phone me-2"></i>Voice Channels
+                        </h6>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    {{ form.voice_inbound(class="form-check-input channel-checkbox", id="voice-inbound") }}
+                                    <label class="form-check-label" for="voice-inbound">
+                                        <span class="icon-wrap"><i class="fas fa-phone-volume text-success"></i></span>Voice - Inbound
+                                    </label>
                                 </div>
-                                <div class="card-body py-3">
-                                    <div class="row g-3">
-                                        <div class="col-md-6">
-                                            <div class="form-check">
-                                                {{ form.voice_inbound(class="form-check-input channel-checkbox", id="voice-inbound") }}
-                                                <label class="form-check-label" for="voice-inbound">
-                                                    <span class="icon-wrap"><i class="fas fa-phone-volume text-success"></i></span>Voice - Inbound
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-check">
-                                                {{ form.voice_outbound(class="form-check-input channel-checkbox", id="voice-outbound") }}
-                                                <label class="form-check-label" for="voice-outbound">
-                                                    <span class="icon-wrap"><i class="fas fa-phone-square-alt text-primary"></i></span>Voice - Outbound
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    {{ form.voice_outbound(class="form-check-input channel-checkbox", id="voice-outbound") }}
+                                    <label class="form-check-label" for="voice-outbound">
+                                        <span class="icon-wrap"><i class="fas fa-phone-square-alt text-primary"></i></span>Voice - Outbound
+                                    </label>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Digital Channels -->
-                    <div class="row mb-4">
-                        <div class="col-12">
-                            <div class="card border shadow-sm">
-                                <div class="card-header border-bottom py-2">
-                                    <h6 class="card-title mb-0">
-                                        <i class="fas fa-desktop me-2"></i>Digital Channels
-                                    </h6>
+                    <div class="mb-4">
+                        <h6 class="mb-3 fw-bold text-dark">
+                            <i class="fas fa-desktop me-2"></i>Digital Channels
+                        </h6>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    {{ form.chat(class="form-check-input channel-checkbox", id="chat") }}
+                                    <label class="form-check-label" for="chat">
+                                        <span class="icon-wrap"><i class="fas fa-comments text-info"></i></span>Chat
+                                    </label>
                                 </div>
-                                <div class="card-body py-3">
-                                    <div class="row g-3">
-                                        <div class="col-md-6">
-                                            <div class="form-check">
-                                                {{ form.chat(class="form-check-input channel-checkbox", id="chat") }}
-                                                <label class="form-check-label" for="chat">
-                                                    <span class="icon-wrap"><i class="fas fa-comments text-info"></i></span>Chat
-                                                </label>
-                                            </div>
-                                            <div class="form-check">
-                                                {{ form.email(class="form-check-input channel-checkbox", id="email") }}
-                                                <label class="form-check-label" for="email">
-                                                    <span class="icon-wrap"><i class="fas fa-envelope text-warning"></i></span>Email
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-check">
-                                                {{ form.social_sms(class="form-check-input channel-checkbox", id="social-sms") }}
-                                                <label class="form-check-label" for="social-sms">
-                                                    <span class="icon-wrap"><i class="fas fa-share-alt text-danger"></i></span>Social Media/SMS
-                                                </label>
-                                            </div>
-                                            <div class="form-check">
-                                                {{ form.back_office(class="form-check-input channel-checkbox", id="back-office") }}
-                                                <label class="form-check-label" for="back-office">
-                                                    <span class="icon-wrap"><i class="fas fa-cogs text-secondary"></i></span>Back Office
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="form-check">
+                                    {{ form.email(class="form-check-input channel-checkbox", id="email") }}
+                                    <label class="form-check-label" for="email">
+                                        <span class="icon-wrap"><i class="fas fa-envelope text-warning"></i></span>Email
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    {{ form.social_sms(class="form-check-input channel-checkbox", id="social-sms") }}
+                                    <label class="form-check-label" for="social-sms">
+                                        <span class="icon-wrap"><i class="fas fa-share-alt text-danger"></i></span>Social Media/SMS
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    {{ form.back_office(class="form-check-input channel-checkbox", id="back-office") }}
+                                    <label class="form-check-label" for="back-office">
+                                        <span class="icon-wrap"><i class="fas fa-cogs text-secondary"></i></span>Back Office
+                                    </label>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Others Section -->
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card border shadow-sm">
-                                <div class="card-body p-3">
-                                    <div class="form-check">
-                                        {{ form.others(class="form-check-input", id="others-toggle", onchange="toggleOthersText()") }}
-                                        <label class="form-check-label" for="others-toggle">
-                                            <span class="icon-wrap"><i class="fas fa-plus-circle text-muted"></i></span>Others
-                                        </label>
-                                    </div>
-                                    <div id="others-text-container" style="display: none;" class="mt-3">
-                                        {{ form.others_text(class="form-control", id="others-text", placeholder="Specify other channels...") }}
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            {{ form.others(class="form-check-input", id="others-toggle", onchange="toggleOthersText()") }}
+                            <label class="form-check-label" for="others-toggle">
+                                <span class="icon-wrap"><i class="fas fa-plus-circle text-muted"></i></span>Others
+                            </label>
+                        </div>
+                        <div id="others-text-container" style="display: none;" class="mt-3">
+                            {{ form.others_text(class="form-control", id="others-text", placeholder="Specify other channels...") }}
                         </div>
                     </div>
                 </div>
