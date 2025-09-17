@@ -112,7 +112,7 @@
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border-radius: 15px;
     color: white;
-    min-width: 220px;
+    min-width: 280px;
     transition: all 0.3s ease;
     cursor: pointer;
 }
@@ -123,7 +123,7 @@
 }
 
 .country-card .card-body {
-    padding: 12px 18px;
+    padding: 8px 24px;
 }
 
 .country-name {
@@ -757,8 +757,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 card.className = 'card country-card border-0 shadow';
                 card.innerHTML = `
                     <div class="card-body text-center">
-                        <div class="country-flag mb-2" style="font-size: 2rem;">${flag}</div>
-                        <div class="headcount-badge">${headcount || 0}</div>
+                        <div class="country-flag mb-1" style="font-size: 1.3rem;">${flag}</div>
+                        <div class="headcount-badge" style="font-size: 1.1rem;">${headcount || 0}</div>
                     </div>
                 `;
                 cardsContainer.appendChild(card);
