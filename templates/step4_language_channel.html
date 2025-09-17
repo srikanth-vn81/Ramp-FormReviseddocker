@@ -61,140 +61,173 @@
             </div>
             <div class="card-body">
                 <div class="row g-3">
-                    <div class="col-md-6">
+                    <div class="col-12">
                         <label class="form-label fw-semibold">
-                            <i class="fas fa-hashtag me-1"></i>LOB Count
+                            <i class="fas fa-edit me-1"></i>LOB Names
                         </label>
-                        {{ form.lob_count(class="form-control", placeholder="Enter number of LOBs") }}
+                        <input type="text" class="form-control form-control-lg" 
+                               id="lob-names-input" 
+                               placeholder="Type LOB names separated by commas (e.g., Customer Service, Technical Support, Sales)"
+                               style="border: 2px solid #e3e6f0; border-radius: 0.5rem; padding: 0.75rem; font-size: 1rem;">
+                        <small class="form-text text-muted mt-2">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Enter LOB names separated by commas. They will appear as checkboxes below.
+                        </small>
                     </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">
-                            <i class="fas fa-list-ul me-1"></i>LOB Names
+                </div>
+                
+                <!-- LOB Checkboxes Display -->
+                <div class="row mt-4" id="lob-checkboxes-section" style="display: none;">
+                    <div class="col-12">
+                        <label class="form-label fw-semibold text-primary">
+                            <i class="fas fa-check-square me-1"></i>Select LOBs for Language & Channel Support
                         </label>
-                        <div class="dropdown">
-                            <button class="form-control dropdown-toggle d-flex justify-content-between align-items-center text-start" 
-                                    type="button" 
-                                    id="lob-dropdown-toggle" 
-                                    data-bs-toggle="dropdown" 
-                                    aria-expanded="false"
-                                    style="background: #ffffff; border: 1px solid #ced4da; border-radius: 0.375rem; min-height: 38px; box-shadow: none;">
-                                <span id="lob-selection-display" style="color: #6c757d; font-weight: 400;">Select LOBs...</span>
-                                <i class="fas fa-chevron-down" style="color: #6c757d; font-size: 12px;"></i>
-                            </button>
-                            <ul class="dropdown-menu w-100 shadow-lg border-0" id="lob-dropdown-menu" style="max-height: 280px; overflow-y: auto; border-radius: 0.5rem; margin-top: 4px;">
-                                <li class="px-3 py-2 border-bottom" style="background: #f8f9fa;">
-                                    <div class="input-group input-group-sm">
-                                        <span class="input-group-text bg-white border-end-0" style="border-color: #e3e6f0;">
-                                            <i class="fas fa-search text-muted" style="font-size: 12px;"></i>
-                                        </span>
-                                        <input type="text" class="form-control border-start-0" placeholder="Search LOBs..." id="lob-search" style="border-color: #e3e6f0; box-shadow: none;">
-                                    </div>
-                                </li>
-                                <li class="lob-option" data-value="Customer Service">
-                                    <div class="dropdown-item py-2 px-3" style="transition: all 0.2s ease;">
-                                        <div class="form-check m-0">
-                                            <input class="form-check-input lob-checkbox" type="checkbox" value="Customer Service" id="lob-1" style="margin-top: 2px;">
-                                            <label class="form-check-label w-100 ps-2" for="lob-1" style="font-weight: 500; color: #495057; cursor: pointer;">
-                                                <i class="fas fa-headset me-2 text-primary" style="font-size: 14px;"></i>Customer Service
-                                            </label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="lob-option" data-value="Technical Support">
-                                    <div class="dropdown-item py-2 px-3" style="transition: all 0.2s ease;">
-                                        <div class="form-check m-0">
-                                            <input class="form-check-input lob-checkbox" type="checkbox" value="Technical Support" id="lob-2" style="margin-top: 2px;">
-                                            <label class="form-check-label w-100 ps-2" for="lob-2" style="font-weight: 500; color: #495057; cursor: pointer;">
-                                                <i class="fas fa-tools me-2 text-success" style="font-size: 14px;"></i>Technical Support
-                                            </label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="lob-option" data-value="Sales">
-                                    <div class="dropdown-item py-2 px-3" style="transition: all 0.2s ease;">
-                                        <div class="form-check m-0">
-                                            <input class="form-check-input lob-checkbox" type="checkbox" value="Sales" id="lob-3" style="margin-top: 2px;">
-                                            <label class="form-check-label w-100 ps-2" for="lob-3" style="font-weight: 500; color: #495057; cursor: pointer;">
-                                                <i class="fas fa-chart-line me-2 text-info" style="font-size: 14px;"></i>Sales
-                                            </label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="lob-option" data-value="Billing">
-                                    <div class="dropdown-item py-2 px-3" style="transition: all 0.2s ease;">
-                                        <div class="form-check m-0">
-                                            <input class="form-check-input lob-checkbox" type="checkbox" value="Billing" id="lob-4" style="margin-top: 2px;">
-                                            <label class="form-check-label w-100 ps-2" for="lob-4" style="font-weight: 500; color: #495057; cursor: pointer;">
-                                                <i class="fas fa-file-invoice-dollar me-2 text-warning" style="font-size: 14px;"></i>Billing
-                                            </label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="lob-option" data-value="Collections">
-                                    <div class="dropdown-item py-2 px-3" style="transition: all 0.2s ease;">
-                                        <div class="form-check m-0">
-                                            <input class="form-check-input lob-checkbox" type="checkbox" value="Collections" id="lob-5" style="margin-top: 2px;">
-                                            <label class="form-check-label w-100 ps-2" for="lob-5" style="font-weight: 500; color: #495057; cursor: pointer;">
-                                                <i class="fas fa-hand-holding-usd me-2 text-danger" style="font-size: 14px;"></i>Collections
-                                            </label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="lob-option" data-value="Back Office Operations">
-                                    <div class="dropdown-item py-2 px-3" style="transition: all 0.2s ease;">
-                                        <div class="form-check m-0">
-                                            <input class="form-check-input lob-checkbox" type="checkbox" value="Back Office Operations" id="lob-6" style="margin-top: 2px;">
-                                            <label class="form-check-label w-100 ps-2" for="lob-6" style="font-weight: 500; color: #495057; cursor: pointer;">
-                                                <i class="fas fa-cogs me-2 text-secondary" style="font-size: 14px;"></i>Back Office Operations
-                                            </label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="lob-option" data-value="Quality Assurance">
-                                    <div class="dropdown-item py-2 px-3" style="transition: all 0.2s ease;">
-                                        <div class="form-check m-0">
-                                            <input class="form-check-input lob-checkbox" type="checkbox" value="Quality Assurance" id="lob-7" style="margin-top: 2px;">
-                                            <label class="form-check-label w-100 ps-2" for="lob-7" style="font-weight: 500; color: #495057; cursor: pointer;">
-                                                <i class="fas fa-clipboard-check me-2 text-primary" style="font-size: 14px;"></i>Quality Assurance
-                                            </label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="lob-option" data-value="Retention">
-                                    <div class="dropdown-item py-2 px-3" style="transition: all 0.2s ease;">
-                                        <div class="form-check m-0">
-                                            <input class="form-check-input lob-checkbox" type="checkbox" value="Retention" id="lob-8" style="margin-top: 2px;">
-                                            <label class="form-check-label w-100 ps-2" for="lob-8" style="font-weight: 500; color: #495057; cursor: pointer;">
-                                                <i class="fas fa-user-shield me-2 text-success" style="font-size: 14px;"></i>Retention
-                                            </label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="lob-option" data-value="Fraud Prevention">
-                                    <div class="dropdown-item py-2 px-3" style="transition: all 0.2s ease;">
-                                        <div class="form-check m-0">
-                                            <input class="form-check-input lob-checkbox" type="checkbox" value="Fraud Prevention" id="lob-9" style="margin-top: 2px;">
-                                            <label class="form-check-label w-100 ps-2" for="lob-9" style="font-weight: 500; color: #495057; cursor: pointer;">
-                                                <i class="fas fa-shield-alt me-2 text-danger" style="font-size: 14px;"></i>Fraud Prevention
-                                            </label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="lob-option" data-value="Others">
-                                    <div class="dropdown-item py-2 px-3" style="transition: all 0.2s ease;">
-                                        <div class="form-check m-0">
-                                            <input class="form-check-input lob-checkbox" type="checkbox" value="Others" id="lob-10" style="margin-top: 2px;">
-                                            <label class="form-check-label w-100 ps-2" for="lob-10" style="font-weight: 500; color: #495057; cursor: pointer;">
-                                                <i class="fas fa-ellipsis-h me-2 text-muted" style="font-size: 14px;"></i>Others
-                                            </label>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                            <!-- Hidden select for form submission -->
-                            {{ form.lob_names(class="d-none", multiple=true, id="lob-names-select") }}
+                        <div class="card border-0 shadow-sm" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
+                            <div class="card-body p-4">
+                                <div id="lob-checkboxes-container" class="row g-3">
+                                    <!-- Dynamic checkboxes will be generated here -->
+                                </div>
+                            </div>
                         </div>
-                        <small class="form-text text-muted" id="lob-selection-info">Select up to <span id="max-lob-count">0</span> LOBs</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Static Language & Channel Support Section -->
+<div class="row mt-4" id="language-channel-section" style="display: none;">
+    <div class="col-lg-8 mx-auto">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-primary text-white position-relative overflow-hidden">
+                <div class="card-header-bg-effect"></div>
+                <div class="d-flex justify-content-between align-items-center position-relative">
+                    <h6 class="card-title mb-0 fw-bold">
+                        <i class="fas fa-cog me-2"></i>Language & Channel Support
+                        <small class="badge bg-light text-primary ms-2 fw-normal" id="selected-lob-badge">Select a LOB</small>
+                    </h6>
+                    <div class="d-flex align-items-center">
+                        <span class="badge bg-white text-primary fw-semibold">
+                            <i class="fas fa-check-circle me-1"></i>Configuration
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-4">
+                <!-- Language Support Section -->
+                <div class="mb-4">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-dark mb-2">
+                                <i class="fas fa-globe me-2 text-primary"></i>Languages Supported
+                            </label>
+                            {{ form.languages_supported(class="form-select form-select-lg shadow-sm", id="languages-supported") }}
+                        </div>
+                        <div class="col-md-6" id="specify-languages-container" style="display: none;">
+                            <label class="form-label fw-bold text-dark mb-2">Specify the Languages</label>
+                            {{ form.specify_languages(class="form-control form-control-lg shadow-sm", id="specify-languages", placeholder="e.g., English, Spanish, French") }}
+                        </div>
+                    </div>
+                </div>
+                
+                <hr class="my-4 border-2">
+                
+                <!-- Channel Support Section -->
+                <div class="channel-support">
+                    <div class="d-flex align-items-center mb-4">
+                        <h6 class="fw-bold text-dark mb-0 me-3">
+                            <i class="fas fa-headset me-2 text-primary"></i>Channel Support
+                        </h6>
+                        <div class="flex-grow-1">
+                            <div class="progress" style="height: 4px; border-radius: 10px;">
+                                <div class="progress-bar bg-primary" style="width: 0%;" id="channel-progress"></div>
+                            </div>
+                        </div>
+                        <small class="text-muted ms-2" id="channel-summary">0 of 6 selected</small>
+                    </div>
+                    
+                    <div class="row g-4">
+                        <!-- Voice Channels -->
+                        <div class="col-md-6">
+                            <div class="card h-100 border-0 shadow-sm" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
+                                <div class="card-header bg-light border-0 py-3">
+                                    <h6 class="card-title mb-0 fw-bold text-dark">
+                                        <i class="fas fa-phone me-2 text-primary"></i>Voice Channels
+                                    </h6>
+                                </div>
+                                <div class="card-body py-3">
+                                    <div class="form-check mb-3 p-2 rounded" style="background: rgba(13, 110, 253, 0.1);">
+                                        {{ form.voice_inbound(class="form-check-input channel-checkbox", id="voice-inbound") }}
+                                        <label class="form-check-label fw-semibold" for="voice-inbound">
+                                            <i class="fas fa-phone-volume me-2 text-success"></i>Voice - Inbound
+                                        </label>
+                                    </div>
+                                    <div class="form-check p-2 rounded" style="background: rgba(25, 135, 84, 0.1);">
+                                        {{ form.voice_outbound(class="form-check-input channel-checkbox", id="voice-outbound") }}
+                                        <label class="form-check-label fw-semibold" for="voice-outbound">
+                                            <i class="fas fa-phone-square-alt me-2 text-primary"></i>Voice - Outbound
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Digital Channels -->
+                        <div class="col-md-6">
+                            <div class="card h-100 border-0 shadow-sm" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
+                                <div class="card-header bg-light border-0 py-3">
+                                    <h6 class="card-title mb-0 fw-bold text-dark">
+                                        <i class="fas fa-desktop me-2 text-info"></i>Digital Channels
+                                    </h6>
+                                </div>
+                                <div class="card-body py-3">
+                                    <div class="form-check mb-2 p-2 rounded" style="background: rgba(13, 202, 240, 0.1);">
+                                        {{ form.chat(class="form-check-input channel-checkbox", id="chat") }}
+                                        <label class="form-check-label fw-semibold" for="chat">
+                                            <i class="fas fa-comments me-2 text-info"></i>Chat
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2 p-2 rounded" style="background: rgba(255, 193, 7, 0.1);">
+                                        {{ form.email(class="form-check-input channel-checkbox", id="email") }}
+                                        <label class="form-check-label fw-semibold" for="email">
+                                            <i class="fas fa-envelope me-2 text-warning"></i>Email
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2 p-2 rounded" style="background: rgba(220, 53, 69, 0.1);">
+                                        {{ form.social_sms(class="form-check-input channel-checkbox", id="social-sms") }}
+                                        <label class="form-check-label fw-semibold" for="social-sms">
+                                            <i class="fas fa-share-alt me-2 text-danger"></i>Social Media/SMS
+                                        </label>
+                                    </div>
+                                    <div class="form-check p-2 rounded" style="background: rgba(108, 117, 125, 0.1);">
+                                        {{ form.back_office(class="form-check-input channel-checkbox", id="back-office") }}
+                                        <label class="form-check-label fw-semibold" for="back-office">
+                                            <i class="fas fa-cogs me-2 text-secondary"></i>Back Office
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Others Section -->
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
+                                <div class="card-body p-3">
+                                    <div class="form-check mb-2">
+                                        {{ form.others(class="form-check-input", id="others-toggle", onchange="toggleOthersText()") }}
+                                        <label class="form-check-label fw-semibold" for="others-toggle">
+                                            <i class="fas fa-plus-circle me-2 text-muted"></i>Others
+                                        </label>
+                                    </div>
+                                    <div id="others-text-container" style="display: none;" class="mt-3">
+                                        {{ form.others_text(class="form-control shadow-sm", id="others-text", placeholder="Specify other channels...") }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -203,28 +236,17 @@
 </div>
 
 <!-- Hidden field to store LOB language and channel data -->
-<input type="hidden" name="lob_language_channel_data" id="lob-language-channel-data">
-
-<!-- Dynamic Language & Channel Support Sections -->
-<div id="lob-language-channel-sections" class="mt-4">
-    <!-- This will be populated dynamically based on selected LOBs -->
-</div>
-
-<!-- No LOBs Selected Message -->
-<div id="no-lob-selected-message" class="row mt-4" style="display: none;">
-    <div class="col-lg-8 mx-auto">
-        <div class="alert alert-info text-center border-0 shadow-sm" style="background: linear-gradient(135deg, #e3f2fd 0%, #f3f4f6 100%);">
-            <i class="fas fa-info-circle me-2 text-primary"></i>
-            <strong>Select LOBs above to configure Language & Channel Support for each LOB</strong>
-        </div>
-    </div>
-</div>
+{{ form.lob_language_channel_data(id="lob-language-channel-data") }}
 </div> <!-- End of program-details-content -->
 
 {% endblock %}
 
 {% block extra_js %}
 <script>
+// Global variables
+let currentSelectedLob = null;
+let lobData = {};
+
 // Toggle Program Details based on availability selection
 function toggleProgramDetails() {
     const selectedRadio = document.querySelector('input[name="program-availability"]:checked');
@@ -242,668 +264,443 @@ function toggleProgramDetails() {
 
 // Clear all program form data
 function clearProgramFormData() {
-    // Clear LOB count
-    const lobCountField = document.getElementById('lob_count');
-    if (lobCountField) lobCountField.value = '';
+    // Clear LOB names input
+    const lobNamesInput = document.getElementById('lob-names-input');
+    if (lobNamesInput) lobNamesInput.value = '';
     
     // Clear LOB checkboxes
-    document.querySelectorAll('.lob-checkbox').forEach(function(checkbox) {
-        checkbox.checked = false;
-    });
+    const lobCheckboxesSection = document.getElementById('lob-checkboxes-section');
+    if (lobCheckboxesSection) lobCheckboxesSection.style.display = 'none';
     
-    // Update LOB selection display
-    const lobSelectionDisplay = document.getElementById('lob-selection-display');
-    if (lobSelectionDisplay) {
-        lobSelectionDisplay.textContent = 'Select LOBs...';
-        lobSelectionDisplay.style.color = '#6c757d';
-    }
+    // Clear checkbox container
+    const lobCheckboxesContainer = document.getElementById('lob-checkboxes-container');
+    if (lobCheckboxesContainer) lobCheckboxesContainer.innerHTML = '';
+    
+    // Hide language & channel section
+    const languageChannelSection = document.getElementById('language-channel-section');
+    if (languageChannelSection) languageChannelSection.style.display = 'none';
     
     // Clear language support
-    const languagesSupported = document.getElementById('languages_supported');
+    const languagesSupported = document.getElementById('languages-supported');
     if (languagesSupported) languagesSupported.value = '';
     
     // Clear specify languages
-    const specifyLanguages = document.getElementById('specify_languages');
+    const specifyLanguages = document.getElementById('specify-languages');
     if (specifyLanguages) specifyLanguages.value = '';
     
     // Hide specify languages container
     const specifyContainer = document.getElementById('specify-languages-container');
     if (specifyContainer) specifyContainer.style.display = 'none';
     
-    // Clear dynamic LOB sections
-    const lobSections = document.getElementById('lob-language-channel-sections');
-    if (lobSections) lobSections.innerHTML = '';
+    // Clear all channel checkboxes
+    clearAllChannelCheckboxes();
+    
+    // Clear global variables
+    currentSelectedLob = null;
+    lobData = {};
     
     // Clear hidden form data
     const hiddenField = document.getElementById('lob-language-channel-data');
     if (hiddenField) hiddenField.value = '';
-    
-    // Hide no LOBs message
-    const noLobMessage = document.getElementById('no-lob-selected-message');
-    if (noLobMessage) noLobMessage.style.display = 'none';
 }
 
-// Generate dynamic Language & Channel Support sections for selected LOBs
-function generateLobSections() {
-    const selectedLobs = Array.from(document.querySelectorAll('.lob-checkbox:checked')).map(cb => cb.value);
-    const lobSectionsContainer = document.getElementById('lob-language-channel-sections');
-    const noLobMessage = document.getElementById('no-lob-selected-message');
+// Process LOB names input and generate checkboxes
+function processLobNames() {
+    const lobNamesInput = document.getElementById('lob-names-input');
+    const lobNamesValue = lobNamesInput.value.trim();
     
-    // Clear existing sections
-    lobSectionsContainer.innerHTML = '';
-    
-    if (selectedLobs.length === 0) {
-        noLobMessage.style.display = 'block';
+    if (!lobNamesValue) {
+        // Hide checkboxes section if empty
+        const lobCheckboxesSection = document.getElementById('lob-checkboxes-section');
+        lobCheckboxesSection.style.display = 'none';
+        
+        // Hide language & channel section
+        const languageChannelSection = document.getElementById('language-channel-section');
+        languageChannelSection.style.display = 'none';
+        
+        // Clear data
+        currentSelectedLob = null;
+        lobData = {};
+        updateFormData();
         return;
     }
     
-    noLobMessage.style.display = 'none';
+    // Split by comma and clean up
+    const lobNames = lobNamesValue.split(',').map(name => name.trim()).filter(name => name.length > 0);
     
-    selectedLobs.forEach((lob, index) => {
-        const section = createLobSection(lob, index);
-        lobSectionsContainer.appendChild(section);
-    });
+    if (lobNames.length === 0) {
+        return;
+    }
     
-    // Add event listeners to newly created elements
-    addDynamicEventListeners();
+    // Generate checkboxes
+    generateLobCheckboxes(lobNames);
 }
 
-// Create a Language & Channel Support section for a specific LOB
-function createLobSection(lobName, index) {
-    const lobId = lobName.toLowerCase().replace(/[^a-z0-9]/g, '_');
-    const colors = ['primary', 'success', 'info', 'warning', 'secondary'];
-    const color = colors[index % colors.length];
+// Generate LOB checkboxes from the list of names
+function generateLobCheckboxes(lobNames) {
+    const lobCheckboxesContainer = document.getElementById('lob-checkboxes-container');
+    const lobCheckboxesSection = document.getElementById('lob-checkboxes-section');
     
-    const section = document.createElement('div');
-    section.className = 'row mb-4';
-    section.innerHTML = `
-        <div class="col-lg-10 mx-auto">
-            <div class="card shadow-lg border-0 lob-section" style="transition: all 0.3s ease;">
-                <div class="card-header bg-${color} text-white position-relative overflow-hidden">
-                    <div class="card-header-bg-effect"></div>
-                    <div class="d-flex justify-content-between align-items-center position-relative">
-                        <h6 class="card-title mb-0 fw-bold">
-                            <i class="fas fa-building me-2"></i>${lobName}
-                            <small class="badge bg-light text-${color} ms-2 fw-normal">Language & Channel Support</small>
-                        </h6>
-                        <div class="d-flex align-items-center">
-                            <span class="badge bg-white text-${color} me-2 fw-semibold">
-                                <i class="fas fa-check-circle me-1"></i>LOB ${index + 1}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body p-4">
-                    <!-- Language Support Section -->
-                    <div class="mb-4">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label fw-bold text-dark mb-2">
-                                    <i class="fas fa-globe me-2 text-${color}"></i>Languages Supported
-                                </label>
-                                <select class="form-select form-select-lg shadow-sm" id="languages_${lobId}" name="languages_${lobId}">
-                                    <option value="">Select Language Support</option>
-                                    <option value="english_only">English Only</option>
-                                    <option value="bilingual">Bilingual</option>
-                                    <option value="multilingual">Multilingual</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6" id="specify-languages-container-${lobId}" style="display: none;">
-                                <label class="form-label fw-bold text-dark mb-2">Specify the Languages</label>
-                                <input type="text" class="form-control form-control-lg shadow-sm" id="specify_languages_${lobId}" name="specify_languages_${lobId}" placeholder="e.g., English, Spanish, French">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <hr class="my-4 border-2">
-                    
-                    <!-- Channel Support Section -->
-                    <div class="channel-support">
-                        <div class="d-flex align-items-center mb-4">
-                            <h6 class="fw-bold text-dark mb-0 me-3">
-                                <i class="fas fa-headset me-2 text-${color}"></i>Channel Support
-                            </h6>
-                            <div class="flex-grow-1">
-                                <div class="progress" style="height: 4px; border-radius: 10px;">
-                                    <div class="progress-bar bg-${color}" style="width: 0%;" id="channel-progress-${lobId}"></div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="row g-4">
-                            <!-- Voice Channels -->
-                            <div class="col-md-6">
-                                <div class="card h-100 border-0 shadow-sm" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
-                                    <div class="card-header bg-light border-0 py-3">
-                                        <h6 class="card-title mb-0 fw-bold text-dark">
-                                            <i class="fas fa-phone me-2 text-primary"></i>Voice Channels
-                                        </h6>
-                                    </div>
-                                    <div class="card-body py-3">
-                                        <div class="form-check mb-3 p-2 rounded" style="background: rgba(13, 110, 253, 0.1);">
-                                            <input class="form-check-input channel-checkbox" type="checkbox" id="voice_inbound_${lobId}" name="voice_inbound_${lobId}" data-lob="${lobId}">
-                                            <label class="form-check-label fw-semibold" for="voice_inbound_${lobId}">
-                                                <i class="fas fa-phone-volume me-2 text-success"></i>Voice - Inbound
-                                            </label>
-                                        </div>
-                                        <div class="form-check p-2 rounded" style="background: rgba(25, 135, 84, 0.1);">
-                                            <input class="form-check-input channel-checkbox" type="checkbox" id="voice_outbound_${lobId}" name="voice_outbound_${lobId}" data-lob="${lobId}">
-                                            <label class="form-check-label fw-semibold" for="voice_outbound_${lobId}">
-                                                <i class="fas fa-phone-alt me-2 text-primary"></i>Voice - Outbound
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Digital Channels -->
-                            <div class="col-md-6">
-                                <div class="card h-100 border-0 shadow-sm" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
-                                    <div class="card-header bg-light border-0 py-3">
-                                        <h6 class="card-title mb-0 fw-bold text-dark">
-                                            <i class="fas fa-comments me-2 text-info"></i>Digital Channels
-                                        </h6>
-                                    </div>
-                                    <div class="card-body py-3">
-                                        <div class="form-check mb-2 p-2 rounded" style="background: rgba(13, 202, 240, 0.1);">
-                                            <input class="form-check-input channel-checkbox" type="checkbox" id="chat_${lobId}" name="chat_${lobId}" data-lob="${lobId}">
-                                            <label class="form-check-label fw-semibold" for="chat_${lobId}">
-                                                <i class="fas fa-comment-dots me-2 text-info"></i>Chat
-                                            </label>
-                                        </div>
-                                        <div class="form-check mb-2 p-2 rounded" style="background: rgba(220, 53, 69, 0.1);">
-                                            <input class="form-check-input channel-checkbox" type="checkbox" id="email_${lobId}" name="email_${lobId}" data-lob="${lobId}">
-                                            <label class="form-check-label fw-semibold" for="email_${lobId}">
-                                                <i class="fas fa-envelope me-2 text-danger"></i>Email
-                                            </label>
-                                        </div>
-                                        <div class="form-check p-2 rounded" style="background: rgba(255, 193, 7, 0.1);">
-                                            <input class="form-check-input channel-checkbox" type="checkbox" id="social_sms_${lobId}" name="social_sms_${lobId}" data-lob="${lobId}">
-                                            <label class="form-check-label fw-semibold" for="social_sms_${lobId}">
-                                                <i class="fas fa-sms me-2 text-warning"></i>Social/SMS
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Back Office & Others -->
-                            <div class="col-md-6">
-                                <div class="card h-100 border-0 shadow-sm" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
-                                    <div class="card-header bg-light border-0 py-3">
-                                        <h6 class="card-title mb-0 fw-bold text-dark">
-                                            <i class="fas fa-briefcase me-2 text-secondary"></i>Back Office
-                                        </h6>
-                                    </div>
-                                    <div class="card-body py-3">
-                                        <div class="form-check p-2 rounded" style="background: rgba(108, 117, 125, 0.1);">
-                                            <input class="form-check-input channel-checkbox" type="checkbox" id="back_office_${lobId}" name="back_office_${lobId}" data-lob="${lobId}">
-                                            <label class="form-check-label fw-semibold" for="back_office_${lobId}">
-                                                <i class="fas fa-file-alt me-2 text-secondary"></i>Back Office
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Others -->
-                            <div class="col-md-6">
-                                <div class="card h-100 border-0 shadow-sm" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
-                                    <div class="card-header bg-light border-0 py-3">
-                                        <h6 class="card-title mb-0 fw-bold text-dark">
-                                            <i class="fas fa-plus me-2 text-success"></i>Other Channels
-                                        </h6>
-                                    </div>
-                                    <div class="card-body py-3">
-                                        <div class="form-check mb-3 p-2 rounded" style="background: rgba(25, 135, 84, 0.1);">
-                                            <input class="form-check-input channel-checkbox others-checkbox" type="checkbox" id="others_${lobId}" name="others_${lobId}" data-lob="${lobId}">
-                                            <label class="form-check-label fw-semibold" for="others_${lobId}">
-                                                <i class="fas fa-ellipsis-h me-2 text-success"></i>Others
-                                            </label>
-                                        </div>
-                                        <div id="others-text-container-${lobId}" style="display: none;">
-                                            <input type="text" class="form-control shadow-sm" id="others_text_${lobId}" name="others_text_${lobId}" placeholder="Please specify other channels...">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Channel Summary -->
-                        <div class="mt-4">
-                            <div class="alert border-0 shadow-sm" style="background: linear-gradient(135deg, #e3f2fd 0%, #f3f4f6 100%);">
-                                <div class="d-flex align-items-center">
-                                    <i class="fas fa-chart-bar me-3 text-${color}" style="font-size: 1.2rem;"></i>
-                                    <div>
-                                        <strong class="text-dark">Selected Channels:</strong>
-                                        <span id="channel-summary-${lobId}" class="ms-2 text-muted">No channels selected</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+    // Clear existing checkboxes
+    lobCheckboxesContainer.innerHTML = '';
+    
+    // Create checkbox for each LOB
+    lobNames.forEach((lobName, index) => {
+        const colors = ['primary', 'success', 'info', 'warning', 'danger', 'secondary'];
+        const color = colors[index % colors.length];
+        const icons = ['fas fa-headset', 'fas fa-tools', 'fas fa-chart-line', 'fas fa-file-invoice-dollar', 'fas fa-hand-holding-usd', 'fas fa-cogs'];
+        const icon = icons[index % icons.length];
+        
+        const checkboxDiv = document.createElement('div');
+        checkboxDiv.className = 'col-md-6 col-lg-4';
+        checkboxDiv.innerHTML = `
+            <div class="card border-0 shadow-sm h-100 lob-card" style="transition: all 0.3s ease; cursor: pointer;" onclick="selectLob('${lobName}')">
+                <div class="card-body p-3 text-center">
+                    <div class="form-check d-flex align-items-center justify-content-center">
+                        <input class="form-check-input lob-radio me-2" type="radio" name="selected-lob" id="lob-${index}" value="${lobName}" onchange="selectLob('${lobName}')" style="transform: scale(1.2);">
+                        <label class="form-check-label fw-bold text-${color}" for="lob-${index}">
+                            <i class="${icon} me-2"></i>${lobName}
+                        </label>
                     </div>
                 </div>
             </div>
-        </div>
-    `;
+        `;
+        
+        lobCheckboxesContainer.appendChild(checkboxDiv);
+    });
     
-    return section;
+    // Show checkboxes section
+    lobCheckboxesSection.style.display = 'block';
+    
+    // Clean up obsolete LOB data and initialize new ones
+    const newLobData = {};
+    lobNames.forEach(lobName => {
+        if (lobData[lobName]) {
+            // Keep existing data
+            newLobData[lobName] = lobData[lobName];
+        } else {
+            // Initialize new LOB
+            newLobData[lobName] = {
+                language_support: '',
+                specify_languages: '',
+                channels: [],
+                others_text: ''
+            };
+        }
+    });
+    
+    // Update global lobData to remove obsolete entries
+    lobData = newLobData;
+    
+    // If current selected LOB is no longer in the list, clear selection
+    if (currentSelectedLob && !lobNames.includes(currentSelectedLob)) {
+        currentSelectedLob = null;
+        const languageChannelSection = document.getElementById('language-channel-section');
+        if (languageChannelSection) languageChannelSection.style.display = 'none';
+    }
 }
 
-// Add event listeners to dynamically created elements
-function addDynamicEventListeners() {
-    // Language support event listeners
-    document.querySelectorAll('[id^="languages_"]').forEach(select => {
-        select.addEventListener('change', function() {
-            const lobId = this.id.replace('languages_', '');
-            const specifyContainer = document.getElementById(`specify-languages-container-${lobId}`);
-            
-            if (this.value === 'bilingual' || this.value === 'multilingual') {
-                specifyContainer.style.display = 'block';
-            } else {
-                specifyContainer.style.display = 'none';
-                const specifyInput = document.getElementById(`specify_languages_${lobId}`);
-                if (specifyInput) specifyInput.value = '';
-            }
-            
-            // Update form data
-            updateLobFormData();
-        });
-    });
+// Select a LOB and update the Language & Channel Support section
+function selectLob(lobName) {
+    // Save current LOB data if there was a previously selected LOB
+    if (currentSelectedLob) {
+        saveLobData(currentSelectedLob);
+    }
     
-    // Channel checkbox event listeners
-    document.querySelectorAll('.channel-checkbox').forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            const lobId = this.dataset.lob;
-            updateChannelSummary(lobId);
-            updateChannelProgress(lobId);
-            
-            // Handle others checkbox
-            if (this.id.includes('others_')) {
-                const othersContainer = document.getElementById(`others-text-container-${lobId}`);
-                if (this.checked) {
-                    othersContainer.style.display = 'block';
-                } else {
-                    othersContainer.style.display = 'none';
-                    const othersText = document.getElementById(`others_text_${lobId}`);
-                    if (othersText) othersText.value = '';
-                }
-            }
-            
-            // Update form data
-            updateLobFormData();
-        });
-    });
+    // Set new selected LOB
+    currentSelectedLob = lobName;
     
-    // Others text input listeners
-    document.querySelectorAll('[id^="others_text_"]').forEach(input => {
-        input.addEventListener('input', function() {
-            const lobId = this.id.replace('others_text_', '');
-            updateChannelSummary(lobId);
-            // Update form data
-            updateLobFormData();
-        });
-    });
+    // Show Language & Channel Support section
+    const languageChannelSection = document.getElementById('language-channel-section');
+    languageChannelSection.style.display = 'block';
     
-    // Specify languages input listeners
-    document.querySelectorAll('[id^="specify_languages_"]').forEach(input => {
-        input.addEventListener('input', function() {
-            // Update form data
-            updateLobFormData();
-        });
-    });
+    // Update selected LOB badge
+    const selectedLobBadge = document.getElementById('selected-lob-badge');
+    selectedLobBadge.textContent = lobName;
+    
+    // Load data for this LOB
+    loadLobData(lobName);
+    
+    // Update form data
+    updateFormData();
 }
 
-// Update channel summary for specific LOB
-function updateChannelSummary(lobId) {
+// Save current form data to the selected LOB
+function saveLobData(lobName) {
+    if (!lobData[lobName]) {
+        lobData[lobName] = {};
+    }
+    
+    // Save language support
+    const languagesSupported = document.getElementById('languages-supported');
+    lobData[lobName].language_support = languagesSupported.value;
+    
+    // Save specify languages
+    const specifyLanguages = document.getElementById('specify-languages');
+    lobData[lobName].specify_languages = specifyLanguages.value;
+    
+    // Save channel selections
     const channels = [];
-    const checkboxes = [
-        { id: `voice_inbound_${lobId}`, label: 'Voice Inbound' },
-        { id: `voice_outbound_${lobId}`, label: 'Voice Outbound' },
-        { id: `chat_${lobId}`, label: 'Chat' },
-        { id: `email_${lobId}`, label: 'Email' },
-        { id: `social_sms_${lobId}`, label: 'Social/SMS' },
-        { id: `back_office_${lobId}`, label: 'Back Office' }
-    ];
+    document.querySelectorAll('.channel-checkbox:checked').forEach(checkbox => {
+        channels.push(checkbox.id);
+    });
+    lobData[lobName].channels = channels;
     
-    checkboxes.forEach(channel => {
-        const checkbox = document.getElementById(channel.id);
-        if (checkbox && checkbox.checked) {
-            channels.push(channel.label);
+    // Save others text
+    const othersText = document.getElementById('others-text');
+    if (othersText) {
+        lobData[lobName].others_text = othersText.value;
+    }
+}
+
+// Load data for the selected LOB into the form
+function loadLobData(lobName) {
+    const data = lobData[lobName] || {
+        language_support: '',
+        specify_languages: '',
+        channels: [],
+        others_text: ''
+    };
+    
+    // Load language support
+    const languagesSupported = document.getElementById('languages-supported');
+    languagesSupported.value = data.language_support;
+    
+    // Show/hide specify languages based on selection
+    toggleSpecifyLanguages();
+    
+    // Load specify languages
+    const specifyLanguages = document.getElementById('specify-languages');
+    specifyLanguages.value = data.specify_languages;
+    
+    // Clear all channel checkboxes first
+    clearAllChannelCheckboxes();
+    
+    // Load channel selections
+    data.channels.forEach(channelId => {
+        const checkbox = document.getElementById(channelId);
+        if (checkbox) {
+            checkbox.checked = true;
         }
     });
     
-    // Check others
-    const othersCheckbox = document.getElementById(`others_${lobId}`);
-    if (othersCheckbox && othersCheckbox.checked) {
-        const othersText = document.getElementById(`others_text_${lobId}`);
-        if (othersText && othersText.value.trim()) {
-            channels.push(`Others: ${othersText.value.trim()}`);
-        } else {
-            channels.push('Others');
-        }
+    // Load others text
+    const othersText = document.getElementById('others-text');
+    if (othersText) {
+        othersText.value = data.others_text;
     }
     
-    const summaryElement = document.getElementById(`channel-summary-${lobId}`);
-    if (summaryElement) {
-        if (channels.length > 0) {
-            summaryElement.textContent = channels.join(', ');
-            summaryElement.className = 'ms-2 text-success fw-semibold';
+    // Update others checkbox state
+    const othersCheckbox = document.getElementById('others-toggle');
+    if (othersCheckbox && data.others_text) {
+        othersCheckbox.checked = true;
+        toggleOthersText();
+    }
+    
+    // Update channel progress
+    updateChannelProgress();
+}
+
+// Clear all channel checkboxes
+function clearAllChannelCheckboxes() {
+    document.querySelectorAll('.channel-checkbox').forEach(checkbox => {
+        checkbox.checked = false;
+    });
+    
+    // Clear others checkbox
+    const othersCheckbox = document.getElementById('others-toggle');
+    if (othersCheckbox) {
+        othersCheckbox.checked = false;
+        toggleOthersText();
+    }
+    
+    // Update progress
+    updateChannelProgress();
+}
+
+// Toggle specify languages visibility
+function toggleSpecifyLanguages() {
+    const languageSelect = document.getElementById('languages-supported');
+    const specifyContainer = document.getElementById('specify-languages-container');
+    
+    if (languageSelect && specifyContainer) {
+        if (languageSelect.value === 'bilingual' || languageSelect.value === 'multilingual') {
+            specifyContainer.style.display = 'block';
         } else {
-            summaryElement.textContent = 'No channels selected';
-            summaryElement.className = 'ms-2 text-muted';
+            specifyContainer.style.display = 'none';
+            const specifyInput = document.getElementById('specify-languages');
+            if (specifyInput) specifyInput.value = '';
         }
     }
 }
 
-// Update channel progress bar for specific LOB
-function updateChannelProgress(lobId) {
-    const totalChannels = 6; // Total possible channels
-    const selectedChannels = document.querySelectorAll(`[data-lob="${lobId}"]:checked`).length;
-    const percentage = (selectedChannels / totalChannels) * 100;
+// Update channel progress
+function updateChannelProgress() {
+    const totalChannels = 6; // Total possible channels (excluding others)
+    const checkedChannels = document.querySelectorAll('.channel-checkbox:checked').length;
+    const progressBar = document.getElementById('channel-progress');
+    const channelSummary = document.getElementById('channel-summary');
     
-    const progressBar = document.getElementById(`channel-progress-${lobId}`);
     if (progressBar) {
-        progressBar.style.width = `${percentage}%`;
+        const percentage = (checkedChannels / totalChannels) * 100;
+        progressBar.style.width = percentage + '%';
+    }
+    
+    if (channelSummary) {
+        channelSummary.textContent = `${checkedChannels} of ${totalChannels} selected`;
     }
 }
 
-// Serialize all LOB language and channel data into hidden field
-function updateLobFormData() {
-    const selectedLobs = Array.from(document.querySelectorAll('.lob-checkbox:checked')).map(cb => cb.value);
-    const lobData = {};
+// Toggle Others text input
+function toggleOthersText() {
+    const othersCheckbox = document.getElementById('others-toggle');
+    const othersContainer = document.getElementById('others-text-container');
+    const othersInput = document.getElementById('others-text');
     
-    selectedLobs.forEach(lob => {
-        const lobId = lob.toLowerCase().replace(/[^a-z0-9]/g, '_');
-        
-        // Get language data
-        const languageSelect = document.getElementById(`languages_${lobId}`);
-        const specifyLanguagesInput = document.getElementById(`specify_languages_${lobId}`);
-        
-        // Get channel data
-        const channels = [];
-        const channelCheckboxes = [
-            'voice_inbound', 'voice_outbound', 'chat', 'email', 
-            'social_sms', 'back_office', 'others'
-        ];
-        
-        channelCheckboxes.forEach(channel => {
-            const checkbox = document.getElementById(`${channel}_${lobId}`);
-            if (checkbox && checkbox.checked) {
-                channels.push(channel);
-            }
-        });
-        
-        // Get others text if applicable
-        let othersText = '';
-        const othersTextInput = document.getElementById(`others_text_${lobId}`);
-        if (othersTextInput && othersTextInput.value.trim()) {
-            othersText = othersTextInput.value.trim();
+    if (othersCheckbox && othersContainer && othersInput) {
+        if (othersCheckbox.checked) {
+            othersContainer.style.display = 'block';
+        } else {
+            othersContainer.style.display = 'none';
+            othersInput.value = '';
         }
         
-        lobData[lob] = {
-            language_support: languageSelect ? languageSelect.value : '',
-            specify_languages: specifyLanguagesInput ? specifyLanguagesInput.value : '',
-            channels: channels,
-            others_text: othersText
-        };
-    });
+        // Save data if there's a selected LOB
+        if (currentSelectedLob) {
+            saveLobData(currentSelectedLob);
+            updateFormData();
+        }
+    }
+}
+
+// Update the hidden form data with all LOB configurations
+function updateFormData() {
+    // Save current LOB data before updating
+    if (currentSelectedLob) {
+        saveLobData(currentSelectedLob);
+    }
     
     // Update hidden field
     const hiddenField = document.getElementById('lob-language-channel-data');
     if (hiddenField) {
         hiddenField.value = JSON.stringify(lobData);
     }
+    
+    console.log('LOB Form Data Updated:', lobData);
 }
 
+// Initialize the form when the page loads
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('WFM Analytics - Program Details Form initialized');
     
-    // LOB filterable dropdown functionality
-    const lobCountField = document.getElementById('lob_count');
-    const lobNamesSelect = document.getElementById('lob-names-select');
-    const lobDropdownToggle = document.getElementById('lob-dropdown-toggle');
-    const lobSelectionDisplay = document.getElementById('lob-selection-display');
-    const lobSearchInput = document.getElementById('lob-search');
-    const lobCheckboxes = document.querySelectorAll('.lob-checkbox');
-    const lobOptions = document.querySelectorAll('.lob-option');
-    const maxLobCountSpan = document.getElementById('max-lob-count');
-    const lobSelectionInfo = document.getElementById('lob-selection-info');
+    // Check initial program availability state
+    const availableRadio = document.getElementById('program-available');
+    const unavailableRadio = document.getElementById('program-unavailable');
     
-    console.log('LOB elements found:', {
-        lobCountField: !!lobCountField,
-        lobNamesSelect: !!lobNamesSelect,
-        lobDropdownToggle: !!lobDropdownToggle,
-        lobSelectionDisplay: !!lobSelectionDisplay,
-        lobCheckboxes: lobCheckboxes.length
-    });
-    
-    function updateLobLimit() {
-        const maxCount = parseInt(lobCountField.value) || 0;
-        maxLobCountSpan.textContent = maxCount;
-        
-        if (maxCount === 0) {
-            lobSelectionInfo.style.display = 'none';
-            // Disable dropdown if no count specified
-            lobDropdownToggle.style.opacity = '0.5';
-            lobDropdownToggle.style.pointerEvents = 'none';
-            clearLobSelections();
-        } else {
-            lobSelectionInfo.style.display = 'block';
-            lobDropdownToggle.style.opacity = '1';
-            lobDropdownToggle.style.pointerEvents = 'auto';
-        }
-        
-        // Generate dynamic sections when LOB count changes
-        generateLobSections();
+    if (availableRadio && availableRadio.checked) {
+        toggleProgramDetails();
     }
     
-    function clearLobSelections() {
-        lobCheckboxes.forEach(checkbox => {
-            checkbox.checked = false;
-        });
-        updateLobDisplay();
-        updateHiddenSelect();
-    }
-    
-    function updateLobDisplay() {
-        const selectedCheckboxes = Array.from(lobCheckboxes).filter(cb => cb.checked);
-        
-        if (selectedCheckboxes.length === 0) {
-            lobSelectionDisplay.innerHTML = '<span style="color: #6c757d; font-weight: 400;">Select LOBs...</span>';
-        } else if (selectedCheckboxes.length === 1) {
-            const selectedText = selectedCheckboxes[0].nextElementSibling.textContent.trim().replace(/^\s*[\w-]+\s*/, ''); // Remove icon text
-            lobSelectionDisplay.innerHTML = `<span style="color: #495057; font-weight: 500;">${selectedText}</span>`;
-        } else {
-            lobSelectionDisplay.innerHTML = `<span style="color: #495057; font-weight: 500;"><i class="fas fa-check-circle me-1 text-success"></i>${selectedCheckboxes.length} LOBs selected</span>`;
-        }
-    }
-    
-    function updateHiddenSelect() {
-        // Update the hidden select element for form submission
-        const selectedValues = Array.from(lobCheckboxes)
-            .filter(cb => cb.checked)
-            .map(cb => cb.value);
-        
-        Array.from(lobNamesSelect.options).forEach(option => {
-            option.selected = selectedValues.includes(option.value);
+    // LOB names input listener with debounce
+    const lobNamesInput = document.getElementById('lob-names-input');
+    if (lobNamesInput) {
+        let timeout;
+        lobNamesInput.addEventListener('input', function() {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                processLobNames();
+            }, 500); // 500ms debounce
         });
     }
     
-    function validateLobSelection(clickedCheckbox) {
-        const maxCount = parseInt(lobCountField.value) || 0;
-        const selectedCheckboxes = Array.from(lobCheckboxes).filter(cb => cb.checked);
-        
-        if (selectedCheckboxes.length > maxCount && maxCount > 0) {
-            // If user just checked a box and exceeded limit, uncheck it
-            if (clickedCheckbox && clickedCheckbox.checked) {
-                clickedCheckbox.checked = false;
-                alert(`You can only select up to ${maxCount} LOBs.`);
-            }
-        }
-        
-        updateLobDisplay();
-        updateHiddenSelect();
-        // Generate dynamic sections when LOB selection changes
-        generateLobSections();
-    }
-    
-    function filterLobOptions() {
-        const searchTerm = lobSearchInput.value.toLowerCase();
-        
-        lobOptions.forEach(option => {
-            const text = option.textContent.toLowerCase();
-            if (text.includes(searchTerm)) {
-                option.style.display = 'block';
-            } else {
-                option.style.display = 'none';
+    // Language support change listener
+    const languagesSupported = document.getElementById('languages-supported');
+    if (languagesSupported) {
+        languagesSupported.addEventListener('change', function() {
+            toggleSpecifyLanguages();
+            if (currentSelectedLob) {
+                saveLobData(currentSelectedLob);
+                updateFormData();
             }
         });
     }
     
-    // Event listeners for LOB functionality
-    if (lobCountField) {
-        lobCountField.addEventListener('input', updateLobLimit);
-        lobCountField.addEventListener('change', updateLobLimit);
-        updateLobLimit(); // Initial call
-    }
-    
-    // Search functionality
-    if (lobSearchInput) {
-        lobSearchInput.addEventListener('input', filterLobOptions);
-        // Prevent dropdown from closing when typing in search
-        lobSearchInput.addEventListener('click', function(e) {
-            e.stopPropagation();
+    // Specify languages input listener
+    const specifyLanguages = document.getElementById('specify-languages');
+    if (specifyLanguages) {
+        specifyLanguages.addEventListener('input', function() {
+            if (currentSelectedLob) {
+                saveLobData(currentSelectedLob);
+                updateFormData();
+            }
         });
     }
     
-    // Checkbox change events
-    lobCheckboxes.forEach(checkbox => {
+    // Channel checkbox listeners
+    document.querySelectorAll('.channel-checkbox').forEach(checkbox => {
         checkbox.addEventListener('change', function() {
-            validateLobSelection(this);
-            // Also trigger dynamic section generation
-            generateLobSections();
+            updateChannelProgress();
+            if (currentSelectedLob) {
+                saveLobData(currentSelectedLob);
+                updateFormData();
+            }
         });
     });
     
-    // Initialize display
-    updateLobDisplay();
+    // Others text input listener
+    const othersText = document.getElementById('others-text');
+    if (othersText) {
+        othersText.addEventListener('input', function() {
+            if (currentSelectedLob) {
+                saveLobData(currentSelectedLob);
+                updateFormData();
+            }
+        });
+    }
     
-    // Add hover effects and corporate styling
-    const style = document.createElement('style');
-    style.textContent = `
-        .dropdown-item:hover {
-            background-color: #f8f9fa !important;
-            transform: translateX(2px);
-        }
-        .lob-option .dropdown-item:hover {
-            background: linear-gradient(90deg, #f8f9fa 0%, #e9ecef 100%) !important;
-        }
-        .lob-checkbox:checked + .form-check-label {
-            color: #0d6efd !important;
-            font-weight: 600 !important;
-        }
-        .lob-checkbox:checked + .form-check-label i {
-            color: #0d6efd !important;
-        }
-        #lob-dropdown-toggle:focus {
-            border-color: #86b7fe !important;
-            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25) !important;
-        }
-        
-        /* Corporate LOB Section Styling */
-        .lob-section {
-            border-left: 5px solid transparent;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        .lob-section:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important;
-            border-left-color: var(--bs-primary);
-        }
-        
-        .card-header-bg-effect {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
-            pointer-events: none;
-        }
-        
-        .form-check:hover {
-            transform: scale(1.02);
-            transition: transform 0.2s ease;
-        }
-        
-        .channel-checkbox:checked + .form-check-label {
-            color: #198754 !important;
-            font-weight: 600 !important;
-        }
-        
-        .channel-checkbox:checked + .form-check-label i {
-            animation: checkPulse 0.6s ease-in-out;
-        }
-        
-        @keyframes checkPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-        
-        .card .card-header {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .badge {
-            animation: fadeInUp 0.5s ease-out;
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .form-select:focus, .form-control:focus {
-            border-color: #86b7fe;
-            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
-            transform: scale(1.02);
-            transition: all 0.3s ease;
-        }
-        
-        .progress {
-            background: rgba(108, 117, 125, 0.2);
-            backdrop-filter: blur(10px);
-        }
-        
-        .alert {
-            border: none;
-            backdrop-filter: blur(10px);
-            animation: slideInUp 0.5s ease-out;
-        }
-        
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    `;
-    document.head.appendChild(style);
-    
-    // Initialize with any pre-existing LOB selections
-    generateLobSections();
+    console.log('Program Details form initialized with new LOB input system');
 });
 </script>
+
+<style>
+.lob-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+}
+
+.lob-card .form-check-input:checked {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+.card-header-bg-effect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+    pointer-events: none;
+}
+
+.channel-checkbox:checked + label {
+    font-weight: bold;
+    color: var(--bs-primary) !important;
+}
+
+.progress {
+    background-color: rgba(0,0,0,0.1);
+}
+
+.badge {
+    font-size: 0.75rem;
+}
+
+@media (max-width: 768px) {
+    .lob-card {
+        margin-bottom: 1rem;
+    }
+}
+</style>
+
 {% endblock %}
