@@ -585,6 +585,9 @@
 {% endblock %}
 
 {% block extra_js %}
+<!-- Country Headcounts Data from Location Details Step -->
+<script id="country-headcounts" type="application/json">{{ country_headcounts|tojson if country_headcounts else '{}' }}</script>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Handle site configuration toggle
