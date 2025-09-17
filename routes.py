@@ -212,9 +212,6 @@ def ramp_form_step(step):
         flash('Invalid form step', 'error')
         return redirect(url_for('ramp_form_step', step=1))
     
-    # FIXED: Always redirect GET requests (page refreshes) to step 1 (Ramp Details)
-    if request.method == 'GET' and step != 1:
-        return redirect(url_for('ramp_form_step', step=1))
     
     form = RampInputForm()
     
