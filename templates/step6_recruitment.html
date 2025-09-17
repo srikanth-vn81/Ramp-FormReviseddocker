@@ -652,18 +652,21 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Handle site configuration toggle
+    // Handle site configuration toggle - FIXED: Show different content for Yes/No
     function handleSiteConfigToggle() {
         const yesRadio = document.getElementById('site_config_yes');
         const noRadio = document.getElementById('site_config_no');
         const sitesSection = document.getElementById('sites-configuration-section');
         
+        // Always show the section, but with different content
+        sitesSection.style.display = 'block';
+        
         if (yesRadio.checked) {
-            sitesSection.style.display = 'block';
-            // Initialize sites configuration when shown
-            initializeSitesConfiguration();
+            // Show full table with all fields including Site Location and Agent Profile
+            initializeSitesConfiguration(true); // true = full configuration
         } else {
-            sitesSection.style.display = 'none';
+            // Show simplified table with only capacity fields (no Site Location, no Agent Profile)
+            initializeSitesConfiguration(false); // false = simplified configuration
         }
     }
     
@@ -746,8 +749,8 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Recruitment form reset');
     };
     
-    // Initialize Sites Configuration
-    function initializeSitesConfiguration() {
+    // Initialize Sites Configuration - FIXED: Accept fullConfig parameter
+    function initializeSitesConfiguration(fullConfig = true) {
         // Parse country headcount data from server
         let countryHeadcounts = {};
         try {
@@ -762,15 +765,15 @@ document.addEventListener('DOMContentLoaded', function() {
         // If we have headcount data, use those countries. Otherwise show all countries.
         const selectedCountries = Object.keys(countryHeadcounts);
         if (selectedCountries.length > 0) {
-            buildSitesConfigurationTable(countryHeadcounts);
+            buildSitesConfigurationTable(countryHeadcounts, fullConfig);
         } else {
             // Fallback: show message that no countries are selected in Location Details
             showNoCountriesMessage();
         }
     }
     
-    // Build sites configuration table with country headcount data
-    function buildSitesConfigurationTable(countryHeadcounts) {
+    // Build sites configuration table with country headcount data - FIXED: Accept fullConfig
+    function buildSitesConfigurationTable(countryHeadcounts, fullConfig = true) {
         const headerRow = document.getElementById('sites-header-row');
         const tableBody = document.getElementById('sites-table-body');
         
@@ -900,11 +903,11 @@ document.addEventListener('DOMContentLoaded', function() {
         tableBody.appendChild(sitesCountRow);
         
         // Build dynamic site rows based on sites count (default 3)
-        buildSiteRows(countryCodes, countrySites, 3);
+        buildSiteRows(countryCodes, countrySites, 3, fullConfig);
     }
     
-    // Function to build site rows dynamically (optimized for performance)
-    function buildSiteRows(countryCodes, countrySites, sitesCount) {
+    // Function to build site rows dynamically - FIXED: Filter metrics based on fullConfig
+    function buildSiteRows(countryCodes, countrySites, sitesCount, fullConfig = true) {
         const tableBody = document.getElementById('sites-table-body');
         
         // Clear existing site rows efficiently
@@ -944,14 +947,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 </tr>
             `;
             
-            // Metrics rows
-            const metrics = [
+            // Metrics rows - FIXED: Filter based on fullConfig parameter
+            const allMetrics = [
                 { label: 'SITE LOCATION', type: 'site_location' },
                 { label: 'AGENT PROFILE', type: 'agent_profile' },
                 { label: 'LEAD TIME (DAYS)', type: 'lead_time' },
                 { label: 'WEEKLY CAPACITY', type: 'weekly_capacity' },
                 { label: 'MONTHLY CAPACITY', type: 'monthly_capacity' }
             ];
+            
+            // When fullConfig is false (No selected), only show capacity fields
+            const metrics = fullConfig ? allMetrics : allMetrics.filter(m => 
+                m.type !== 'site_location' && m.type !== 'agent_profile'
+            );
             
             metrics.forEach(metric => {
                 htmlContent += `
@@ -1110,12 +1118,14 @@ document.addEventListener('DOMContentLoaded', function() {
             ]
         };
         
-        // Rebuild with custom logic for individual countries
-        buildCustomSiteRows(countryCodes, countrySites, countrySiteCounts);
+        // Rebuild with custom logic for individual countries - check current config mode
+        const yesRadio = document.getElementById('site_config_yes');
+        const fullConfig = yesRadio && yesRadio.checked;
+        buildCustomSiteRows(countryCodes, countrySites, countrySiteCounts, fullConfig);
     };
     
-    // LIGHTWEIGHT: Simple and fast site rows builder
-    function buildCustomSiteRows(countryCodes, countrySites, countrySiteCounts) {
+    // LIGHTWEIGHT: Simple and fast site rows builder - FIXED: Filter rows based on fullConfig
+    function buildCustomSiteRows(countryCodes, countrySites, countrySiteCounts, fullConfig = true) {
         const tableBody = document.getElementById('sites-table-body');
         
         // Clear existing site rows (keep sites count row)
@@ -1140,14 +1150,19 @@ document.addEventListener('DOMContentLoaded', function() {
             // Site header
             html += `<tr><td colspan="${countryCodes.length + 1}" class="bg-info text-white text-center fw-bold">Site ${site}</td></tr>`;
             
-            // Simple rows
-            const rows = [
+            // Simple rows - FIXED: Filter based on fullConfig parameter
+            const allRows = [
                 {label: 'Location', field: 'site_location', type: 'select'},
                 {label: 'Profile', field: 'agent_profile', type: 'profile'},
                 {label: 'Lead Time', field: 'lead_time', type: 'number'},
                 {label: 'Weekly', field: 'weekly_capacity', type: 'number'},
                 {label: 'Monthly', field: 'monthly_capacity', type: 'number'}
             ];
+            
+            // When fullConfig is false (No selected), only show capacity fields
+            const rows = fullConfig ? allRows : allRows.filter(r => 
+                r.field !== 'site_location' && r.field !== 'agent_profile'
+            );
             
             rows.forEach(row => {
                 html += `<tr><td class="bg-light fw-semibold">${row.label}</td>`;
