@@ -652,14 +652,18 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Handle site configuration toggle - FIXED: Show different content for Yes/No
+    // Handle site configuration toggle - FIXED: Only show section after selection
     function handleSiteConfigToggle() {
         const yesRadio = document.getElementById('site_config_yes');
         const noRadio = document.getElementById('site_config_no');
         const sitesSection = document.getElementById('sites-configuration-section');
         
-        // Always show the section, but with different content
-        sitesSection.style.display = 'block';
+        // Only show the section if either Yes or No is selected
+        if (yesRadio.checked || noRadio.checked) {
+            sitesSection.style.display = 'block';
+        } else {
+            sitesSection.style.display = 'none';
+        }
         
         if (yesRadio.checked) {
             // Show full table with all fields including Site Location and Agent Profile
