@@ -43,36 +43,16 @@
                     </div>
                 </div>
 
-                <!-- Country Headcount Summary Table -->
+                <!-- Country Headcount Summary Cards -->
                 <div class="mb-4" id="headcount-summary-section">
                     <h6 class="fw-bold text-dark mb-3">
                         <i class="fas fa-users me-2"></i>Country Headcount Summary (from Location Details)
                     </h6>
-                    <div class="card border-0 shadow-lg headcount-card">
-                        <div class="card-body p-0">
-                            <div class="table-responsive">
-                                <table class="table table-sm table-bordered mb-0 headcount-table">
-                                    <thead class="headcount-header">
-                                        <tr>
-                                            <th class="text-center fw-bold text-white">
-                                                <i class="fas fa-globe me-2"></i>Country
-                                            </th>
-                                            <th class="text-center fw-bold text-white">
-                                                <i class="fas fa-users me-2"></i>Headcount
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="headcount-summary-body">
-                                        <!-- Country headcount rows will be populated by JavaScript -->
-                                        <tr id="no-data-row">
-                                            <td colspan="2" class="text-center text-muted py-3">
-                                                <i class="fas fa-info-circle me-1"></i>
-                                                No headcount data available. Please complete Location Details first.
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                    <div id="headcount-cards-container" class="d-flex flex-wrap gap-3">
+                        <!-- Country cards will be populated by JavaScript -->
+                        <div id="no-data-card" class="alert alert-info border-0 shadow-sm">
+                            <i class="fas fa-info-circle me-2"></i>
+                            No headcount data available. Please complete Location Details first.
                         </div>
                     </div>
                 </div>
@@ -127,27 +107,41 @@
     color: #f57c00 !important;
 }
 
-/* Enhanced Country Headcount Summary Table */
-.headcount-card {
-    border-radius: 12px;
-    overflow: hidden;
+/* Beautiful Country Headcount Cards */
+.country-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    color: white;
+    min-width: 180px;
     transition: all 0.3s ease;
+    cursor: pointer;
 }
 
-.headcount-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+.country-card:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
 }
 
-.headcount-header {
-    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+.country-card .card-body {
+    padding: 20px 15px;
 }
 
-.headcount-header th {
-    padding: 15px;
-    font-size: 0.95rem;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
+.country-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    opacity: 0.9;
+    margin-bottom: 8px;
+}
+
+.headcount-badge {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    font-size: 1.5rem;
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: 25px;
+}
     border: none;
 }
 
@@ -713,7 +707,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Restore saved site configuration state
     restoreSiteConfigurationState();
     
-    // Function to populate headcount summary table
+    // Function to populate beautiful headcount summary cards
     function initializeHeadcountSummary() {
         // Parse country headcount data from server
         let countryHeadcounts = {};
@@ -726,8 +720,8 @@ document.addEventListener('DOMContentLoaded', function() {
             console.warn('Could not parse country headcount data for summary:', e);
         }
         
-        const summaryBody = document.getElementById('headcount-summary-body');
-        const noDataRow = document.getElementById('no-data-row');
+        const cardsContainer = document.getElementById('headcount-cards-container');
+        const noDataCard = document.getElementById('no-data-card');
         
         // Country code to name mapping
         const countryNames = {
@@ -743,25 +737,36 @@ document.addEventListener('DOMContentLoaded', function() {
             'USA': 'USA'
         };
         
+        // Country flag emojis for visual appeal
+        const countryFlags = {
+            'CAN': '🇨🇦', 'COL': '🇨🇴', 'HKG': '🇭🇰', 'IND': '🇮🇳', 
+            'MEX': '🇲🇽', 'PAN': '🇵🇦', 'PHL': '🇵🇭', 'POL': '🇵🇱', 
+            'TTO': '🇹🇹', 'USA': '🇺🇸'
+        };
+        
         if (Object.keys(countryHeadcounts).length > 0) {
-            // Hide no data row
-            noDataRow.style.display = 'none';
+            // Hide no data card
+            noDataCard.style.display = 'none';
             
-            // Add rows for each country with headcount
+            // Create beautiful cards for each country
             Object.entries(countryHeadcounts).forEach(([countryCode, headcount]) => {
                 const countryName = countryNames[countryCode] || countryCode;
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td class="text-center fw-semibold">${countryName}</td>
-                    <td class="text-center">
-                        <span class="badge bg-primary">${headcount || 0}</span>
-                    </td>
+                const flag = countryFlags[countryCode] || '🌍';
+                
+                const card = document.createElement('div');
+                card.className = 'card country-card border-0 shadow';
+                card.innerHTML = `
+                    <div class="card-body text-center">
+                        <div class="country-flag mb-2" style="font-size: 2rem;">${flag}</div>
+                        <div class="country-name">${countryName}</div>
+                        <div class="headcount-badge">${headcount || 0}</div>
+                    </div>
                 `;
-                summaryBody.appendChild(row);
+                cardsContainer.appendChild(card);
             });
         } else {
-            // Show no data row
-            noDataRow.style.display = 'table-row';
+            // Show no data card
+            noDataCard.style.display = 'block';
         }
     }
     
