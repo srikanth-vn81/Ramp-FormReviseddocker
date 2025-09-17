@@ -620,16 +620,130 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize Sites Configuration
     function initializeSitesConfiguration() {
-        // Get initial geo selection if exists in session storage
-        const geoCountries = window.sessionStorage.getItem('geo_country');
-        if (geoCountries) {
-            const selectedCountries = JSON.parse(geoCountries);
-            updateSitesTableForRecruitment(selectedCountries);
-        } else {
-            // Default to showing all countries for recruitment
-            const allCountries = ['CAN', 'COL', 'HKG', 'IND', 'MEX', 'PAN', 'PHL', 'POL', 'TTO', 'USA'];
-            updateSitesTableForRecruitment(allCountries);
+        // Parse country headcount data from server
+        let countryHeadcounts = {};
+        try {
+            const headcountData = document.getElementById('country-headcounts');
+            if (headcountData) {
+                countryHeadcounts = JSON.parse(headcountData.textContent || '{}');
+            }
+        } catch (e) {
+            console.warn('Could not parse country headcount data:', e);
         }
+        
+        // If we have headcount data, use those countries. Otherwise show all countries.
+        const selectedCountries = Object.keys(countryHeadcounts);
+        if (selectedCountries.length > 0) {
+            buildSitesConfigurationTable(countryHeadcounts);
+        } else {
+            // Fallback: show message that no countries are selected in Location Details
+            showNoCountriesMessage();
+        }
+    }
+    
+    // Build sites configuration table with country headcount data
+    function buildSitesConfigurationTable(countryHeadcounts) {
+        const tableContainer = document.querySelector('.sites-table-container');
+        if (!tableContainer) return;
+        
+        // Country names mapping
+        const countryNames = {
+            'CAN': 'Canada', 'COL': 'Colombia', 'HKG': 'Hong Kong', 'IND': 'India',
+            'MEX': 'Mexico', 'PAN': 'Panama', 'PHL': 'Philippines', 'POL': 'Poland',
+            'TTO': 'Trinidad and Tobago', 'USA': 'United States'
+        };
+        
+        // Clear existing table
+        tableContainer.innerHTML = '';
+        
+        // Create countries sections
+        Object.entries(countryHeadcounts).forEach(([countryCode, headcount]) => {
+            const countryName = countryNames[countryCode] || countryCode;
+            
+            const countrySection = document.createElement('div');
+            countrySection.className = 'country-section mb-4 border rounded p-3';
+            countrySection.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="mb-0 fw-bold text-primary">
+                        <i class="fas fa-flag me-2"></i>${countryName} (${countryCode})
+                    </h6>
+                    <div class="badge-group">
+                        <span class="badge bg-info me-2">Total Required: ${headcount}</span>
+                        <span class="badge bg-secondary" id="remaining-${countryCode}">Remaining: ${headcount}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">Lead Time to Hire (Days)</label>
+                        <input type="number" class="form-control" id="lead_time_${countryCode}" min="1" placeholder="Enter days">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Weekly Hiring Capacity</label>
+                        <input type="number" class="form-control country-allocation" 
+                               id="weekly_capacity_${countryCode}" 
+                               data-country="${countryCode}" 
+                               data-total="${headcount}"
+                               min="0" max="${headcount}" 
+                               placeholder="Enter weekly capacity">
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <small class="text-muted">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Weekly capacity cannot exceed total required headcount of ${headcount}
+                    </small>
+                </div>
+            `;
+            
+            tableContainer.appendChild(countrySection);
+        });
+        
+        // Add event listeners for real-time validation
+        addAllocationValidation(countryHeadcounts);
+    }
+    
+    // Show message when no countries are selected
+    function showNoCountriesMessage() {
+        const tableContainer = document.querySelector('.sites-table-container');
+        if (!tableContainer) return;
+        
+        tableContainer.innerHTML = `
+            <div class="alert alert-warning text-center">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <strong>No Countries Selected</strong><br>
+                Please go back to <strong>Location Details</strong> step and select countries with headcount distribution first.
+            </div>
+        `;
+    }
+    
+    // Add validation for allocation inputs
+    function addAllocationValidation(countryHeadcounts) {
+        document.querySelectorAll('.country-allocation').forEach(input => {
+            input.addEventListener('input', function() {
+                const countryCode = this.getAttribute('data-country');
+                const totalRequired = parseInt(this.getAttribute('data-total'));
+                const allocated = parseInt(this.value) || 0;
+                const remaining = totalRequired - allocated;
+                
+                const remainingBadge = document.getElementById(`remaining-${countryCode}`);
+                if (remainingBadge) {
+                    remainingBadge.textContent = `Remaining: ${remaining}`;
+                    
+                    // Update badge color based on remaining
+                    remainingBadge.className = 'badge';
+                    if (remaining < 0) {
+                        remainingBadge.classList.add('bg-danger');
+                        this.classList.add('is-invalid');
+                    } else if (remaining === 0) {
+                        remainingBadge.classList.add('bg-success');
+                        this.classList.remove('is-invalid');
+                    } else {
+                        remainingBadge.classList.add('bg-secondary');
+                        this.classList.remove('is-invalid');
+                    }
+                }
+            });
+        });
     }
     
     // Update sites table based on selected countries (recruitment specific)
