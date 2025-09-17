@@ -866,41 +866,43 @@ document.addEventListener('DOMContentLoaded', function() {
             ]
         };
         
-        // First, add sites count selection row
-        const sitesCountRow = document.createElement('tr');
-        const sitesCountMetricsCell = document.createElement('td');
-        sitesCountMetricsCell.className = 'text-center fw-semibold bg-light';
-        sitesCountMetricsCell.innerHTML = `
-            <div class="d-flex align-items-center justify-content-center">
-                <i class="fas fa-cog me-2" style="color: #6c757d;"></i>
-                <div>
-                    <small class="d-block fw-bold text-uppercase" style="font-size: 0.65rem; line-height: 1.2;">
-                        SITES COUNT
-                    </small>
+        // FIXED: Only add sites count selection row when fullConfig is true (Yes selected)
+        if (fullConfig) {
+            const sitesCountRow = document.createElement('tr');
+            const sitesCountMetricsCell = document.createElement('td');
+            sitesCountMetricsCell.className = 'text-center fw-semibold bg-light';
+            sitesCountMetricsCell.innerHTML = `
+                <div class="d-flex align-items-center justify-content-center">
+                    <i class="fas fa-cog me-2" style="color: #6c757d;"></i>
+                    <div>
+                        <small class="d-block fw-bold text-uppercase" style="font-size: 0.65rem; line-height: 1.2;">
+                            SITES COUNT
+                        </small>
+                    </div>
                 </div>
-            </div>
-        `;
-        sitesCountRow.appendChild(sitesCountMetricsCell);
-        
-        // Add sites count dropdowns for each country
-        countryCodes.forEach(countryCode => {
-            const sitesCountCell = document.createElement('td');
-            sitesCountCell.className = 'text-center p-2';
-            sitesCountCell.innerHTML = `
-                <select class="form-select form-select-sm sites-count-select" 
-                        name="sites_count_${countryCode}" 
-                        data-country="${countryCode}"
-                        style="min-width: 120px;"
-                        onchange="updateSitesConfiguration()">
-                    <option value="1">1 Site</option>
-                    <option value="2">2 Sites</option>
-                    <option value="3" selected>3 Sites</option>
-                </select>
             `;
-            sitesCountRow.appendChild(sitesCountCell);
-        });
-        
-        tableBody.appendChild(sitesCountRow);
+            sitesCountRow.appendChild(sitesCountMetricsCell);
+            
+            // Add sites count dropdowns for each country
+            countryCodes.forEach(countryCode => {
+                const sitesCountCell = document.createElement('td');
+                sitesCountCell.className = 'text-center p-2';
+                sitesCountCell.innerHTML = `
+                    <select class="form-select form-select-sm sites-count-select" 
+                            name="sites_count_${countryCode}" 
+                            data-country="${countryCode}"
+                            style="min-width: 120px;"
+                            onchange="updateSitesConfiguration()">
+                        <option value="1">1 Site</option>
+                        <option value="2">2 Sites</option>
+                        <option value="3" selected>3 Sites</option>
+                    </select>
+                `;
+                sitesCountRow.appendChild(sitesCountCell);
+            });
+            
+            tableBody.appendChild(sitesCountRow);
+        }
         
         // Build dynamic site rows based on sites count (default 3)
         buildSiteRows(countryCodes, countrySites, 3, fullConfig);
