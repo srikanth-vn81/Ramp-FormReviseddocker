@@ -460,6 +460,15 @@ function validateLobCount(lobNames) {
     
     if (actualCount > lobCount) {
         showValidationMessage('danger', `Too many LOB names! You entered ${actualCount} LOBs but specified ${lobCount}. Please remove ${actualCount - lobCount} LOB name(s).`);
+        
+        // Hide checkboxes section when validation fails
+        const lobCheckboxesSection = document.getElementById('lob-checkboxes-section');
+        if (lobCheckboxesSection) lobCheckboxesSection.style.display = 'none';
+        
+        // Hide language & channel section
+        const languageChannelSection = document.getElementById('language-channel-section');
+        if (languageChannelSection) languageChannelSection.style.display = 'none';
+        
         return false;
     }
     
@@ -709,15 +718,62 @@ document.addEventListener('DOMContentLoaded', function() {
         updateLobInfoText();
     }
     
-    // LOB names input listener with debounce
+    // LOB names input listener with debounce and real-time validation
     const lobNamesInput = document.getElementById('lob-names-input');
     if (lobNamesInput) {
         let timeout;
+        
+        // Real-time input validation
         lobNamesInput.addEventListener('input', function() {
+            const lobCountField = document.getElementById('lob_count');
+            const lobCount = parseInt(lobCountField.value) || 0;
+            const currentValue = this.value.trim();
+            
+            if (lobCount > 0 && currentValue) {
+                const currentLobNames = currentValue.split(',').map(name => name.trim()).filter(name => name.length > 0);
+                
+                // If user tries to enter more than allowed
+                if (currentLobNames.length > lobCount) {
+                    // Truncate to allowed count
+                    const allowedLobNames = currentLobNames.slice(0, lobCount);
+                    this.value = allowedLobNames.join(', ');
+                    
+                    // Show warning message
+                    showValidationMessage('warning', `Maximum ${lobCount} LOB names allowed. Additional names were removed.`);
+                    setTimeout(hideValidationMessage, 3000);
+                }
+            }
+            
             clearTimeout(timeout);
             timeout = setTimeout(() => {
                 processLobNames();
             }, 500); // 500ms debounce
+        });
+        
+        // Prevent pasting too many LOB names
+        lobNamesInput.addEventListener('paste', function(e) {
+            setTimeout(() => {
+                const lobCountField = document.getElementById('lob_count');
+                const lobCount = parseInt(lobCountField.value) || 0;
+                const currentValue = this.value.trim();
+                
+                if (lobCount > 0 && currentValue) {
+                    const currentLobNames = currentValue.split(',').map(name => name.trim()).filter(name => name.length > 0);
+                    
+                    if (currentLobNames.length > lobCount) {
+                        const allowedLobNames = currentLobNames.slice(0, lobCount);
+                        this.value = allowedLobNames.join(', ');
+                        
+                        showValidationMessage('warning', `Pasted content exceeded ${lobCount} LOB limit. Only first ${lobCount} LOB names were kept.`);
+                        setTimeout(hideValidationMessage, 4000);
+                        
+                        // Trigger processing with corrected value
+                        setTimeout(() => {
+                            processLobNames();
+                        }, 100);
+                    }
+                }
+            }, 10); // Small delay to ensure paste content is processed
         });
     }
     
