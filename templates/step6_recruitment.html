@@ -1041,72 +1041,170 @@ document.addEventListener('DOMContentLoaded', function() {
         tableBody.insertAdjacentHTML('beforeend', htmlContent);
     }
     
-    // FIXED: Update sites configuration to show correct sites per country
+    // PROPERLY FIXED: Update sites configuration based on individual country selections
     window.updateSitesConfiguration = function() {
-        console.log('🔧 Updating sites configuration - each country shows only selected sites count');
+        console.log('🔧 Rebuilding sites configuration with individual country selections...');
         
-        // Get all country dropdowns and their selected counts
-        const siteDropdowns = document.querySelectorAll('.sites-count-select');
-        const countrySelections = {};
+        // Get country data
+        let countryHeadcounts = {};
+        try {
+            const headcountData = document.getElementById('country-headcounts');
+            if (headcountData) {
+                countryHeadcounts = JSON.parse(headcountData.textContent || '{}');
+            }
+        } catch (e) {
+            console.warn('Could not parse country headcount data:', e);
+        }
         
-        siteDropdowns.forEach(dropdown => {
-            const country = dropdown.getAttribute('data-country');
-            const selectedCount = parseInt(dropdown.value) || 1;
-            countrySelections[country] = selectedCount;
-            console.log(`${country}: ${selectedCount} sites selected`);
+        const countryCodes = Object.keys(countryHeadcounts);
+        if (countryCodes.length === 0) return;
+        
+        // Get individual country site selections
+        const countrySiteCounts = {};
+        countryCodes.forEach(countryCode => {
+            const dropdown = document.querySelector(`select[data-country="${countryCode}"]`);
+            countrySiteCounts[countryCode] = dropdown ? parseInt(dropdown.value) || 1 : 1;
+            console.log(`${countryCode}: ${countrySiteCounts[countryCode]} sites`);
         });
         
-        // Update each site row to show/hide content based on individual country selections
-        for (let siteNum = 1; siteNum <= 3; siteNum++) {
-            // Find all site rows for this site number
-            const siteRows = document.querySelectorAll(`tr[data-site="${siteNum}"]`);
+        // Get max sites count needed to rebuild table
+        const maxSites = Math.max(...Object.values(countrySiteCounts));
+        console.log(`Max sites needed: ${maxSites}`);
+        
+        // Country sites data (same as in buildSiteRows)
+        const countrySites = {
+            'CAN': [
+                { value: 'montreal', text: 'Montreal' },
+                { value: 'toronto-02', text: 'Toronto 02' }
+            ],
+            'COL': [
+                { value: 'medellin', text: 'Medellin' }
+            ],
+            'HKG': [
+                { value: 'hong-kong', text: 'Hong Kong' }
+            ],
+            'IND': [
+                { value: 'noida', text: 'Noida' },
+                { value: 'noida-02', text: 'Noida 02' }
+            ],
+            'MEX': [
+                { value: 'mexico-city-02', text: 'Mexico City 02' },
+                { value: 'mexico-city-03', text: 'Mexico City 03' }
+            ],
+            'PAN': [
+                { value: 'panama-city', text: 'Panama City' }
+            ],
+            'PHL': [
+                { value: 'bacolod-city', text: 'Bacolod City' },
+                { value: 'clark-01', text: 'Clark 01' },
+                { value: 'clark-02', text: 'Clark 02' },
+                { value: 'clark-03', text: 'Clark 03' },
+                { value: 'clark-05', text: 'Clark 05' },
+                { value: 'dasmarinas-01', text: 'Dasmarinas 01' },
+                { value: 'dasmarinas-02', text: 'Dasmarinas 02' },
+                { value: 'davao', text: 'Davao' },
+                { value: 'davao-02', text: 'Davao 02' },
+                { value: 'fairview', text: 'Fairview' },
+                { value: 'fairview-02', text: 'Fairview 02' },
+                { value: 'iloilo', text: 'Iloilo' },
+                { value: 'iloilo-02', text: 'Iloilo 02' },
+                { value: 'iloilo-03', text: 'Iloilo 03' },
+                { value: 'santa-rosa', text: 'Santa Rosa' },
+                { value: 'santa-rosa-02', text: 'Santa Rosa 02' },
+                { value: 'talisay-city', text: 'Talisay City' }
+            ],
+            'POL': [
+                { value: 'warsaw', text: 'Warsaw' }
+            ],
+            'TTO': [
+                { value: 'barataria', text: 'Barataria' },
+                { value: 'chaguanas', text: 'Chaguanas' },
+                { value: 'waterfield', text: 'Waterfield' }
+            ],
+            'USA': [
+                { value: 'allentown', text: 'Allentown' },
+                { value: 'atlanta', text: 'Atlanta' },
+                { value: 'buffalo', text: 'Buffalo' },
+                { value: 'charlotte', text: 'Charlotte' },
+                { value: 'east-hartford', text: 'East Hartford' },
+                { value: 'fort-lauderdale-02', text: 'Fort Lauderdale 02' },
+                { value: 'houston-01', text: 'Houston 01' },
+                { value: 'meridian', text: 'Meridian' },
+                { value: 'naperville', text: 'Naperville' },
+                { value: 'phoenix', text: 'Phoenix' },
+                { value: 'richfield', text: 'Richfield' },
+                { value: 'tempe', text: 'Tempe' },
+                { value: 'west-des-moines', text: 'West Des Moines' }
+            ]
+        };
+        
+        // Rebuild with custom logic for individual countries
+        buildCustomSiteRows(countryCodes, countrySites, countrySiteCounts);
+    };
+    
+    // LIGHTWEIGHT: Simple and fast site rows builder
+    function buildCustomSiteRows(countryCodes, countrySites, countrySiteCounts) {
+        const tableBody = document.getElementById('sites-table-body');
+        
+        // Clear existing site rows (keep sites count row)
+        const firstRow = tableBody.firstElementChild; 
+        tableBody.innerHTML = '';
+        if (firstRow) {
+            tableBody.appendChild(firstRow);
+        }
+        
+        const maxSites = Math.max(...Object.values(countrySiteCounts));
+        let html = '';
+        
+        // Simple site options
+        const getSiteOptions = (countryCode) => {
+            const sites = countrySites[countryCode] || [];
+            return '<option value="">Select Site</option>' + 
+                sites.map(s => `<option value="${s.value}">${s.text}</option>`).join('');
+        };
+        
+        // Build lightweight table
+        for (let site = 1; site <= maxSites; site++) {
+            // Site header
+            html += `<tr><td colspan="${countryCodes.length + 1}" class="bg-info text-white text-center fw-bold">Site ${site}</td></tr>`;
             
-            siteRows.forEach(row => {
-                // Find all country cells in this site row
-                const cells = row.querySelectorAll('td[data-country]');
+            // Simple rows
+            const rows = [
+                {label: 'Location', field: 'site_location', type: 'select'},
+                {label: 'Profile', field: 'agent_profile', type: 'profile'},
+                {label: 'Lead Time', field: 'lead_time', type: 'number'},
+                {label: 'Weekly', field: 'weekly_capacity', type: 'number'},
+                {label: 'Monthly', field: 'monthly_capacity', type: 'number'}
+            ];
+            
+            rows.forEach(row => {
+                html += `<tr><td class="bg-light fw-semibold">${row.label}</td>`;
                 
-                cells.forEach(cell => {
-                    const country = cell.getAttribute('data-country');
-                    const selectedCount = countrySelections[country] || 1;
-                    
-                    if (siteNum <= selectedCount) {
-                        // This site should show content for this country
-                        cell.style.opacity = '1';
-                        cell.style.backgroundColor = '';
-                        
-                        // Make sure form inputs are enabled
-                        const inputs = cell.querySelectorAll('input, select');
-                        inputs.forEach(input => {
-                            input.disabled = false;
-                            input.style.opacity = '1';
-                        });
-                    } else {
-                        // This site should be blank/disabled for this country  
-                        cell.style.opacity = '0.3';
-                        cell.style.backgroundColor = '#f8f9fa';
-                        
-                        // Disable and clear form inputs
-                        const inputs = cell.querySelectorAll('input, select');
-                        inputs.forEach(input => {
-                            input.disabled = true;
-                            input.value = '';
-                            input.style.opacity = '0.5';
-                        });
-                        
-                        // Show a visual indicator
-                        if (!cell.querySelector('.disabled-indicator')) {
-                            const indicator = document.createElement('div');
-                            indicator.className = 'disabled-indicator text-center text-muted';
-                            indicator.innerHTML = '<small><i class="fas fa-minus"></i> Not Used</small>';
-                            cell.appendChild(indicator);
+                countryCodes.forEach(code => {
+                    const count = countrySiteCounts[code] || 1;
+                    if (site <= count) {
+                        // Active site
+                        if (row.type === 'select') {
+                            html += `<td><select name="${row.field}_${code}_site${site}" class="form-select form-select-sm">${getSiteOptions(code)}</select></td>`;
+                        } else if (row.type === 'profile') {
+                            html += `<td><select name="${row.field}_${code}_site${site}" class="form-select form-select-sm">
+                                <option>Select Tier</option><option>Tier 1</option><option>Tier 2</option><option>Tier 3</option>
+                            </select></td>`;
+                        } else {
+                            html += `<td><input type="number" name="${row.field}_${code}_site${site}" class="form-control form-control-sm" placeholder="0" min="0"></td>`;
                         }
+                    } else {
+                        // Blank site
+                        html += '<td class="bg-light text-muted text-center">-</td>';
                     }
                 });
+                html += '</tr>';
             });
         }
         
-        console.log('✅ Sites configuration updated successfully');
-    };
+        tableBody.insertAdjacentHTML('beforeend', html);
+        console.log('✅ Lightweight sites table built');
+    }
     
     // Show message when no countries are selected
     function showNoCountriesMessage() {
