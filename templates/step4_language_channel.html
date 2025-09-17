@@ -3,6 +3,48 @@
 {% block title %}Program Details - WFM Analytics{% endblock %}
 
 {% block form_content %}
+<!-- Program Details Availability Section -->
+<div class="row mb-4">
+    <div class="col-lg-8 mx-auto">
+        <div class="mb-4">
+            <div class="form-label fw-bold text-success mb-3">
+                <i class="fas fa-question-circle me-2"></i>Program Details Availability
+            </div>
+            <div class="card border-0 shadow-sm bg-light">
+                <div class="card-body p-4">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label fw-bold text-dark mb-3">
+                                Do you have Program Details?
+                            </label>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-check form-check-inline p-3 border rounded bg-white shadow-sm">
+                                        <input class="form-check-input" type="radio" name="program-availability" id="program-available" value="available" onchange="toggleProgramDetails()">
+                                        <label class="form-check-label fw-bold text-success ms-2" for="program-available">
+                                            <i class="fas fa-check-circle me-2"></i>Available
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check form-check-inline p-3 border rounded bg-white shadow-sm">
+                                        <input class="form-check-input" type="radio" name="program-availability" id="program-unavailable" value="unavailable" onchange="toggleProgramDetails()">
+                                        <label class="form-check-label fw-bold text-secondary ms-2" for="program-unavailable">
+                                            <i class="fas fa-times-circle me-2"></i>Currently Unavailable
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Program Details Content (Initially Hidden) -->
+<div id="program-details-content" style="display: none;">
 <!-- LOB Details Card -->
 <div class="row mb-4">
     <div class="col-lg-8 mx-auto">
@@ -302,11 +344,80 @@
         </div>
     </div>
 </div>
+</div> <!-- End of program-details-content -->
 
 {% endblock %}
 
 {% block extra_js %}
 <script>
+// Toggle Program Details based on availability selection
+function toggleProgramDetails() {
+    const selectedRadio = document.querySelector('input[name="program-availability"]:checked');
+    const availability = selectedRadio ? selectedRadio.value : '';
+    const content = document.getElementById('program-details-content');
+    
+    if (availability === 'available') {
+        content.style.display = 'block';
+    } else {
+        content.style.display = 'none';
+        // Clear all form data when hiding
+        clearProgramFormData();
+    }
+}
+
+// Clear all program form data
+function clearProgramFormData() {
+    // Clear LOB count
+    const lobCountField = document.getElementById('lob_count');
+    if (lobCountField) lobCountField.value = '';
+    
+    // Clear LOB checkboxes
+    document.querySelectorAll('.lob-checkbox').forEach(function(checkbox) {
+        checkbox.checked = false;
+    });
+    
+    // Update LOB selection display
+    const lobSelectionDisplay = document.getElementById('lob-selection-display');
+    if (lobSelectionDisplay) {
+        lobSelectionDisplay.textContent = 'Select LOBs...';
+        lobSelectionDisplay.style.color = '#6c757d';
+    }
+    
+    // Clear language support
+    const languagesSupported = document.getElementById('languages_supported');
+    if (languagesSupported) languagesSupported.value = '';
+    
+    // Clear specify languages
+    const specifyLanguages = document.getElementById('specify_languages');
+    if (specifyLanguages) specifyLanguages.value = '';
+    
+    // Hide specify languages container
+    const specifyContainer = document.getElementById('specify-languages-container');
+    if (specifyContainer) specifyContainer.style.display = 'none';
+    
+    // Clear all channel checkboxes
+    const channelCheckboxes = [
+        'voice_inbound', 'voice_outbound', 'chat', 'email', 
+        'social_sms', 'back_office', 'others-checkbox'
+    ];
+    
+    channelCheckboxes.forEach(function(checkboxId) {
+        const checkbox = document.getElementById(checkboxId);
+        if (checkbox) checkbox.checked = false;
+    });
+    
+    // Clear others text and hide container
+    const othersText = document.getElementById('others_text');
+    if (othersText) othersText.value = '';
+    
+    const othersContainer = document.getElementById('others-text-container');
+    if (othersContainer) othersContainer.style.display = 'none';
+    
+    // Update channel summary
+    const channelSummary = document.getElementById('channel-summary');
+    if (channelSummary) channelSummary.textContent = 'No channels selected';
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Show/hide language specification field
     const languagesSupported = document.getElementById('languages_supported');
