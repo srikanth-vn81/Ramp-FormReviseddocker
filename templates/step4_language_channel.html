@@ -160,64 +160,78 @@
                         <small class="text-muted ms-2" id="channel-summary">0 of 6 selected</small>
                     </div>
                     
-                    <div class="row g-4">
-                        <!-- Voice Channels -->
-                        <div class="col-md-6">
-                            <div class="card h-100 border-0 shadow-sm" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
+                    <!-- Voice Channels -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
                                 <div class="card-header bg-light border-0 py-3">
                                     <h6 class="card-title mb-0 fw-bold text-dark">
                                         <i class="fas fa-phone me-2 text-primary"></i>Voice Channels
                                     </h6>
                                 </div>
                                 <div class="card-body py-3">
-                                    <div class="form-check mb-3 p-2 rounded" style="background: rgba(13, 110, 253, 0.1);">
-                                        {{ form.voice_inbound(class="form-check-input channel-checkbox", id="voice-inbound") }}
-                                        <label class="form-check-label fw-semibold" for="voice-inbound">
-                                            <i class="fas fa-phone-volume me-2 text-success"></i>Voice - Inbound
-                                        </label>
-                                    </div>
-                                    <div class="form-check p-2 rounded" style="background: rgba(25, 135, 84, 0.1);">
-                                        {{ form.voice_outbound(class="form-check-input channel-checkbox", id="voice-outbound") }}
-                                        <label class="form-check-label fw-semibold" for="voice-outbound">
-                                            <i class="fas fa-phone-square-alt me-2 text-primary"></i>Voice - Outbound
-                                        </label>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="form-check p-2 rounded" style="background: rgba(13, 110, 253, 0.1);">
+                                                {{ form.voice_inbound(class="form-check-input channel-checkbox", id="voice-inbound") }}
+                                                <label class="form-check-label fw-semibold" for="voice-inbound">
+                                                    <i class="fas fa-phone-volume me-2 text-success"></i>Voice - Inbound
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check p-2 rounded" style="background: rgba(25, 135, 84, 0.1);">
+                                                {{ form.voice_outbound(class="form-check-input channel-checkbox", id="voice-outbound") }}
+                                                <label class="form-check-label fw-semibold" for="voice-outbound">
+                                                    <i class="fas fa-phone-square-alt me-2 text-primary"></i>Voice - Outbound
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Digital Channels -->
-                        <div class="col-md-6">
-                            <div class="card h-100 border-0 shadow-sm" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
+                    </div>
+                    
+                    <!-- Digital Channels -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
                                 <div class="card-header bg-light border-0 py-3">
                                     <h6 class="card-title mb-0 fw-bold text-dark">
                                         <i class="fas fa-desktop me-2 text-info"></i>Digital Channels
                                     </h6>
                                 </div>
                                 <div class="card-body py-3">
-                                    <div class="form-check mb-2 p-2 rounded" style="background: rgba(13, 202, 240, 0.1);">
-                                        {{ form.chat(class="form-check-input channel-checkbox", id="chat") }}
-                                        <label class="form-check-label fw-semibold" for="chat">
-                                            <i class="fas fa-comments me-2 text-info"></i>Chat
-                                        </label>
-                                    </div>
-                                    <div class="form-check mb-2 p-2 rounded" style="background: rgba(255, 193, 7, 0.1);">
-                                        {{ form.email(class="form-check-input channel-checkbox", id="email") }}
-                                        <label class="form-check-label fw-semibold" for="email">
-                                            <i class="fas fa-envelope me-2 text-warning"></i>Email
-                                        </label>
-                                    </div>
-                                    <div class="form-check mb-2 p-2 rounded" style="background: rgba(220, 53, 69, 0.1);">
-                                        {{ form.social_sms(class="form-check-input channel-checkbox", id="social-sms") }}
-                                        <label class="form-check-label fw-semibold" for="social-sms">
-                                            <i class="fas fa-share-alt me-2 text-danger"></i>Social Media/SMS
-                                        </label>
-                                    </div>
-                                    <div class="form-check p-2 rounded" style="background: rgba(108, 117, 125, 0.1);">
-                                        {{ form.back_office(class="form-check-input channel-checkbox", id="back-office") }}
-                                        <label class="form-check-label fw-semibold" for="back-office">
-                                            <i class="fas fa-cogs me-2 text-secondary"></i>Back Office
-                                        </label>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2 p-2 rounded" style="background: rgba(13, 202, 240, 0.1);">
+                                                {{ form.chat(class="form-check-input channel-checkbox", id="chat") }}
+                                                <label class="form-check-label fw-semibold" for="chat">
+                                                    <i class="fas fa-comments me-2 text-info"></i>Chat
+                                                </label>
+                                            </div>
+                                            <div class="form-check p-2 rounded" style="background: rgba(255, 193, 7, 0.1);">
+                                                {{ form.email(class="form-check-input channel-checkbox", id="email") }}
+                                                <label class="form-check-label fw-semibold" for="email">
+                                                    <i class="fas fa-envelope me-2 text-warning"></i>Email
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2 p-2 rounded" style="background: rgba(220, 53, 69, 0.1);">
+                                                {{ form.social_sms(class="form-check-input channel-checkbox", id="social-sms") }}
+                                                <label class="form-check-label fw-semibold" for="social-sms">
+                                                    <i class="fas fa-share-alt me-2 text-danger"></i>Social Media/SMS
+                                                </label>
+                                            </div>
+                                            <div class="form-check p-2 rounded" style="background: rgba(108, 117, 125, 0.1);">
+                                                {{ form.back_office(class="form-check-input channel-checkbox", id="back-office") }}
+                                                <label class="form-check-label fw-semibold" for="back-office">
+                                                    <i class="fas fa-cogs me-2 text-secondary"></i>Back Office
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -225,7 +239,7 @@
                     </div>
                     
                     <!-- Others Section -->
-                    <div class="row mt-3">
+                    <div class="row">
                         <div class="col-12">
                             <div class="card border-0 shadow-sm" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
                                 <div class="card-body p-3">
@@ -237,6 +251,49 @@
                                     </div>
                                     <div id="others-text-container" style="display: none;" class="mt-3">
                                         {{ form.others_text(class="form-control shadow-sm", id="others-text", placeholder="Specify other channels...") }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional Training Details -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
+                                <div class="card-header bg-light border-0 py-3">
+                                    <h6 class="card-title mb-0 fw-bold text-dark">
+                                        <i class="fas fa-info-circle me-2 text-success"></i>Additional Training Details
+                                    </h6>
+                                </div>
+                                <div class="card-body py-3">
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <label class="form-label fw-semibold">Training Duration</label>
+                                            <div class="d-flex gap-2 align-items-center">
+                                                <div class="flex-shrink-0" style="min-width: 100px;">
+                                                    {{ form.training_duration(class="form-select") }}
+                                                </div>
+                                                <div id="training-duration-number-container" style="display: none; min-width: 80px;">
+                                                    {{ form.training_duration_number(class="form-select") }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label fw-semibold">Nesting Duration</label>
+                                            <div class="d-flex gap-2 align-items-center">
+                                                <div class="flex-shrink-0" style="min-width: 100px;">
+                                                    {{ form.nesting_duration(class="form-select") }}
+                                                </div>
+                                                <div id="nesting-duration-number-container" style="display: none; min-width: 80px;">
+                                                    {{ form.nesting_duration_number(class="form-select") }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label fw-semibold">Batch Size</label>
+                                            {{ form.batch_size(class="form-select") }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
