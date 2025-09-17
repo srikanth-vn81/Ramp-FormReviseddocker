@@ -631,27 +631,29 @@ function initializeProgressTracking() {
 }
 
 /**
- * Initialize application when DOM is loaded
+ * Initialize application when DOM is loaded - MINIMAL VERSION FOR PERFORMANCE
  */
 document.addEventListener('DOMContentLoaded', function() {
-    // Use requestAnimationFrame to defer heavy initialization
-    requestAnimationFrame(() => {
-        // Initialize form controller
-        const formController = new RampFormController();
-        
-        // Initialize location details functionality only on step 2
-        if (window.location.pathname.includes('/step/2')) {
-            initializeLocationDetails();
-        }
-        
-        // Initialize Sites Configuration functionality only on step 3
-        if (window.location.pathname.includes('/step/3')) {
-            initializeSitesConfiguration();
-        }
-    });
-    
-    // Minimal immediate initialization
+    // ONLY initialize what's absolutely necessary for the current step
     console.log('WFM Analytics - Ramp Input Form initialized successfully');
+    
+    // Only initialize sites configuration if we're on recruitment step AND user selects "Yes"
+    if (window.location.pathname.includes('/step/3')) {
+        setTimeout(() => {
+            const yesRadio = document.getElementById('site_config_yes');
+            if (yesRadio && yesRadio.checked) {
+                initializeSitesConfiguration();
+            }
+            // Add listener for when user clicks "Yes"
+            if (yesRadio) {
+                yesRadio.addEventListener('change', function() {
+                    if (this.checked) {
+                        initializeSitesConfiguration();
+                    }
+                });
+            }
+        }, 100);
+    }
 });
 
 /**
