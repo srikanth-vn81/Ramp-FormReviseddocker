@@ -202,18 +202,18 @@
                                 <div class="card-body py-3">
                                     <div class="row g-3">
                                         <div class="col-md-6">
-                                            <div class="form-check d-flex align-items-center p-3">
-                                                {{ form.voice_inbound(class="form-check-input channel-checkbox me-3", id="voice-inbound") }}
-                                                <label class="form-check-label fw-semibold mb-0" for="voice-inbound">
-                                                    <i class="fas fa-phone-volume me-2 text-success"></i>Voice - Inbound
+                                            <div class="form-check">
+                                                {{ form.voice_inbound(class="form-check-input channel-checkbox", id="voice-inbound") }}
+                                                <label class="form-check-label" for="voice-inbound">
+                                                    <span class="icon-wrap"><i class="fas fa-phone-volume text-success"></i></span>Voice - Inbound
                                                 </label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-check d-flex align-items-center p-3">
-                                                {{ form.voice_outbound(class="form-check-input channel-checkbox me-3", id="voice-outbound") }}
-                                                <label class="form-check-label fw-semibold mb-0" for="voice-outbound">
-                                                    <i class="fas fa-phone-square-alt me-2 text-primary"></i>Voice - Outbound
+                                            <div class="form-check">
+                                                {{ form.voice_outbound(class="form-check-input channel-checkbox", id="voice-outbound") }}
+                                                <label class="form-check-label" for="voice-outbound">
+                                                    <span class="icon-wrap"><i class="fas fa-phone-square-alt text-primary"></i></span>Voice - Outbound
                                                 </label>
                                             </div>
                                         </div>
@@ -235,30 +235,30 @@
                                 <div class="card-body py-3">
                                     <div class="row g-3">
                                         <div class="col-md-6">
-                                            <div class="form-check d-flex align-items-center mb-3 p-3">
-                                                {{ form.chat(class="form-check-input channel-checkbox me-3", id="chat") }}
-                                                <label class="form-check-label fw-semibold mb-0" for="chat">
-                                                    <i class="fas fa-comments me-2 text-info"></i>Chat
+                                            <div class="form-check">
+                                                {{ form.chat(class="form-check-input channel-checkbox", id="chat") }}
+                                                <label class="form-check-label" for="chat">
+                                                    <span class="icon-wrap"><i class="fas fa-comments text-info"></i></span>Chat
                                                 </label>
                                             </div>
-                                            <div class="form-check d-flex align-items-center p-3">
-                                                {{ form.email(class="form-check-input channel-checkbox me-3", id="email") }}
-                                                <label class="form-check-label fw-semibold mb-0" for="email">
-                                                    <i class="fas fa-envelope me-2 text-warning"></i>Email
+                                            <div class="form-check">
+                                                {{ form.email(class="form-check-input channel-checkbox", id="email") }}
+                                                <label class="form-check-label" for="email">
+                                                    <span class="icon-wrap"><i class="fas fa-envelope text-warning"></i></span>Email
                                                 </label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-check d-flex align-items-center mb-3 p-3">
-                                                {{ form.social_sms(class="form-check-input channel-checkbox me-3", id="social-sms") }}
-                                                <label class="form-check-label fw-semibold mb-0" for="social-sms">
-                                                    <i class="fas fa-share-alt me-2 text-danger"></i>Social Media/SMS
+                                            <div class="form-check">
+                                                {{ form.social_sms(class="form-check-input channel-checkbox", id="social-sms") }}
+                                                <label class="form-check-label" for="social-sms">
+                                                    <span class="icon-wrap"><i class="fas fa-share-alt text-danger"></i></span>Social Media/SMS
                                                 </label>
                                             </div>
-                                            <div class="form-check d-flex align-items-center p-3">
-                                                {{ form.back_office(class="form-check-input channel-checkbox me-3", id="back-office") }}
-                                                <label class="form-check-label fw-semibold mb-0" for="back-office">
-                                                    <i class="fas fa-cogs me-2 text-secondary"></i>Back Office
+                                            <div class="form-check">
+                                                {{ form.back_office(class="form-check-input channel-checkbox", id="back-office") }}
+                                                <label class="form-check-label" for="back-office">
+                                                    <span class="icon-wrap"><i class="fas fa-cogs text-secondary"></i></span>Back Office
                                                 </label>
                                             </div>
                                         </div>
@@ -273,10 +273,10 @@
                         <div class="col-12">
                             <div class="card border shadow-sm">
                                 <div class="card-body p-3">
-                                    <div class="form-check d-flex align-items-center p-3">
-                                        {{ form.others(class="form-check-input me-3", id="others-toggle", onchange="toggleOthersText()") }}
-                                        <label class="form-check-label fw-semibold mb-0" for="others-toggle">
-                                            <i class="fas fa-plus-circle me-2 text-muted"></i>Others
+                                    <div class="form-check">
+                                        {{ form.others(class="form-check-input", id="others-toggle", onchange="toggleOthersText()") }}
+                                        <label class="form-check-label" for="others-toggle">
+                                            <span class="icon-wrap"><i class="fas fa-plus-circle text-muted"></i></span>Others
                                         </label>
                                     </div>
                                     <div id="others-text-container" style="display: none;" class="mt-3">
