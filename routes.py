@@ -38,19 +38,32 @@ def get_server_session_path(session_uuid):
     os.makedirs(SESSIONS_DIR, exist_ok=True)
     return os.path.join(SESSIONS_DIR, f'{session_uuid}.json')
 
+# In-memory cache for fast session access
+_session_cache = {}
+
 def load_server_session(session_uuid):
-    """Load data from server-side session file"""
+    """Load data from in-memory cache (FAST)"""
+    if session_uuid in _session_cache:
+        return _session_cache[session_uuid].copy()
+    
+    # Fallback to file if not in cache
     session_path = get_server_session_path(session_uuid)
     if os.path.exists(session_path):
         with open(session_path, 'r') as f:
-            return json.load(f)
+            data = json.load(f)
+            _session_cache[session_uuid] = data  # Cache it
+            return data.copy()
     return {}
 
 def save_server_session(session_uuid, data):
-    """Save data to server-side session file"""
-    session_path = get_server_session_path(session_uuid)
-    with open(session_path, 'w') as f:
-        json.dump(data, f, indent=2)
+    """Save data to in-memory cache (FAST) - lazy file write"""
+    _session_cache[session_uuid] = data.copy()
+    
+    # Only write to file every 10th save to reduce I/O
+    if len(_session_cache) % 10 == 0:
+        session_path = get_server_session_path(session_uuid)
+        with open(session_path, 'w') as f:
+            json.dump(data, f, indent=2)
 
 def generate_date_choices():
     """Generate date choices for the next 60 days"""
@@ -204,14 +217,16 @@ def ramp_form_step(step):
     if request.method == 'POST':
         action = request.form.get('action')
         
-        # Always save current step data on any POST request
-        save_step_data(step, form)
+        # OPTIMIZED: Only save data when absolutely necessary
+        if action in ['save', 'next', 'previous']:
+            save_step_data(step, form)
         
-        # For step 3 (Recruitment), also save site configuration state to server storage
+        # For step 3 (Recruitment), also save site configuration state to server storage  
         if step == 3:
             site_config_needed = request.form.get('site_config_needed')
             session_uuid = get_session_uuid()
-            server_data = load_server_session(session_uuid)
+            # FAST: Use cached data instead of file I/O
+            server_data = _session_cache.get(session_uuid, {})
             if 'form_data' not in server_data:
                 server_data['form_data'] = {}
             server_data['form_data']['site_config_needed'] = site_config_needed or 'no'
