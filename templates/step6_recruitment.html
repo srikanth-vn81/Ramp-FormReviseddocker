@@ -44,7 +44,7 @@
                 </div>
 
                 <!-- Country Headcount Summary Cards -->
-                <div class="mb-4" id="headcount-summary-section">
+                <div class="mb-4" id="headcount-summary-section" style="display: none;">
                     <h6 class="fw-bold text-dark mb-3">
                         <i class="fas fa-users me-2"></i>Country Headcount Summary (from Location Details)
                     </h6>
@@ -652,17 +652,20 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Handle site configuration toggle - FIXED: Only show section after selection
+    // Handle site configuration toggle - FIXED: Show both sections only after selection
     function handleSiteConfigToggle() {
         const yesRadio = document.getElementById('site_config_yes');
         const noRadio = document.getElementById('site_config_no');
         const sitesSection = document.getElementById('sites-configuration-section');
+        const headcountSection = document.getElementById('headcount-summary-section');
         
-        // Only show the section if either Yes or No is selected
+        // Only show both sections if either Yes or No is selected
         if (yesRadio.checked || noRadio.checked) {
             sitesSection.style.display = 'block';
+            headcountSection.style.display = 'block';
         } else {
             sitesSection.style.display = 'none';
+            headcountSection.style.display = 'none';
         }
         
         if (yesRadio.checked) {
