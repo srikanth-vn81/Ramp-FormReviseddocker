@@ -18,6 +18,44 @@
                 </div>
             </div>
             <div class="card-body">
+                <!-- Training Support Availability Section -->
+                <div class="mb-4">
+                    <div class="form-label fw-bold text-success mb-3">
+                        <i class="fas fa-question-circle me-2"></i>Training Support Availability
+                    </div>
+                    <div class="card border-0 shadow-sm bg-light">
+                        <div class="card-body p-4">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label fw-bold text-dark mb-3">
+                                        Do you have Training Support Details?
+                                    </label>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="form-check form-check-inline p-3 border rounded bg-white shadow-sm">
+                                                <input class="form-check-input" type="radio" name="training-availability" id="training-available" value="available" onchange="toggleTrainingDetails()">
+                                                <label class="form-check-label fw-bold text-success ms-2" for="training-available">
+                                                    <i class="fas fa-check-circle me-2"></i>Available
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check form-check-inline p-3 border rounded bg-white shadow-sm">
+                                                <input class="form-check-input" type="radio" name="training-availability" id="training-unavailable" value="unavailable" onchange="toggleTrainingDetails()">
+                                                <label class="form-check-label fw-bold text-secondary ms-2" for="training-unavailable">
+                                                    <i class="fas fa-times-circle me-2"></i>Currently Unavailable
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Training Support Content (Initially Hidden) -->
+                <div id="training-support-content" style="display: none;">
                 <!-- Training Support Type -->
                 <div class="row g-3 mb-4">
                     <div class="col-12">
@@ -150,6 +188,7 @@
                         </div>
                     </div>
                 </div>
+                </div> <!-- End of training-support-content -->
             </div>
         </div>
     </div>
@@ -159,6 +198,68 @@
 
 {% block extra_js %}
 <script>
+// Toggle Training Support Details based on availability selection
+function toggleTrainingDetails() {
+    const selectedRadio = document.querySelector('input[name="training-availability"]:checked');
+    const availability = selectedRadio ? selectedRadio.value : '';
+    const content = document.getElementById('training-support-content');
+    
+    if (availability === 'available') {
+        content.style.display = 'block';
+    } else {
+        content.style.display = 'none';
+        // Clear all form data when hiding
+        clearTrainingFormData();
+    }
+}
+
+// Clear all training form data
+function clearTrainingFormData() {
+    // Clear training support type radio buttons
+    document.querySelectorAll('input[name="training_support_type"]').forEach(function(radio) {
+        radio.checked = false;
+    });
+    
+    // Clear internal trainer availability radio buttons
+    document.querySelectorAll('input[name="internal_trainer_available"]').forEach(function(radio) {
+        radio.checked = false;
+    });
+    
+    // Clear all select fields
+    document.querySelectorAll('select[name="client_trainer"], select[name="internal_trainer"], select[name="training_duration"], select[name="nesting_duration"], select[name="batch_size"]').forEach(function(select) {
+        select.value = '';
+    });
+    
+    // Clear total trainers fields
+    document.querySelectorAll('input[name="total_trainers"]').forEach(function(input) {
+        input.value = '0';
+    });
+    
+    // Clear training/nesting duration number fields
+    const trainingDurationNumber = document.getElementById('training_duration_number');
+    const nestingDurationNumber = document.getElementById('nesting_duration_number');
+    if (trainingDurationNumber) trainingDurationNumber.value = '';
+    if (nestingDurationNumber) nestingDurationNumber.value = '';
+    
+    // Hide all conditional sections
+    const conditionalSections = [
+        'internal-availability-section',
+        'client-trainer-details',
+        'both-trainer-details',
+        'internal-trainer-details',
+        'additional-fields',
+        'training-duration-number-container',
+        'nesting-duration-number-container'
+    ];
+    
+    conditionalSections.forEach(function(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section) {
+            section.style.display = 'none';
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Training support type logic
     const trainingSupportRadios = document.querySelectorAll('input[name="training_support_type"]');
