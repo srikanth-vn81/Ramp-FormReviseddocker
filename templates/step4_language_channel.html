@@ -49,7 +49,7 @@
 <div class="row mb-4">
     <div class="col-lg-8 mx-auto">
         <div class="card shadow-sm">
-            <div class="card-header bg-success text-white">
+            <div class="card-header border-bottom">
                 <div class="d-flex justify-content-between align-items-center">
                     <h6 class="card-title mb-0 fw-bold">
                         <i class="fas fa-building me-2"></i>LOB Details
@@ -62,13 +62,13 @@
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <label class="form-label fw-semibold">
+                        <label class="form-label">
                             <i class="fas fa-hashtag me-1"></i>LOB Count
                         </label>
                         {{ form.lob_count(class="form-control", placeholder="Enter number of LOBs") }}
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-semibold">
+                        <label class="form-label">
                             <i class="fas fa-edit me-1"></i>LOB Names
                         </label>
                         <input type="text" class="form-control" 
@@ -92,7 +92,7 @@
                 <!-- LOB Checkboxes Display -->
                 <div class="row mt-4" id="lob-checkboxes-section" style="display: none;">
                     <div class="col-12">
-                        <label class="form-label fw-semibold text-primary">
+                        <label class="form-label">
                             <i class="fas fa-check-square me-1"></i>Select LOBs for Language & Channel Support
                         </label>
                         <div class="card border-0 shadow-sm" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
@@ -113,7 +113,7 @@
 <div class="row mt-4" id="additional-training-section" style="display: none;">
     <div class="col-lg-8 mx-auto">
         <div class="card border shadow-sm">
-            <div class="card-header bg-light text-dark">
+            <div class="card-header border-bottom">
                 <h6 class="card-title mb-0">
                     <i class="fas fa-graduation-cap me-2"></i>Additional Training Details
                 </h6>
@@ -121,7 +121,7 @@
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <label class="form-label fw-semibold">Training Duration</label>
+                        <label class="form-label">Training Duration</label>
                         <div class="d-flex gap-2 align-items-center">
                             <div class="flex-shrink-0" style="min-width: 100px;">
                                 {{ form.training_duration(class="form-select") }}
@@ -132,7 +132,7 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label fw-semibold">Nesting Duration</label>
+                        <label class="form-label">Nesting Duration</label>
                         <div class="d-flex gap-2 align-items-center">
                             <div class="flex-shrink-0" style="min-width: 100px;">
                                 {{ form.nesting_duration(class="form-select") }}
@@ -143,7 +143,7 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label fw-semibold">Batch Size</label>
+                        <label class="form-label">Batch Size</label>
                         {{ form.batch_size(class="form-select") }}
                     </div>
                 </div>
@@ -156,13 +156,13 @@
 <div class="row mt-4" id="language-channel-section" style="display: none;">
     <div class="col-lg-8 mx-auto">
         <div class="card border shadow-sm">
-            <div class="card-header bg-light text-dark">
+            <div class="card-header border-bottom">
                 <div class="d-flex justify-content-between align-items-center">
                     <h6 class="card-title mb-0">
                         <i class="fas fa-cog me-2"></i>Language & Channel Support
-                        <small class="badge bg-secondary ms-2" id="selected-lob-badge">Select a LOB</small>
+                        <small class="text-muted ms-2" id="selected-lob-badge">Select a LOB</small>
                     </h6>
-                    <span class="badge bg-secondary">
+                    <span class="text-muted">
                         <i class="fas fa-check-circle me-1"></i>Configuration
                     </span>
                 </div>
@@ -173,13 +173,13 @@
                 <div class="mb-4">
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold mb-2">
+                            <label class="form-label mb-2">
                                 <i class="fas fa-globe me-2"></i>Languages Supported
                             </label>
                             {{ form.languages_supported(class="form-select", id="languages-supported") }}
                         </div>
                         <div class="col-md-6" id="specify-languages-container" style="display: none;">
-                            <label class="form-label fw-semibold mb-2">Specify the Languages</label>
+                            <label class="form-label mb-2">Specify the Languages</label>
                             {{ form.specify_languages(class="form-control", id="specify-languages", placeholder="e.g., English, Spanish, French") }}
                         </div>
                     </div>
@@ -194,7 +194,7 @@
                     <div class="row mb-4">
                         <div class="col-12">
                             <div class="card border shadow-sm">
-                                <div class="card-header bg-light py-2">
+                                <div class="card-header border-bottom py-2">
                                     <h6 class="card-title mb-0">
                                         <i class="fas fa-phone me-2"></i>Voice Channels
                                     </h6>
@@ -227,7 +227,7 @@
                     <div class="row mb-4">
                         <div class="col-12">
                             <div class="card border shadow-sm">
-                                <div class="card-header bg-light py-2">
+                                <div class="card-header border-bottom py-2">
                                     <h6 class="card-title mb-0">
                                         <i class="fas fa-desktop me-2"></i>Digital Channels
                                     </h6>
