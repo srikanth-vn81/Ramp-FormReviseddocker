@@ -314,45 +314,51 @@ function toggleProgramDetails() {
     }
 }
 
-// Highlight mandatory fields in Additional Training Details
+// Show mandatory fields message for Additional Training Details
 function highlightMandatoryFields() {
-    // Training Duration
+    // Add a message above the Additional Training Details section
+    const additionalTrainingSection = document.getElementById('additional-training-section');
+    if (additionalTrainingSection) {
+        // Remove any existing message
+        const existingMessage = document.getElementById('mandatory-fields-message');
+        if (existingMessage) {
+            existingMessage.remove();
+        }
+        
+        // Create new message
+        const messageDiv = document.createElement('div');
+        messageDiv.id = 'mandatory-fields-message';
+        messageDiv.className = 'alert alert-info mb-3';
+        messageDiv.innerHTML = '<i class="fas fa-info-circle me-2"></i><strong>Please enter the mandatory fields:</strong> Training Duration, Nesting Duration, and Batch Size are required for the unavailable program.';
+        
+        // Insert before the Additional Training section
+        additionalTrainingSection.parentNode.insertBefore(messageDiv, additionalTrainingSection);
+    }
+    
+    // Set fields as required for validation
     const trainingDuration = document.getElementById('training_duration');
-    if (trainingDuration) {
-        trainingDuration.style.borderColor = '#dc3545';
-        trainingDuration.style.borderWidth = '2px';
-        trainingDuration.style.boxShadow = '0 0 0 0.2rem rgba(220, 53, 69, 0.25)';
-        trainingDuration.required = true;
-    }
+    if (trainingDuration) trainingDuration.required = true;
     
-    // Nesting Duration  
     const nestingDuration = document.getElementById('nesting_duration');
-    if (nestingDuration) {
-        nestingDuration.style.borderColor = '#dc3545';
-        nestingDuration.style.borderWidth = '2px';
-        nestingDuration.style.boxShadow = '0 0 0 0.2rem rgba(220, 53, 69, 0.25)';
-        nestingDuration.required = true;
-    }
+    if (nestingDuration) nestingDuration.required = true;
     
-    // Batch Size
     const batchSize = document.getElementById('batch_size');
-    if (batchSize) {
-        batchSize.style.borderColor = '#dc3545';
-        batchSize.style.borderWidth = '2px';
-        batchSize.style.boxShadow = '0 0 0 0.2rem rgba(220, 53, 69, 0.25)';
-        batchSize.required = true;
-    }
+    if (batchSize) batchSize.required = true;
 }
 
 // Remove mandatory field highlighting
 function removeMandatoryHighlighting() {
+    // Remove the mandatory fields message
+    const existingMessage = document.getElementById('mandatory-fields-message');
+    if (existingMessage) {
+        existingMessage.remove();
+    }
+    
+    // Remove required attribute from fields
     const fields = ['training_duration', 'nesting_duration', 'batch_size'];
     fields.forEach(fieldId => {
         const field = document.getElementById(fieldId);
         if (field) {
-            field.style.borderColor = '';
-            field.style.borderWidth = '';
-            field.style.boxShadow = '';
             field.required = false;
         }
     });
