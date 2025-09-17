@@ -1,0 +1,24 @@
+{
+  "form_data": {
+    "client_name": "",
+    "ramp_requirement": 200,
+    "ramp_requirement_type": "",
+    "requirement_type": "headcount",
+    "requirement_value": 100,
+    "geo_country": [
+      "IND",
+      "PHL",
+      "TTO"
+    ],
+    "can_headcount": 0,
+    "col_headcount": 0,
+    "hkg_headcount": 0,
+    "ind_headcount": 100,
+    "mex_headcount": 0,
+    "pan_headcount": 0,
+    "phl_headcount": 50,
+    "pol_headcount": 0,
+    "tto_headcount": 50,
+    "usa_headcount": 0
+  }
+}

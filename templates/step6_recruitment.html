@@ -1109,10 +1109,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Generate sites rows using existing function from main.js if available
-        if (typeof generateSitesRows === 'function') {
-            generateSitesRows(selectedCountries);
-        }
+        // Sites rows generation handled by step-loader.js
     }
     
     // Add event listeners to country site selectors
@@ -1124,9 +1121,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     selectedCountries.push(header.getAttribute('data-country'));
                 }
             });
-            if (typeof generateSitesRows === 'function') {
-                generateSitesRows(selectedCountries);
-            }
+            // Sites rows generation handled by step-specific loader
         });
     });
     
