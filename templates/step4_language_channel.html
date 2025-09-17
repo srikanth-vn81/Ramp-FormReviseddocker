@@ -170,17 +170,25 @@
             <div class="card-body p-4">
                 
                 <!-- Language Support Section -->
-                <div class="mb-4">
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label mb-2">
-                                <i class="fas fa-globe me-2"></i>Languages Supported
-                            </label>
-                            {{ form.languages_supported(class="form-select", id="languages-supported") }}
-                        </div>
-                        <div class="col-md-6" id="specify-languages-container" style="display: none;">
-                            <label class="form-label mb-2">Specify the Languages</label>
-                            {{ form.specify_languages(class="form-control", id="specify-languages", placeholder="e.g., English, Spanish, French") }}
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card border shadow-sm">
+                            <div class="card-header border-bottom py-2">
+                                <h6 class="card-title mb-0">
+                                    <i class="fas fa-globe me-2"></i>Languages Supported
+                                </h6>
+                            </div>
+                            <div class="card-body py-3">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        {{ form.languages_supported(class="form-select", id="languages-supported") }}
+                                    </div>
+                                    <div class="col-md-6" id="specify-languages-container" style="display: none;">
+                                        <label class="form-label mb-2">Specify the Languages</label>
+                                        {{ form.specify_languages(class="form-control", id="specify-languages", placeholder="e.g., English, Spanish, French") }}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
