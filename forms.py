@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, SelectMultipleField, RadioField, IntegerField, DateField, BooleanField, TextAreaField
+from wtforms import StringField, SelectField, SelectMultipleField, RadioField, IntegerField, DateField, BooleanField, TextAreaField, HiddenField
 from wtforms.validators import DataRequired, NumberRange, Optional
 from wtforms.widgets import CheckboxInput, ListWidget
 
@@ -134,6 +134,9 @@ class RampInputForm(FlaskForm):
     back_office = BooleanField('Back Office')
     others = BooleanField('Others')
     others_text = StringField('Others Text', validators=[Optional()])
+    
+    # Dynamic LOB Language & Channel Support Data (JSON)
+    lob_language_channel_data = HiddenField('LOB Language Channel Data', validators=[Optional()])
     
     # Location Details
     requirement_type = SelectField(

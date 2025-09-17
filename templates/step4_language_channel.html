@@ -202,6 +202,9 @@
     </div>
 </div>
 
+<!-- Hidden field to store LOB language and channel data -->
+<input type="hidden" name="lob_language_channel_data" id="lob-language-channel-data">
+
 <!-- Dynamic Language & Channel Support Sections -->
 <div id="lob-language-channel-sections" class="mt-4">
     <!-- This will be populated dynamically based on selected LOBs -->
@@ -270,6 +273,10 @@ function clearProgramFormData() {
     // Clear dynamic LOB sections
     const lobSections = document.getElementById('lob-language-channel-sections');
     if (lobSections) lobSections.innerHTML = '';
+    
+    // Clear hidden form data
+    const hiddenField = document.getElementById('lob-language-channel-data');
+    if (hiddenField) hiddenField.value = '';
     
     // Hide no LOBs message
     const noLobMessage = document.getElementById('no-lob-selected-message');
@@ -498,6 +505,9 @@ function addDynamicEventListeners() {
                 const specifyInput = document.getElementById(`specify_languages_${lobId}`);
                 if (specifyInput) specifyInput.value = '';
             }
+            
+            // Update form data
+            updateLobFormData();
         });
     });
     
@@ -519,6 +529,9 @@ function addDynamicEventListeners() {
                     if (othersText) othersText.value = '';
                 }
             }
+            
+            // Update form data
+            updateLobFormData();
         });
     });
     
@@ -527,6 +540,16 @@ function addDynamicEventListeners() {
         input.addEventListener('input', function() {
             const lobId = this.id.replace('others_text_', '');
             updateChannelSummary(lobId);
+            // Update form data
+            updateLobFormData();
+        });
+    });
+    
+    // Specify languages input listeners
+    document.querySelectorAll('[id^="specify_languages_"]').forEach(input => {
+        input.addEventListener('input', function() {
+            // Update form data
+            updateLobFormData();
         });
     });
 }
@@ -585,6 +608,54 @@ function updateChannelProgress(lobId) {
     }
 }
 
+// Serialize all LOB language and channel data into hidden field
+function updateLobFormData() {
+    const selectedLobs = Array.from(document.querySelectorAll('.lob-checkbox:checked')).map(cb => cb.value);
+    const lobData = {};
+    
+    selectedLobs.forEach(lob => {
+        const lobId = lob.toLowerCase().replace(/[^a-z0-9]/g, '_');
+        
+        // Get language data
+        const languageSelect = document.getElementById(`languages_${lobId}`);
+        const specifyLanguagesInput = document.getElementById(`specify_languages_${lobId}`);
+        
+        // Get channel data
+        const channels = [];
+        const channelCheckboxes = [
+            'voice_inbound', 'voice_outbound', 'chat', 'email', 
+            'social_sms', 'back_office', 'others'
+        ];
+        
+        channelCheckboxes.forEach(channel => {
+            const checkbox = document.getElementById(`${channel}_${lobId}`);
+            if (checkbox && checkbox.checked) {
+                channels.push(channel);
+            }
+        });
+        
+        // Get others text if applicable
+        let othersText = '';
+        const othersTextInput = document.getElementById(`others_text_${lobId}`);
+        if (othersTextInput && othersTextInput.value.trim()) {
+            othersText = othersTextInput.value.trim();
+        }
+        
+        lobData[lob] = {
+            language_support: languageSelect ? languageSelect.value : '',
+            specify_languages: specifyLanguagesInput ? specifyLanguagesInput.value : '',
+            channels: channels,
+            others_text: othersText
+        };
+    });
+    
+    // Update hidden field
+    const hiddenField = document.getElementById('lob-language-channel-data');
+    if (hiddenField) {
+        hiddenField.value = JSON.stringify(lobData);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     
     // LOB filterable dropdown functionality
@@ -621,6 +692,9 @@ document.addEventListener('DOMContentLoaded', function() {
             lobDropdownToggle.style.opacity = '1';
             lobDropdownToggle.style.pointerEvents = 'auto';
         }
+        
+        // Generate dynamic sections when LOB count changes
+        generateLobSections();
     }
     
     function clearLobSelections() {
@@ -706,6 +780,8 @@ document.addEventListener('DOMContentLoaded', function() {
     lobCheckboxes.forEach(checkbox => {
         checkbox.addEventListener('change', function() {
             validateLobSelection(this);
+            // Also trigger dynamic section generation
+            generateLobSections();
         });
     });
     
