@@ -79,10 +79,13 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-12">
-                        <small class="form-text text-muted">
+                        <small class="form-text text-muted" id="lob-info-text">
                             <i class="fas fa-info-circle me-1"></i>
                             Enter LOB names separated by commas. They will appear as checkboxes below.
                         </small>
+                        <div id="lob-validation-message" class="mt-2" style="display: none;">
+                            <!-- Validation messages will appear here -->
+                        </div>
                     </div>
                 </div>
                 
@@ -319,6 +322,9 @@ function processLobNames() {
     const lobNamesInput = document.getElementById('lob-names-input');
     const lobNamesValue = lobNamesInput.value.trim();
     
+    // Clear validation message
+    hideValidationMessage();
+    
     if (!lobNamesValue) {
         // Hide checkboxes section if empty
         const lobCheckboxesSection = document.getElementById('lob-checkboxes-section');
@@ -332,6 +338,7 @@ function processLobNames() {
         currentSelectedLob = null;
         lobData = {};
         updateFormData();
+        updateLobInfoText();
         return;
     }
     
@@ -340,6 +347,11 @@ function processLobNames() {
     
     if (lobNames.length === 0) {
         return;
+    }
+    
+    // Validate against LOB count
+    if (!validateLobCount(lobNames)) {
+        return; // Don't generate checkboxes if validation fails
     }
     
     // Generate checkboxes
@@ -433,6 +445,72 @@ function selectLob(lobName) {
     
     // Update form data
     updateFormData();
+}
+
+// Validate LOB count against entered LOB names
+function validateLobCount(lobNames) {
+    const lobCountField = document.getElementById('lob_count');
+    const lobCount = parseInt(lobCountField.value) || 0;
+    const actualCount = lobNames.length;
+    
+    if (lobCount === 0) {
+        showValidationMessage('warning', 'Please enter the LOB Count first to validate your LOB names.');
+        return false;
+    }
+    
+    if (actualCount > lobCount) {
+        showValidationMessage('danger', `Too many LOB names! You entered ${actualCount} LOBs but specified ${lobCount}. Please remove ${actualCount - lobCount} LOB name(s).`);
+        return false;
+    }
+    
+    if (actualCount < lobCount) {
+        showValidationMessage('warning', `You need ${lobCount - actualCount} more LOB name(s). You specified ${lobCount} LOBs but only entered ${actualCount}.`);
+        return true; // Allow partial entry
+    }
+    
+    // Perfect match
+    showValidationMessage('success', `✓ Perfect! ${actualCount} LOB names match the specified count.`);
+    setTimeout(hideValidationMessage, 3000); // Auto-hide success message
+    return true;
+}
+
+// Show validation message
+function showValidationMessage(type, message) {
+    const validationDiv = document.getElementById('lob-validation-message');
+    validationDiv.innerHTML = `
+        <div class="alert alert-${type} alert-dismissible fade show py-2" role="alert">
+            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'times-circle'} me-2"></i>
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    `;
+    validationDiv.style.display = 'block';
+}
+
+// Hide validation message
+function hideValidationMessage() {
+    const validationDiv = document.getElementById('lob-validation-message');
+    validationDiv.style.display = 'none';
+    validationDiv.innerHTML = '';
+}
+
+// Update LOB info text based on count
+function updateLobInfoText() {
+    const lobCountField = document.getElementById('lob_count');
+    const infoText = document.getElementById('lob-info-text');
+    const lobCount = parseInt(lobCountField.value) || 0;
+    
+    if (lobCount > 0) {
+        infoText.innerHTML = `
+            <i class="fas fa-info-circle me-1"></i>
+            Enter exactly ${lobCount} LOB name(s) separated by commas. They will appear as checkboxes below.
+        `;
+    } else {
+        infoText.innerHTML = `
+            <i class="fas fa-info-circle me-1"></i>
+            Enter LOB names separated by commas. They will appear as checkboxes below.
+        `;
+    }
 }
 
 // Save current form data to the selected LOB
@@ -609,6 +687,26 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (availableRadio && availableRadio.checked) {
         toggleProgramDetails();
+    }
+    
+    // LOB count field listener
+    const lobCountField = document.getElementById('lob_count');
+    if (lobCountField) {
+        lobCountField.addEventListener('input', function() {
+            updateLobInfoText();
+            hideValidationMessage();
+            
+            // Re-validate if LOB names are already entered
+            const lobNamesInput = document.getElementById('lob-names-input');
+            if (lobNamesInput && lobNamesInput.value.trim()) {
+                setTimeout(() => {
+                    processLobNames();
+                }, 100); // Small delay to ensure LOB count is updated
+            }
+        });
+        
+        // Initialize info text
+        updateLobInfoText();
     }
     
     // LOB names input listener with debounce
