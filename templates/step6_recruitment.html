@@ -621,6 +621,10 @@
 <!-- Country Headcounts Data from Location Details Step -->
 <script id="country-headcounts" type="application/json">{{ country_headcounts|tojson if country_headcounts else '{}' }}</script>
 
+<!-- Site Configuration State and Sites Configuration Data -->
+<script id="site-config-needed" type="application/json">{{ site_config_needed|tojson if site_config_needed else '"no"' }}</script>
+<script id="sites-config-data" type="application/json">{{ sites_config|tojson if sites_config else '{}' }}</script>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Handle site configuration toggle
@@ -644,6 +648,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize headcount summary on page load
     initializeHeadcountSummary();
+    
+    // Restore saved site configuration state
+    restoreSiteConfigurationState();
     
     // Function to populate headcount summary table
     function initializeHeadcountSummary() {
@@ -756,13 +763,80 @@ document.addEventListener('DOMContentLoaded', function() {
             headerRow.appendChild(countryHeader);
         });
         
+        // Site location options for each country
+        const countrySites = {
+            'CAN': [
+                { value: 'montreal', text: 'Montreal' },
+                { value: 'toronto-02', text: 'Toronto 02' }
+            ],
+            'COL': [
+                { value: 'medellin', text: 'Medellin' }
+            ],
+            'HKG': [
+                { value: 'hong-kong', text: 'Hong Kong' }
+            ],
+            'IND': [
+                { value: 'noida', text: 'Noida' },
+                { value: 'noida-02', text: 'Noida 02' }
+            ],
+            'MEX': [
+                { value: 'mexico-city-02', text: 'Mexico City 02' },
+                { value: 'mexico-city-03', text: 'Mexico City 03' }
+            ],
+            'PAN': [
+                { value: 'panama-city', text: 'Panama City' }
+            ],
+            'PHL': [
+                { value: 'bacolod-city', text: 'Bacolod City' },
+                { value: 'clark-01', text: 'Clark 01' },
+                { value: 'clark-02', text: 'Clark 02' },
+                { value: 'clark-03', text: 'Clark 03' },
+                { value: 'clark-05', text: 'Clark 05' },
+                { value: 'dasmarinas-01', text: 'Dasmarinas 01' },
+                { value: 'dasmarinas-02', text: 'Dasmarinas 02' },
+                { value: 'davao', text: 'Davao' },
+                { value: 'davao-02', text: 'Davao 02' },
+                { value: 'fairview', text: 'Fairview' },
+                { value: 'fairview-02', text: 'Fairview 02' },
+                { value: 'iloilo', text: 'Iloilo' },
+                { value: 'iloilo-02', text: 'Iloilo 02' },
+                { value: 'iloilo-03', text: 'Iloilo 03' },
+                { value: 'santa-rosa', text: 'Santa Rosa' },
+                { value: 'santa-rosa-02', text: 'Santa Rosa 02' },
+                { value: 'talisay-city', text: 'Talisay City' }
+            ],
+            'POL': [
+                { value: 'warsaw', text: 'Warsaw' }
+            ],
+            'TTO': [
+                { value: 'barataria', text: 'Barataria' },
+                { value: 'chaguanas', text: 'Chaguanas' },
+                { value: 'waterfield', text: 'Waterfield' }
+            ],
+            'USA': [
+                { value: 'allentown', text: 'Allentown' },
+                { value: 'atlanta', text: 'Atlanta' },
+                { value: 'buffalo', text: 'Buffalo' },
+                { value: 'charlotte', text: 'Charlotte' },
+                { value: 'east-hartford', text: 'East Hartford' },
+                { value: 'fort-lauderdale-02', text: 'Fort Lauderdale 02' },
+                { value: 'houston-01', text: 'Houston 01' },
+                { value: 'meridian', text: 'Meridian' },
+                { value: 'naperville', text: 'Naperville' },
+                { value: 'phoenix', text: 'Phoenix' },
+                { value: 'richfield', text: 'Richfield' },
+                { value: 'tempe', text: 'Tempe' },
+                { value: 'west-des-moines', text: 'West Des Moines' }
+            ]
+        };
+        
         // Build table rows
         const metrics = [
             { 
                 label: 'SITE LOCATION', 
                 type: 'select',
-                options: ['Select Site', '3 Sites', '5 Sites', '10 Sites'],
-                id: 'site_location'
+                id: 'site_location',
+                useCountrySpecific: true
             },
             { 
                 label: 'AGENT PROFILE', 
@@ -815,9 +889,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 countryCell.className = 'text-center p-2';
                 
                 if (metric.type === 'select') {
-                    const optionsHtml = metric.options.map(option => 
-                        `<option value="${option}" ${option === metric.options[0] ? 'selected' : ''}>${option}</option>`
-                    ).join('');
+                    let optionsHtml;
+                    
+                    if (metric.useCountrySpecific && metric.id === 'site_location') {
+                        // Use country-specific site locations
+                        const sites = countrySites[countryCode] || [];
+                        optionsHtml = '<option value="" selected>Select Site</option>' + 
+                                     sites.map(site => `<option value="${site.value}">${site.text}</option>`).join('');
+                    } else {
+                        // Use regular options
+                        optionsHtml = metric.options.map(option => 
+                            `<option value="${option}" ${option === metric.options[0] ? 'selected' : ''}>${option}</option>`
+                        ).join('');
+                    }
                     
                     countryCell.innerHTML = `
                         <select class="form-select form-select-sm" name="${metric.id}_${countryCode}" style="min-width: 120px;">
@@ -900,6 +984,63 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize the toggle state
     handleSiteConfigToggle();
+    
+    // Function to restore saved site configuration state
+    function restoreSiteConfigurationState() {
+        // Parse site config needed state from server
+        let siteConfigNeeded = 'no';
+        try {
+            const siteConfigData = document.getElementById('site-config-needed');
+            if (siteConfigData) {
+                siteConfigNeeded = JSON.parse(siteConfigData.textContent || '"no"');
+            }
+        } catch (e) {
+            console.warn('Could not parse site config needed state:', e);
+        }
+        
+        // Restore radio button state
+        if (siteConfigNeeded === 'yes') {
+            document.getElementById('site_config_yes').checked = true;
+            document.getElementById('site_config_no').checked = false;
+        } else {
+            document.getElementById('site_config_yes').checked = false;
+            document.getElementById('site_config_no').checked = true;
+        }
+        
+        // Trigger the toggle to show/hide the sites section
+        handleSiteConfigToggle();
+        
+        // If sites configuration is enabled, restore field values
+        if (siteConfigNeeded === 'yes') {
+            restoreSitesConfigurationData();
+        }
+    }
+    
+    // Function to restore sites configuration table data
+    function restoreSitesConfigurationData() {
+        // Parse sites config data from server
+        let sitesConfigData = {};
+        try {
+            const sitesData = document.getElementById('sites-config-data');
+            if (sitesData) {
+                sitesConfigData = JSON.parse(sitesData.textContent || '{}');
+            }
+        } catch (e) {
+            console.warn('Could not parse sites config data:', e);
+            return;
+        }
+        
+        // Wait for DOM elements to be available
+        setTimeout(() => {
+            // Restore field values
+            Object.entries(sitesConfigData).forEach(([fieldName, fieldValue]) => {
+                const field = document.querySelector(`[name="${fieldName}"]`);
+                if (field && fieldValue) {
+                    field.value = fieldValue;
+                }
+            });
+        }, 100); // Small delay to ensure DOM is ready
+    }
 });
 </script>
 {% endblock %}

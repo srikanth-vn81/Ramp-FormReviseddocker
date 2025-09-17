@@ -82,6 +82,22 @@ def save_step_data(step, form):
                     session['form_data'][field_name] = field_data.isoformat()
                 else:
                     session['form_data'][field_name] = field_data
+    
+    # For step 3 (Recruitment), also save dynamic Sites Configuration fields
+    if step == 3 and request:
+        sites_config = {}
+        country_codes = ['CAN', 'COL', 'HKG', 'IND', 'MEX', 'PAN', 'PHL', 'POL', 'TTO', 'USA']
+        metrics = ['site_location', 'agent_profile', 'lead_time', 'weekly_capacity', 'monthly_capacity']
+        
+        for metric in metrics:
+            for country_code in country_codes:
+                field_name = f'{metric}_{country_code}'
+                field_value = request.form.get(field_name)
+                if field_value is not None:
+                    sites_config[field_name] = field_value
+        
+        if sites_config:
+            session['form_data']['sites_config'] = sites_config
 
 def load_step_data(step, form):
     """Load step data from session into form"""
@@ -137,13 +153,27 @@ def ramp_form_step(step):
         # Always save current step data on any POST request
         save_step_data(step, form)
         
-        # For step 3 (Recruitment), also save site configuration state
+        # For step 3 (Recruitment), also save site configuration state and dynamic fields
         if step == 3:
             site_config_needed = request.form.get('site_config_needed')
-            if site_config_needed:
-                if 'form_data' not in session:
-                    session['form_data'] = {}
-                session['form_data']['site_config_needed'] = site_config_needed
+            if 'form_data' not in session:
+                session['form_data'] = {}
+            session['form_data']['site_config_needed'] = site_config_needed or 'no'
+            
+            # Save sites configuration table data
+            sites_config = {}
+            country_codes = ['CAN', 'COL', 'HKG', 'IND', 'MEX', 'PAN', 'PHL', 'POL', 'TTO', 'USA']
+            metrics = ['site_location', 'agent_profile', 'lead_time', 'weekly_capacity', 'monthly_capacity']
+            
+            for metric in metrics:
+                for country_code in country_codes:
+                    field_name = f'{metric}_{country_code}'
+                    field_value = request.form.get(field_name)
+                    if field_value is not None and field_value != '':
+                        sites_config[field_name] = field_value
+            
+            # Always save sites_config (even if empty) to maintain state
+            session['form_data']['sites_config'] = sites_config
         
         session.modified = True
         
@@ -217,6 +247,8 @@ def ramp_form_step(step):
                     country_headcounts[country_code] = 0
         
         context['country_headcounts'] = country_headcounts
+        context['site_config_needed'] = form_data.get('site_config_needed', 'no')
+        context['sites_config'] = form_data.get('sites_config', {})
     
     # For submit step, include form data for summary
     if step == 7:
