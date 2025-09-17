@@ -634,33 +634,23 @@ function initializeProgressTracking() {
  * Initialize application when DOM is loaded
  */
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize form controller
-    const formController = new RampFormController();
+    // Use requestAnimationFrame to defer heavy initialization
+    requestAnimationFrame(() => {
+        // Initialize form controller
+        const formController = new RampFormController();
+        
+        // Initialize location details functionality only on step 2
+        if (window.location.pathname.includes('/step/2')) {
+            initializeLocationDetails();
+        }
+        
+        // Initialize Sites Configuration functionality only on step 3
+        if (window.location.pathname.includes('/step/3')) {
+            initializeSitesConfiguration();
+        }
+    });
     
-    // Initialize navbar effects
-    initializeNavbarEffects();
-    
-    // Initialize progress tracking
-    initializeProgressTracking();
-    
-    // Initialize tooltips if Bootstrap is available
-    if (typeof bootstrap !== 'undefined') {
-        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
-        });
-    }
-    
-    // Initialize location details functionality only on step 2
-    if (window.location.pathname.includes('/step/2')) {
-        initializeLocationDetails();
-    }
-    
-    // Initialize Sites Configuration functionality only on step 3
-    if (window.location.pathname.includes('/step/3')) {
-        initializeSitesConfiguration();
-    }
-    
+    // Minimal immediate initialization
     console.log('WFM Analytics - Ramp Input Form initialized successfully');
 });
 
