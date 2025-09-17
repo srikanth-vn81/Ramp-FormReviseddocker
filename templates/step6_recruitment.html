@@ -33,7 +33,7 @@
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="site_config_needed" id="site_config_no" value="no" checked>
+                                    <input class="form-check-input" type="radio" name="site_config_needed" id="site_config_no" value="no">
                                     <label class="form-check-label fw-semibold" for="site_config_no">
                                         <i class="fas fa-times-circle text-danger me-1"></i>No
                                     </label>
@@ -746,8 +746,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Reset function (simplified since we removed the form fields)
     window.resetRecruitmentForm = function() {
-        // Reset radio buttons to No
-        document.getElementById('site_config_no').checked = true;
+        // Reset radio buttons to unselected (user must choose)
+        document.getElementById('site_config_no').checked = false;
         document.getElementById('site_config_yes').checked = false;
         handleSiteConfigToggle();
         console.log('Recruitment form reset');
@@ -1332,7 +1332,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('site_config_no').checked = false;
         } else {
             document.getElementById('site_config_yes').checked = false;
-            document.getElementById('site_config_no').checked = true;
+            document.getElementById('site_config_no').checked = false;
         }
         
         // Trigger the toggle to show/hide the sites section
