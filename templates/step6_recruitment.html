@@ -870,130 +870,114 @@ document.addEventListener('DOMContentLoaded', function() {
         buildSiteRows(countryCodes, countrySites, 3);
     }
     
-    // Function to build site rows dynamically
+    // Function to build site rows dynamically (optimized for performance)
     function buildSiteRows(countryCodes, countrySites, sitesCount) {
-        // Clear existing site rows (keep header and sites count row)
         const tableBody = document.getElementById('sites-table-body');
-        const existingRows = tableBody.querySelectorAll('tr');
-        // Remove all rows except the first one (sites count row)
-        for (let i = existingRows.length - 1; i >= 1; i--) {
-            existingRows[i].remove();
+        
+        // Clear existing site rows efficiently
+        const firstRow = tableBody.firstElementChild; // Sites count row
+        tableBody.innerHTML = '';
+        if (firstRow) {
+            tableBody.appendChild(firstRow);
         }
         
-        // Build rows for each site
+        // Pre-build country-specific site options
+        const siteOptionsCache = {};
+        countryCodes.forEach(countryCode => {
+            const sites = countrySites[countryCode] || [];
+            siteOptionsCache[countryCode] = '<option value="" selected>Select Site</option>' + 
+                sites.map(site => `<option value="${site.value}">${site.text}</option>`).join('');
+        });
+        
+        // Agent profile options (pre-built)
+        const agentProfileOptions = '<option value="Select Tier" selected>Select Tier</option>' +
+            '<option value="Tier 1">Tier 1</option>' +
+            '<option value="Tier 2">Tier 2</option>' +
+            '<option value="Tier 3">Tier 3</option>';
+        
+        // Build all HTML content at once
+        let htmlContent = '';
+        
         for (let siteNum = 1; siteNum <= sitesCount; siteNum++) {
-            // Site section header
-            const siteHeaderRow = document.createElement('tr');
-            const siteHeaderCell = document.createElement('td');
-            siteHeaderCell.className = 'text-center fw-semibold bg-info text-white';
-            siteHeaderCell.colSpan = countryCodes.length + 1;
-            siteHeaderCell.innerHTML = `
-                <div class="d-flex align-items-center justify-content-center">
-                    <i class="fas fa-building me-2"></i>
-                    <span class="fw-bold">Site ${siteNum}</span>
-                </div>
+            // Site header row
+            htmlContent += `
+                <tr>
+                    <td colspan="${countryCodes.length + 1}" class="text-center fw-semibold bg-info text-white">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <i class="fas fa-building me-2"></i>
+                            <span class="fw-bold">Site ${siteNum}</span>
+                        </div>
+                    </td>
+                </tr>
             `;
-            siteHeaderRow.appendChild(siteHeaderCell);
-            tableBody.appendChild(siteHeaderRow);
             
-            // Metrics for this site
+            // Metrics rows
             const metrics = [
-                { 
-                    label: 'SITE LOCATION', 
-                    type: 'select',
-                    id: 'site_location',
-                    useCountrySpecific: true
-                },
-                { 
-                    label: 'AGENT PROFILE', 
-                    type: 'select',
-                    options: ['Select Tier', 'Tier 1', 'Tier 2', 'Tier 3'],
-                    id: 'agent_profile'
-                },
-                { 
-                    label: 'LEAD TIME (DAYS)', 
-                    type: 'number',
-                    placeholder: '0',
-                    id: 'lead_time'
-                },
-                { 
-                    label: 'WEEKLY CAPACITY', 
-                    type: 'number',
-                    placeholder: '0',
-                    id: 'weekly_capacity'
-                },
-                { 
-                    label: 'MONTHLY CAPACITY', 
-                    type: 'number',
-                    placeholder: '0',
-                    id: 'monthly_capacity'
-                }
+                { label: 'SITE LOCATION', type: 'site_location' },
+                { label: 'AGENT PROFILE', type: 'agent_profile' },
+                { label: 'LEAD TIME (DAYS)', type: 'lead_time' },
+                { label: 'WEEKLY CAPACITY', type: 'weekly_capacity' },
+                { label: 'MONTHLY CAPACITY', type: 'monthly_capacity' }
             ];
             
-            // Create row for each metric
             metrics.forEach(metric => {
-                const row = document.createElement('tr');
-                
-                // Metrics column (leftmost)
-                const metricsCell = document.createElement('td');
-                metricsCell.className = 'text-center fw-semibold bg-light';
-                metricsCell.innerHTML = `
-                    <div class="d-flex align-items-center justify-content-center">
-                        <i class="fas fa-tag me-2" style="color: #6c757d; font-size: 0.8rem;"></i>
-                        <div>
-                            <small class="d-block fw-bold text-uppercase" style="font-size: 0.65rem; line-height: 1.2;">
-                                ${metric.label}
-                            </small>
-                        </div>
-                    </div>
+                htmlContent += `
+                    <tr>
+                        <td class="text-center fw-semibold bg-light">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <i class="fas fa-tag me-2" style="color: #6c757d; font-size: 0.8rem;"></i>
+                                <div>
+                                    <small class="d-block fw-bold text-uppercase" style="font-size: 0.65rem; line-height: 1.2;">
+                                        ${metric.label}
+                                    </small>
+                                </div>
+                            </div>
+                        </td>
                 `;
-                row.appendChild(metricsCell);
                 
                 // Country columns
                 countryCodes.forEach(countryCode => {
-                    const countryCell = document.createElement('td');
-                    countryCell.className = 'text-center p-2';
-                    
-                    if (metric.type === 'select') {
-                        let optionsHtml;
-                        
-                        if (metric.useCountrySpecific && metric.id === 'site_location') {
-                            // Use country-specific site locations
-                            const sites = countrySites[countryCode] || [];
-                            optionsHtml = '<option value="" selected>Select Site</option>' + 
-                                         sites.map(site => `<option value="${site.value}">${site.text}</option>`).join('');
-                        } else {
-                            // Use regular options
-                            optionsHtml = metric.options.map(option => 
-                                `<option value="${option}" ${option === metric.options[0] ? 'selected' : ''}>${option}</option>`
-                            ).join('');
-                        }
-                        
-                        countryCell.innerHTML = `
-                            <select class="form-select form-select-sm" 
-                                    name="${metric.id}_${countryCode}_site${siteNum}" 
-                                    style="min-width: 120px;">
-                                ${optionsHtml}
-                            </select>
+                    if (metric.type === 'site_location') {
+                        htmlContent += `
+                            <td class="text-center p-2">
+                                <select class="form-select form-select-sm" 
+                                        name="site_location_${countryCode}_site${siteNum}" 
+                                        style="min-width: 120px;">
+                                    ${siteOptionsCache[countryCode]}
+                                </select>
+                            </td>
                         `;
-                    } else if (metric.type === 'number') {
-                        countryCell.innerHTML = `
-                            <input type="number" 
-                                   class="form-control form-control-sm text-center" 
-                                   name="${metric.id}_${countryCode}_site${siteNum}"
-                                   placeholder="${metric.placeholder}"
-                                   min="0"
-                                   value="0"
-                                   style="min-width: 80px;">
+                    } else if (metric.type === 'agent_profile') {
+                        htmlContent += `
+                            <td class="text-center p-2">
+                                <select class="form-select form-select-sm" 
+                                        name="agent_profile_${countryCode}_site${siteNum}" 
+                                        style="min-width: 120px;">
+                                    ${agentProfileOptions}
+                                </select>
+                            </td>
+                        `;
+                    } else {
+                        htmlContent += `
+                            <td class="text-center p-2">
+                                <input type="number" 
+                                       class="form-control form-control-sm text-center" 
+                                       name="${metric.type}_${countryCode}_site${siteNum}"
+                                       placeholder="0"
+                                       min="0"
+                                       value="0"
+                                       style="min-width: 80px;">
+                            </td>
                         `;
                     }
-                    
-                    row.appendChild(countryCell);
                 });
                 
-                tableBody.appendChild(row);
+                htmlContent += '</tr>';
             });
         }
+        
+        // Insert all HTML at once for better performance
+        tableBody.insertAdjacentHTML('beforeend', htmlContent);
     }
     
     // Global function to update sites configuration when dropdown changes
