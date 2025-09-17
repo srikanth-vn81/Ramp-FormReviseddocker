@@ -128,11 +128,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Initial conversion with delay for page load
-    setTimeout(convertAllSelects, 100);
-    
-    // Also convert after a longer delay to catch any late-loading elements
-    setTimeout(convertAllSelects, 500);
+    // Initial conversion immediately on page load
+    convertAllSelects();
     
     // Also watch for dynamically added selects (like date fields that appear)
     const observer = new MutationObserver(function(mutations) {
@@ -143,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const newSelects = node.querySelectorAll ? node.querySelectorAll('select.form-select') : [];
                     newSelects.forEach(select => {
                         if (!select.classList.contains('sideways-hidden')) {
-                            setTimeout(() => convertToSidewaysDropdown(select), 50);
+                            convertToSidewaysDropdown(select);
                         }
                     });
                 }
@@ -157,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const selects = target.querySelectorAll('select.form-select');
                     selects.forEach(select => {
                         if (!select.classList.contains('sideways-hidden')) {
-                            setTimeout(() => convertToSidewaysDropdown(select), 100);
+                            convertToSidewaysDropdown(select);
                         }
                     });
                 }

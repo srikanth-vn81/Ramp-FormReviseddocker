@@ -651,11 +651,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Initialize location details functionality
-    initializeLocationDetails();
+    // Initialize location details functionality only on step 2
+    if (window.location.pathname.includes('/step/2')) {
+        initializeLocationDetails();
+    }
     
-    // Initialize Sites Configuration functionality
-    initializeSitesConfiguration();
+    // Initialize Sites Configuration functionality only on step 3
+    if (window.location.pathname.includes('/step/3')) {
+        initializeSitesConfiguration();
+    }
     
     console.log('WFM Analytics - Ramp Input Form initialized successfully');
 });
