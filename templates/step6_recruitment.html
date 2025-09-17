@@ -830,102 +830,267 @@ document.addEventListener('DOMContentLoaded', function() {
             ]
         };
         
-        // Build table rows
-        const metrics = [
-            { 
-                label: 'SITE LOCATION', 
-                type: 'select',
-                id: 'site_location',
-                useCountrySpecific: true
-            },
-            { 
-                label: 'AGENT PROFILE', 
-                type: 'select',
-                options: ['Select Tier', 'Tier 1', 'Tier 2', 'Tier 3'],
-                id: 'agent_profile'
-            },
-            { 
-                label: 'LEAD TIME (DAYS)', 
-                type: 'number',
-                placeholder: '0',
-                id: 'lead_time'
-            },
-            { 
-                label: 'WEEKLY CAPACITY', 
-                type: 'number',
-                placeholder: '0',
-                id: 'weekly_capacity'
-            },
-            { 
-                label: 'MONTHLY CAPACITY', 
-                type: 'number',
-                placeholder: '0',
-                id: 'monthly_capacity'
-            }
-        ];
+        // First, add sites count selection row
+        const sitesCountRow = document.createElement('tr');
+        const sitesCountMetricsCell = document.createElement('td');
+        sitesCountMetricsCell.className = 'text-center fw-semibold bg-light';
+        sitesCountMetricsCell.innerHTML = `
+            <div class="d-flex align-items-center justify-content-center">
+                <i class="fas fa-cog me-2" style="color: #6c757d;"></i>
+                <div>
+                    <small class="d-block fw-bold text-uppercase" style="font-size: 0.65rem; line-height: 1.2;">
+                        SITES COUNT
+                    </small>
+                </div>
+            </div>
+        `;
+        sitesCountRow.appendChild(sitesCountMetricsCell);
         
-        metrics.forEach(metric => {
-            const row = document.createElement('tr');
-            
-            // Metrics column (leftmost)
-            const metricsCell = document.createElement('td');
-            metricsCell.className = 'text-center fw-semibold bg-light';
-            metricsCell.innerHTML = `
+        // Add sites count dropdowns for each country
+        countryCodes.forEach(countryCode => {
+            const sitesCountCell = document.createElement('td');
+            sitesCountCell.className = 'text-center p-2';
+            sitesCountCell.innerHTML = `
+                <select class="form-select form-select-sm sites-count-select" 
+                        name="sites_count_${countryCode}" 
+                        data-country="${countryCode}"
+                        style="min-width: 120px;"
+                        onchange="updateSitesConfiguration()">
+                    <option value="1">1 Site</option>
+                    <option value="3" selected>3 Sites</option>
+                    <option value="5">5 Sites</option>
+                    <option value="10">10 Sites</option>
+                </select>
+            `;
+            sitesCountRow.appendChild(sitesCountCell);
+        });
+        
+        tableBody.appendChild(sitesCountRow);
+        
+        // Build dynamic site rows based on sites count (default 3)
+        buildSiteRows(countryCodes, countrySites, 3);
+    }
+    
+    // Function to build site rows dynamically
+    function buildSiteRows(countryCodes, countrySites, sitesCount) {
+        // Clear existing site rows (keep header and sites count row)
+        const tableBody = document.getElementById('sites-table-body');
+        const existingRows = tableBody.querySelectorAll('tr');
+        // Remove all rows except the first one (sites count row)
+        for (let i = existingRows.length - 1; i >= 1; i--) {
+            existingRows[i].remove();
+        }
+        
+        // Build rows for each site
+        for (let siteNum = 1; siteNum <= sitesCount; siteNum++) {
+            // Site section header
+            const siteHeaderRow = document.createElement('tr');
+            const siteHeaderCell = document.createElement('td');
+            siteHeaderCell.className = 'text-center fw-semibold bg-info text-white';
+            siteHeaderCell.colSpan = countryCodes.length + 1;
+            siteHeaderCell.innerHTML = `
                 <div class="d-flex align-items-center justify-content-center">
-                    <i class="fas fa-building me-2" style="color: #6c757d;"></i>
-                    <div>
-                        <small class="d-block fw-bold text-uppercase" style="font-size: 0.65rem; line-height: 1.2;">
-                            ${metric.label}
-                        </small>
-                        ${metric.label.includes('SITE') ? '<span class="badge bg-primary mt-1">Site 1</span>' : ''}
-                    </div>
+                    <i class="fas fa-building me-2"></i>
+                    <span class="fw-bold">Site ${siteNum}</span>
                 </div>
             `;
-            row.appendChild(metricsCell);
+            siteHeaderRow.appendChild(siteHeaderCell);
+            tableBody.appendChild(siteHeaderRow);
             
-            // Country columns
-            countryCodes.forEach(countryCode => {
-                const countryCell = document.createElement('td');
-                countryCell.className = 'text-center p-2';
+            // Metrics for this site
+            const metrics = [
+                { 
+                    label: 'SITE LOCATION', 
+                    type: 'select',
+                    id: 'site_location',
+                    useCountrySpecific: true
+                },
+                { 
+                    label: 'AGENT PROFILE', 
+                    type: 'select',
+                    options: ['Select Tier', 'Tier 1', 'Tier 2', 'Tier 3'],
+                    id: 'agent_profile'
+                },
+                { 
+                    label: 'LEAD TIME (DAYS)', 
+                    type: 'number',
+                    placeholder: '0',
+                    id: 'lead_time'
+                },
+                { 
+                    label: 'WEEKLY CAPACITY', 
+                    type: 'number',
+                    placeholder: '0',
+                    id: 'weekly_capacity'
+                },
+                { 
+                    label: 'MONTHLY CAPACITY', 
+                    type: 'number',
+                    placeholder: '0',
+                    id: 'monthly_capacity'
+                }
+            ];
+            
+            // Create row for each metric
+            metrics.forEach(metric => {
+                const row = document.createElement('tr');
                 
-                if (metric.type === 'select') {
-                    let optionsHtml;
+                // Metrics column (leftmost)
+                const metricsCell = document.createElement('td');
+                metricsCell.className = 'text-center fw-semibold bg-light';
+                metricsCell.innerHTML = `
+                    <div class="d-flex align-items-center justify-content-center">
+                        <i class="fas fa-tag me-2" style="color: #6c757d; font-size: 0.8rem;"></i>
+                        <div>
+                            <small class="d-block fw-bold text-uppercase" style="font-size: 0.65rem; line-height: 1.2;">
+                                ${metric.label}
+                            </small>
+                        </div>
+                    </div>
+                `;
+                row.appendChild(metricsCell);
+                
+                // Country columns
+                countryCodes.forEach(countryCode => {
+                    const countryCell = document.createElement('td');
+                    countryCell.className = 'text-center p-2';
                     
-                    if (metric.useCountrySpecific && metric.id === 'site_location') {
-                        // Use country-specific site locations
-                        const sites = countrySites[countryCode] || [];
-                        optionsHtml = '<option value="" selected>Select Site</option>' + 
-                                     sites.map(site => `<option value="${site.value}">${site.text}</option>`).join('');
-                    } else {
-                        // Use regular options
-                        optionsHtml = metric.options.map(option => 
-                            `<option value="${option}" ${option === metric.options[0] ? 'selected' : ''}>${option}</option>`
-                        ).join('');
+                    if (metric.type === 'select') {
+                        let optionsHtml;
+                        
+                        if (metric.useCountrySpecific && metric.id === 'site_location') {
+                            // Use country-specific site locations
+                            const sites = countrySites[countryCode] || [];
+                            optionsHtml = '<option value="" selected>Select Site</option>' + 
+                                         sites.map(site => `<option value="${site.value}">${site.text}</option>`).join('');
+                        } else {
+                            // Use regular options
+                            optionsHtml = metric.options.map(option => 
+                                `<option value="${option}" ${option === metric.options[0] ? 'selected' : ''}>${option}</option>`
+                            ).join('');
+                        }
+                        
+                        countryCell.innerHTML = `
+                            <select class="form-select form-select-sm" 
+                                    name="${metric.id}_${countryCode}_site${siteNum}" 
+                                    style="min-width: 120px;">
+                                ${optionsHtml}
+                            </select>
+                        `;
+                    } else if (metric.type === 'number') {
+                        countryCell.innerHTML = `
+                            <input type="number" 
+                                   class="form-control form-control-sm text-center" 
+                                   name="${metric.id}_${countryCode}_site${siteNum}"
+                                   placeholder="${metric.placeholder}"
+                                   min="0"
+                                   value="0"
+                                   style="min-width: 80px;">
+                        `;
                     }
                     
-                    countryCell.innerHTML = `
-                        <select class="form-select form-select-sm" name="${metric.id}_${countryCode}" style="min-width: 120px;">
-                            ${optionsHtml}
-                        </select>
-                    `;
-                } else if (metric.type === 'number') {
-                    countryCell.innerHTML = `
-                        <input type="number" 
-                               class="form-control form-control-sm text-center" 
-                               name="${metric.id}_${countryCode}"
-                               placeholder="${metric.placeholder}"
-                               min="0"
-                               value="0"
-                               style="min-width: 80px;">
-                    `;
-                }
+                    row.appendChild(countryCell);
+                });
                 
-                row.appendChild(countryCell);
+                tableBody.appendChild(row);
             });
-            
-            tableBody.appendChild(row);
-        });
+        }
     }
+    
+    // Global function to update sites configuration when dropdown changes
+    window.updateSitesConfiguration = function() {
+        // Get current country codes and sites data
+        let countryHeadcounts = {};
+        try {
+            const headcountData = document.getElementById('country-headcounts');
+            if (headcountData) {
+                countryHeadcounts = JSON.parse(headcountData.textContent || '{}');
+            }
+        } catch (e) {
+            console.warn('Could not parse country headcount data:', e);
+        }
+        
+        // Country sites mapping (reuse from above)
+        const countrySites = {
+            'CAN': [
+                { value: 'montreal', text: 'Montreal' },
+                { value: 'toronto-02', text: 'Toronto 02' }
+            ],
+            'COL': [
+                { value: 'medellin', text: 'Medellin' }
+            ],
+            'HKG': [
+                { value: 'hong-kong', text: 'Hong Kong' }
+            ],
+            'IND': [
+                { value: 'noida', text: 'Noida' },
+                { value: 'noida-02', text: 'Noida 02' }
+            ],
+            'MEX': [
+                { value: 'mexico-city-02', text: 'Mexico City 02' },
+                { value: 'mexico-city-03', text: 'Mexico City 03' }
+            ],
+            'PAN': [
+                { value: 'panama-city', text: 'Panama City' }
+            ],
+            'PHL': [
+                { value: 'bacolod-city', text: 'Bacolod City' },
+                { value: 'clark-01', text: 'Clark 01' },
+                { value: 'clark-02', text: 'Clark 02' },
+                { value: 'clark-03', text: 'Clark 03' },
+                { value: 'clark-05', text: 'Clark 05' },
+                { value: 'dasmarinas-01', text: 'Dasmarinas 01' },
+                { value: 'dasmarinas-02', text: 'Dasmarinas 02' },
+                { value: 'davao', text: 'Davao' },
+                { value: 'davao-02', text: 'Davao 02' },
+                { value: 'fairview', text: 'Fairview' },
+                { value: 'fairview-02', text: 'Fairview 02' },
+                { value: 'iloilo', text: 'Iloilo' },
+                { value: 'iloilo-02', text: 'Iloilo 02' },
+                { value: 'iloilo-03', text: 'Iloilo 03' },
+                { value: 'santa-rosa', text: 'Santa Rosa' },
+                { value: 'santa-rosa-02', text: 'Santa Rosa 02' },
+                { value: 'talisay-city', text: 'Talisay City' }
+            ],
+            'POL': [
+                { value: 'warsaw', text: 'Warsaw' }
+            ],
+            'TTO': [
+                { value: 'barataria', text: 'Barataria' },
+                { value: 'chaguanas', text: 'Chaguanas' },
+                { value: 'waterfield', text: 'Waterfield' }
+            ],
+            'USA': [
+                { value: 'allentown', text: 'Allentown' },
+                { value: 'atlanta', text: 'Atlanta' },
+                { value: 'buffalo', text: 'Buffalo' },
+                { value: 'charlotte', text: 'Charlotte' },
+                { value: 'east-hartford', text: 'East Hartford' },
+                { value: 'fort-lauderdale-02', text: 'Fort Lauderdale 02' },
+                { value: 'houston-01', text: 'Houston 01' },
+                { value: 'meridian', text: 'Meridian' },
+                { value: 'naperville', text: 'Naperville' },
+                { value: 'phoenix', text: 'Phoenix' },
+                { value: 'richfield', text: 'Richfield' },
+                { value: 'tempe', text: 'Tempe' },
+                { value: 'west-des-moines', text: 'West Des Moines' }
+            ]
+        };
+        
+        const countryCodes = Object.keys(countryHeadcounts);
+        
+        // Get the maximum sites count from all dropdowns
+        let maxSitesCount = 1;
+        document.querySelectorAll('.sites-count-select').forEach(select => {
+            const count = parseInt(select.value) || 1;
+            if (count > maxSitesCount) {
+                maxSitesCount = count;
+            }
+        });
+        
+        // Rebuild the site rows with the new sites count
+        buildSiteRows(countryCodes, countrySites, maxSitesCount);
+    };
     
     // Show message when no countries are selected
     function showNoCountriesMessage() {
