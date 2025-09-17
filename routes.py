@@ -1,13 +1,15 @@
 import json
 import os
+import uuid
 from datetime import datetime, timedelta, date
 from flask import render_template, request, flash, redirect, url_for, jsonify, send_file, session
 from werkzeug.utils import secure_filename
 from app import app
 from forms import RampInputForm
 
-# Data storage file
+# Data storage files
 DATA_FILE = 'form_submissions.json'
+SESSIONS_DIR = 'server_sessions'
 
 def load_submissions():
     """Load form submissions from JSON file"""
@@ -23,6 +25,32 @@ def save_submission(data):
     submissions.append(data)
     with open(DATA_FILE, 'w') as f:
         json.dump(submissions, f, indent=2)
+
+def get_session_uuid():
+    """Get or create server-side session UUID"""
+    if 'session_uuid' not in session:
+        session['session_uuid'] = str(uuid.uuid4())
+        session.modified = True
+    return session['session_uuid']
+
+def get_server_session_path(session_uuid):
+    """Get path for server-side session file"""
+    os.makedirs(SESSIONS_DIR, exist_ok=True)
+    return os.path.join(SESSIONS_DIR, f'{session_uuid}.json')
+
+def load_server_session(session_uuid):
+    """Load data from server-side session file"""
+    session_path = get_server_session_path(session_uuid)
+    if os.path.exists(session_path):
+        with open(session_path, 'r') as f:
+            return json.load(f)
+    return {}
+
+def save_server_session(session_uuid, data):
+    """Save data to server-side session file"""
+    session_path = get_server_session_path(session_uuid)
+    with open(session_path, 'w') as f:
+        json.dump(data, f, indent=2)
 
 def generate_date_choices():
     """Generate date choices for the next 60 days"""
@@ -83,21 +111,33 @@ def save_step_data(step, form):
                 else:
                     session['form_data'][field_name] = field_data
     
-    # For step 3 (Recruitment), also save dynamic Sites Configuration fields
+    # For step 3 (Recruitment), save dynamic Sites Configuration fields to server-side storage
     if step == 3 and request:
+        session_uuid = get_session_uuid()
+        server_data = load_server_session(session_uuid)
+        
         sites_config = {}
         country_codes = ['CAN', 'COL', 'HKG', 'IND', 'MEX', 'PAN', 'PHL', 'POL', 'TTO', 'USA']
         metrics = ['site_location', 'agent_profile', 'lead_time', 'weekly_capacity', 'monthly_capacity']
         
-        for metric in metrics:
-            for country_code in country_codes:
-                field_name = f'{metric}_{country_code}'
-                field_value = request.form.get(field_name)
-                if field_value is not None:
-                    sites_config[field_name] = field_value
+        # Save sites count selection
+        for country_code in country_codes:
+            sites_count_key = f'sites_count_{country_code}'
+            sites_count_value = request.form.get(sites_count_key)
+            if sites_count_value:
+                sites_config[sites_count_key] = sites_count_value
         
-        if sites_config:
-            session['form_data']['sites_config'] = sites_config
+        # Save all site data (including site-specific fields like _site1, _site2, etc.)
+        for key in request.form.keys():
+            if any(key.startswith(f'{metric}_') for metric in metrics):
+                sites_config[key] = request.form[key]
+        
+        # Store in server-side session instead of cookie
+        server_data['sites_config'] = sites_config
+        save_server_session(session_uuid, server_data)
+        
+        # Keep only a flag in the cookie session, not the data
+        session['form_data']['has_sites_config'] = bool(sites_config)
 
 def load_step_data(step, form):
     """Load step data from session into form"""
@@ -134,7 +174,13 @@ def index():
 @app.route('/clear-session')
 def clear_session():
     """Clear session data to start fresh"""
-    session.pop('form_data', None)
+    # Clear server-side session file if exists
+    if 'session_uuid' in session:
+        session_path = get_server_session_path(session['session_uuid'])
+        if os.path.exists(session_path):
+            os.remove(session_path)
+    
+    session.clear()
     session.modified = True
     return redirect(url_for('ramp_form_step', step=1))
 
@@ -153,27 +199,12 @@ def ramp_form_step(step):
         # Always save current step data on any POST request
         save_step_data(step, form)
         
-        # For step 3 (Recruitment), also save site configuration state and dynamic fields
+        # For step 3 (Recruitment), also save site configuration state
         if step == 3:
             site_config_needed = request.form.get('site_config_needed')
             if 'form_data' not in session:
                 session['form_data'] = {}
             session['form_data']['site_config_needed'] = site_config_needed or 'no'
-            
-            # Save sites configuration table data
-            sites_config = {}
-            country_codes = ['CAN', 'COL', 'HKG', 'IND', 'MEX', 'PAN', 'PHL', 'POL', 'TTO', 'USA']
-            metrics = ['site_location', 'agent_profile', 'lead_time', 'weekly_capacity', 'monthly_capacity']
-            
-            for metric in metrics:
-                for country_code in country_codes:
-                    field_name = f'{metric}_{country_code}'
-                    field_value = request.form.get(field_name)
-                    if field_value is not None and field_value != '':
-                        sites_config[field_name] = field_value
-            
-            # Always save sites_config (even if empty) to maintain state
-            session['form_data']['sites_config'] = sites_config
         
         session.modified = True
         
@@ -248,7 +279,13 @@ def ramp_form_step(step):
         
         context['country_headcounts'] = country_headcounts
         context['site_config_needed'] = form_data.get('site_config_needed', 'no')
-        context['sites_config'] = form_data.get('sites_config', {})
+        
+        # Load sites_config from server-side storage instead of session
+        if 'session_uuid' in session:
+            server_data = load_server_session(session['session_uuid'])
+            context['sites_config'] = server_data.get('sites_config', {})
+        else:
+            context['sites_config'] = {}
     
     # For submit step, include form data for summary
     if step == 7:
@@ -261,13 +298,24 @@ def ramp_form_submit():
     """Handle final form submission"""
     if request.method == 'POST':
         if 'form_data' in session:
-            # Add timestamp and save
+            # Add timestamp and merge server-side data
             form_data = session['form_data'].copy()
             form_data['timestamp'] = datetime.now().isoformat()
             
+            # Merge sites_config from server-side storage
+            if 'session_uuid' in session:
+                server_data = load_server_session(session['session_uuid'])
+                if 'sites_config' in server_data:
+                    form_data['sites_config'] = server_data['sites_config']
+            
             save_submission(form_data)
             
-            # Clear session data
+            # Clear session data and server-side data
+            if 'session_uuid' in session:
+                session_path = get_server_session_path(session['session_uuid'])
+                if os.path.exists(session_path):
+                    os.remove(session_path)
+            
             session.pop('form_data', None)
             session.modified = True
             
