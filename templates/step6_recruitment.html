@@ -1041,99 +1041,71 @@ document.addEventListener('DOMContentLoaded', function() {
         tableBody.insertAdjacentHTML('beforeend', htmlContent);
     }
     
-    // Global function to update sites configuration when dropdown changes
+    // FIXED: Update sites configuration to show correct sites per country
     window.updateSitesConfiguration = function() {
-        // Get current country codes and sites data
-        let countryHeadcounts = {};
-        try {
-            const headcountData = document.getElementById('country-headcounts');
-            if (headcountData) {
-                countryHeadcounts = JSON.parse(headcountData.textContent || '{}');
-            }
-        } catch (e) {
-            console.warn('Could not parse country headcount data:', e);
-        }
+        console.log('🔧 Updating sites configuration - each country shows only selected sites count');
         
-        // Country sites mapping (reuse from above)
-        const countrySites = {
-            'CAN': [
-                { value: 'montreal', text: 'Montreal' },
-                { value: 'toronto-02', text: 'Toronto 02' }
-            ],
-            'COL': [
-                { value: 'medellin', text: 'Medellin' }
-            ],
-            'HKG': [
-                { value: 'hong-kong', text: 'Hong Kong' }
-            ],
-            'IND': [
-                { value: 'noida', text: 'Noida' },
-                { value: 'noida-02', text: 'Noida 02' }
-            ],
-            'MEX': [
-                { value: 'mexico-city-02', text: 'Mexico City 02' },
-                { value: 'mexico-city-03', text: 'Mexico City 03' }
-            ],
-            'PAN': [
-                { value: 'panama-city', text: 'Panama City' }
-            ],
-            'PHL': [
-                { value: 'bacolod-city', text: 'Bacolod City' },
-                { value: 'clark-01', text: 'Clark 01' },
-                { value: 'clark-02', text: 'Clark 02' },
-                { value: 'clark-03', text: 'Clark 03' },
-                { value: 'clark-05', text: 'Clark 05' },
-                { value: 'dasmarinas-01', text: 'Dasmarinas 01' },
-                { value: 'dasmarinas-02', text: 'Dasmarinas 02' },
-                { value: 'davao', text: 'Davao' },
-                { value: 'davao-02', text: 'Davao 02' },
-                { value: 'fairview', text: 'Fairview' },
-                { value: 'fairview-02', text: 'Fairview 02' },
-                { value: 'iloilo', text: 'Iloilo' },
-                { value: 'iloilo-02', text: 'Iloilo 02' },
-                { value: 'iloilo-03', text: 'Iloilo 03' },
-                { value: 'santa-rosa', text: 'Santa Rosa' },
-                { value: 'santa-rosa-02', text: 'Santa Rosa 02' },
-                { value: 'talisay-city', text: 'Talisay City' }
-            ],
-            'POL': [
-                { value: 'warsaw', text: 'Warsaw' }
-            ],
-            'TTO': [
-                { value: 'barataria', text: 'Barataria' },
-                { value: 'chaguanas', text: 'Chaguanas' },
-                { value: 'waterfield', text: 'Waterfield' }
-            ],
-            'USA': [
-                { value: 'allentown', text: 'Allentown' },
-                { value: 'atlanta', text: 'Atlanta' },
-                { value: 'buffalo', text: 'Buffalo' },
-                { value: 'charlotte', text: 'Charlotte' },
-                { value: 'east-hartford', text: 'East Hartford' },
-                { value: 'fort-lauderdale-02', text: 'Fort Lauderdale 02' },
-                { value: 'houston-01', text: 'Houston 01' },
-                { value: 'meridian', text: 'Meridian' },
-                { value: 'naperville', text: 'Naperville' },
-                { value: 'phoenix', text: 'Phoenix' },
-                { value: 'richfield', text: 'Richfield' },
-                { value: 'tempe', text: 'Tempe' },
-                { value: 'west-des-moines', text: 'West Des Moines' }
-            ]
-        };
+        // Get all country dropdowns and their selected counts
+        const siteDropdowns = document.querySelectorAll('.sites-count-select');
+        const countrySelections = {};
         
-        const countryCodes = Object.keys(countryHeadcounts);
-        
-        // Get the maximum sites count from all dropdowns
-        let maxSitesCount = 1;
-        document.querySelectorAll('.sites-count-select').forEach(select => {
-            const count = parseInt(select.value) || 1;
-            if (count > maxSitesCount) {
-                maxSitesCount = count;
-            }
+        siteDropdowns.forEach(dropdown => {
+            const country = dropdown.getAttribute('data-country');
+            const selectedCount = parseInt(dropdown.value) || 1;
+            countrySelections[country] = selectedCount;
+            console.log(`${country}: ${selectedCount} sites selected`);
         });
         
-        // Rebuild the site rows with the new sites count
-        buildSiteRows(countryCodes, countrySites, maxSitesCount);
+        // Update each site row to show/hide content based on individual country selections
+        for (let siteNum = 1; siteNum <= 3; siteNum++) {
+            // Find all site rows for this site number
+            const siteRows = document.querySelectorAll(`tr[data-site="${siteNum}"]`);
+            
+            siteRows.forEach(row => {
+                // Find all country cells in this site row
+                const cells = row.querySelectorAll('td[data-country]');
+                
+                cells.forEach(cell => {
+                    const country = cell.getAttribute('data-country');
+                    const selectedCount = countrySelections[country] || 1;
+                    
+                    if (siteNum <= selectedCount) {
+                        // This site should show content for this country
+                        cell.style.opacity = '1';
+                        cell.style.backgroundColor = '';
+                        
+                        // Make sure form inputs are enabled
+                        const inputs = cell.querySelectorAll('input, select');
+                        inputs.forEach(input => {
+                            input.disabled = false;
+                            input.style.opacity = '1';
+                        });
+                    } else {
+                        // This site should be blank/disabled for this country  
+                        cell.style.opacity = '0.3';
+                        cell.style.backgroundColor = '#f8f9fa';
+                        
+                        // Disable and clear form inputs
+                        const inputs = cell.querySelectorAll('input, select');
+                        inputs.forEach(input => {
+                            input.disabled = true;
+                            input.value = '';
+                            input.style.opacity = '0.5';
+                        });
+                        
+                        // Show a visual indicator
+                        if (!cell.querySelector('.disabled-indicator')) {
+                            const indicator = document.createElement('div');
+                            indicator.className = 'disabled-indicator text-center text-muted';
+                            indicator.innerHTML = '<small><i class="fas fa-minus"></i> Not Used</small>';
+                            cell.appendChild(indicator);
+                        }
+                    }
+                });
+            });
+        }
+        
+        console.log('✅ Sites configuration updated successfully');
     };
     
     // Show message when no countries are selected
