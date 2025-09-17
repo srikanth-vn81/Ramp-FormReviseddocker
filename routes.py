@@ -169,6 +169,39 @@ def ramp_form_step(step):
     if step == 2:
         context['preselected_countries'] = form.geo_country.data or []
     
+    # For step 3 (Recruitment), pass country headcount data from step 2
+    if step == 3:
+        form_data = session.get('form_data', {})
+        selected_countries = form_data.get('geo_country', [])
+        
+        # Country code to headcount field mapping
+        country_field_mapping = {
+            'CAN': 'can_headcount',
+            'COL': 'col_headcount', 
+            'HKG': 'hkg_headcount',
+            'IND': 'ind_headcount',
+            'MEX': 'mex_headcount',
+            'PAN': 'pan_headcount',
+            'PHL': 'phl_headcount',
+            'POL': 'pol_headcount',
+            'TTO': 'tto_headcount',
+            'USA': 'usa_headcount'
+        }
+        
+        # Build country headcount data for selected countries only
+        country_headcounts = {}
+        for country_code in selected_countries:
+            if country_code in country_field_mapping:
+                field_name = country_field_mapping[country_code]
+                headcount_value = form_data.get(field_name, 0)
+                # Convert to int, default to 0 if empty/None
+                try:
+                    country_headcounts[country_code] = int(headcount_value) if headcount_value else 0
+                except (ValueError, TypeError):
+                    country_headcounts[country_code] = 0
+        
+        context['country_headcounts'] = country_headcounts
+    
     # For submit step, include form data for summary
     if step == 7:
         context['form_data'] = session.get('form_data', {})
