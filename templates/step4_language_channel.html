@@ -46,7 +46,7 @@
 <!-- Program Details Content (Initially Hidden) -->
 <div id="program-details-content" style="display: none;">
 <!-- LOB Details Card -->
-<div class="row mb-4">
+<div class="row mb-4" id="lob-details-section">
     <div class="col-lg-8 mx-auto">
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
@@ -286,14 +286,114 @@ function toggleProgramDetails() {
     const selectedRadio = document.querySelector('input[name="program-availability"]:checked');
     const availability = selectedRadio ? selectedRadio.value : '';
     const content = document.getElementById('program-details-content');
+    const lobSection = document.getElementById('lob-details-section');
+    const additionalTrainingSection = document.getElementById('additional-training-section');
+    const languageChannelSection = document.getElementById('language-channel-section');
     
     if (availability === 'available') {
+        // Show all sections for available program
         content.style.display = 'block';
+        if (lobSection) lobSection.style.display = 'block';
+        removeMandatoryHighlighting();
+    } else if (availability === 'unavailable') {
+        // Show only Additional Training Details for unavailable program
+        content.style.display = 'block';
+        if (lobSection) lobSection.style.display = 'none';
+        if (additionalTrainingSection) additionalTrainingSection.style.display = 'block';
+        if (languageChannelSection) languageChannelSection.style.display = 'none';
+        
+        // Highlight mandatory fields in Additional Training Details
+        highlightMandatoryFields();
+        
+        // Clear LOB and language/channel data only
+        clearLobAndChannelData();
     } else {
+        // Hide everything if nothing selected
         content.style.display = 'none';
-        // Clear all form data when hiding
         clearProgramFormData();
     }
+}
+
+// Highlight mandatory fields in Additional Training Details
+function highlightMandatoryFields() {
+    // Training Duration
+    const trainingDuration = document.getElementById('training_duration');
+    if (trainingDuration) {
+        trainingDuration.style.borderColor = '#dc3545';
+        trainingDuration.style.borderWidth = '2px';
+        trainingDuration.style.boxShadow = '0 0 0 0.2rem rgba(220, 53, 69, 0.25)';
+        trainingDuration.required = true;
+    }
+    
+    // Nesting Duration  
+    const nestingDuration = document.getElementById('nesting_duration');
+    if (nestingDuration) {
+        nestingDuration.style.borderColor = '#dc3545';
+        nestingDuration.style.borderWidth = '2px';
+        nestingDuration.style.boxShadow = '0 0 0 0.2rem rgba(220, 53, 69, 0.25)';
+        nestingDuration.required = true;
+    }
+    
+    // Batch Size
+    const batchSize = document.getElementById('batch_size');
+    if (batchSize) {
+        batchSize.style.borderColor = '#dc3545';
+        batchSize.style.borderWidth = '2px';
+        batchSize.style.boxShadow = '0 0 0 0.2rem rgba(220, 53, 69, 0.25)';
+        batchSize.required = true;
+    }
+}
+
+// Remove mandatory field highlighting
+function removeMandatoryHighlighting() {
+    const fields = ['training_duration', 'nesting_duration', 'batch_size'];
+    fields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            field.style.borderColor = '';
+            field.style.borderWidth = '';
+            field.style.boxShadow = '';
+            field.required = false;
+        }
+    });
+}
+
+// Clear only LOB and channel data (keep training details)
+function clearLobAndChannelData() {
+    // Clear LOB names input
+    const lobNamesInput = document.getElementById('lob-names-input');
+    if (lobNamesInput) lobNamesInput.value = '';
+    
+    // Clear LOB checkboxes
+    const lobCheckboxesSection = document.getElementById('lob-checkboxes-section');
+    if (lobCheckboxesSection) lobCheckboxesSection.style.display = 'none';
+    
+    // Clear checkbox container
+    const lobCheckboxesContainer = document.getElementById('lob-checkboxes-container');
+    if (lobCheckboxesContainer) lobCheckboxesContainer.innerHTML = '';
+    
+    // Clear language support
+    const languagesSupported = document.getElementById('languages-supported');
+    if (languagesSupported) languagesSupported.value = '';
+    
+    // Clear specify languages
+    const specifyLanguages = document.getElementById('specify-languages');
+    if (specifyLanguages) specifyLanguages.value = '';
+    
+    // Hide specify languages container
+    const specifyContainer = document.getElementById('specify-languages-container');
+    if (specifyContainer) specifyContainer.style.display = 'none';
+    
+    // Clear all channel checkboxes
+    clearAllChannelCheckboxes();
+    
+    // Clear global variables
+    currentSelectedLob = null;
+    lobData = {};
+    
+    // Clear hidden form data
+    const hiddenField = document.getElementById('lob-language-channel-data');
+    if (hiddenField) hiddenField.value = '';
 }
 
 // Clear all program form data
