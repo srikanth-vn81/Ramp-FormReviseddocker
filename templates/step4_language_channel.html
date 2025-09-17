@@ -109,62 +109,6 @@
     </div>
 </div>
 
-<!-- Additional Training Details Section -->
-<div class="row mt-4" id="additional-training-section" style="display: none;">
-    <div class="col-lg-8 mx-auto">
-        <div class="card border-0 shadow-lg" style="background: linear-gradient(145deg, #667eea 0%, #764ba2 100%); border-radius: 16px;">
-            <div class="card-header text-white border-0 py-4" style="background: transparent; border-radius: 16px 16px 0 0;">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0 fw-bold">
-                        <i class="fas fa-graduation-cap me-3" style="font-size: 1.2em;"></i>Additional Training Details
-                    </h5>
-                    <div class="d-flex align-items-center">
-                        <span class="badge bg-white text-dark fw-semibold px-3 py-2" style="border-radius: 25px;">
-                            <i class="fas fa-clock me-1 text-primary"></i>Configuration
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body p-4" style="background: white; border-radius: 0 0 16px 16px;">
-                <div class="row g-4">
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold text-dark mb-3">
-                            <i class="fas fa-calendar-alt me-2 text-primary"></i>Training Duration
-                        </label>
-                        <div class="d-flex gap-3 align-items-center">
-                            <div class="flex-shrink-0" style="min-width: 120px;">
-                                {{ form.training_duration(class="form-select form-select-lg shadow-sm", style="border: 2px solid #e3f2fd; border-radius: 12px; background: #f8f9fa;") }}
-                            </div>
-                            <div id="training-duration-number-container" style="display: none; min-width: 90px;">
-                                {{ form.training_duration_number(class="form-select form-select-lg shadow-sm", style="border: 2px solid #e3f2fd; border-radius: 12px; background: #f8f9fa;") }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold text-dark mb-3">
-                            <i class="fas fa-seedling me-2 text-success"></i>Nesting Duration
-                        </label>
-                        <div class="d-flex gap-3 align-items-center">
-                            <div class="flex-shrink-0" style="min-width: 120px;">
-                                {{ form.nesting_duration(class="form-select form-select-lg shadow-sm", style="border: 2px solid #e8f5e8; border-radius: 12px; background: #f8f9fa;") }}
-                            </div>
-                            <div id="nesting-duration-number-container" style="display: none; min-width: 90px;">
-                                {{ form.nesting_duration_number(class="form-select form-select-lg shadow-sm", style="border: 2px solid #e8f5e8; border-radius: 12px; background: #f8f9fa;") }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold text-dark mb-3">
-                            <i class="fas fa-users me-2 text-warning"></i>Batch Size
-                        </label>
-                        {{ form.batch_size(class="form-select form-select-lg shadow-sm", style="border: 2px solid #fff3cd; border-radius: 12px; background: #f8f9fa;") }}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Static Language & Channel Support Section -->
 <div class="row mt-4" id="language-channel-section" style="display: none;">
     <div class="col-lg-8 mx-auto">
@@ -183,6 +127,60 @@
                 </div>
             </div>
             <div class="card-body p-4" style="background: white; border-radius: 0 0 16px 16px;">
+                <!-- Additional Training Details Section -->
+                <div class="mb-5">
+                    <div class="card border-0 shadow-lg" style="background: linear-gradient(145deg, #667eea 0%, #764ba2 100%); border-radius: 16px;">
+                        <div class="card-header text-white border-0 py-4" style="background: transparent; border-radius: 16px 16px 0 0;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="card-title mb-0 fw-bold">
+                                    <i class="fas fa-graduation-cap me-3" style="font-size: 1.2em;"></i>Additional Training Details
+                                </h5>
+                                <div class="d-flex align-items-center">
+                                    <span class="badge bg-white text-dark fw-semibold px-3 py-2" style="border-radius: 25px;">
+                                        <i class="fas fa-clock me-1 text-primary"></i>Configuration
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body p-4" style="background: white; border-radius: 0 0 16px 16px;">
+                            <div class="row g-4">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold text-dark mb-3">
+                                        <i class="fas fa-calendar-alt me-2 text-primary"></i>Training Duration
+                                    </label>
+                                    <div class="d-flex gap-3 align-items-center">
+                                        <div class="flex-shrink-0" style="min-width: 120px;">
+                                            {{ form.training_duration(class="form-select form-select-lg shadow-sm", style="border: 2px solid #e3f2fd; border-radius: 12px; background: #f8f9fa;") }}
+                                        </div>
+                                        <div id="training-duration-number-container" style="display: none; min-width: 90px;">
+                                            {{ form.training_duration_number(class="form-select form-select-lg shadow-sm", style="border: 2px solid #e3f2fd; border-radius: 12px; background: #f8f9fa;") }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold text-dark mb-3">
+                                        <i class="fas fa-seedling me-2 text-success"></i>Nesting Duration
+                                    </label>
+                                    <div class="d-flex gap-3 align-items-center">
+                                        <div class="flex-shrink-0" style="min-width: 120px;">
+                                            {{ form.nesting_duration(class="form-select form-select-lg shadow-sm", style="border: 2px solid #e8f5e8; border-radius: 12px; background: #f8f9fa;") }}
+                                        </div>
+                                        <div id="nesting-duration-number-container" style="display: none; min-width: 90px;">
+                                            {{ form.nesting_duration_number(class="form-select form-select-lg shadow-sm", style="border: 2px solid #e8f5e8; border-radius: 12px; background: #f8f9fa;") }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold text-dark mb-3">
+                                        <i class="fas fa-users me-2 text-warning"></i>Batch Size
+                                    </label>
+                                    {{ form.batch_size(class="form-select form-select-lg shadow-sm", style="border: 2px solid #fff3cd; border-radius: 12px; background: #f8f9fa;") }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
                 <!-- Language Support Section -->
                 <div class="mb-5">
                     <div class="row g-4">
@@ -206,17 +204,6 @@
                 
                 <!-- Channel Support Section -->
                 <div class="channel-support">
-                    <div class="d-flex align-items-center mb-4 p-3" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 12px; border: 1px solid #dee2e6;">
-                        <h5 class="fw-bold text-dark mb-0 me-3" style="font-size: 1.2em;">
-                            <i class="fas fa-headset me-2 text-primary" style="font-size: 1.3em;"></i>Channel Support
-                        </h5>
-                        <div class="flex-grow-1">
-                            <div class="progress" style="height: 6px; border-radius: 15px; background: #e9ecef;">
-                                <div class="progress-bar" style="width: 0%; background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); border-radius: 15px;" id="channel-progress"></div>
-                            </div>
-                        </div>
-                        <small class="text-muted ms-3 fw-semibold" id="channel-summary" style="font-size: 0.9em;">0 of 6 selected</small>
-                    </div>
                     
                     <!-- Voice Channels -->
                     <div class="row mb-4">
@@ -504,10 +491,7 @@ function selectLob(lobName) {
     // Set new selected LOB
     currentSelectedLob = lobName;
     
-    // Show Additional Training Details section first, then Language & Channel Support section
-    const additionalTrainingSection = document.getElementById('additional-training-section');
-    if (additionalTrainingSection) additionalTrainingSection.style.display = 'block';
-    
+    // Show Language & Channel Support section (which includes Additional Training Details)
     const languageChannelSection = document.getElementById('language-channel-section');
     languageChannelSection.style.display = 'block';
     
@@ -669,8 +653,7 @@ function loadLobData(lobName) {
         toggleOthersText();
     }
     
-    // Update channel progress
-    updateChannelProgress();
+    // Channel progress removed
 }
 
 // Clear all channel checkboxes
@@ -686,8 +669,7 @@ function clearAllChannelCheckboxes() {
         toggleOthersText();
     }
     
-    // Update progress
-    updateChannelProgress();
+    // Channel progress removed
 }
 
 // Toggle specify languages visibility
@@ -706,22 +688,7 @@ function toggleSpecifyLanguages() {
     }
 }
 
-// Update channel progress
-function updateChannelProgress() {
-    const totalChannels = 6; // Total possible channels (excluding others)
-    const checkedChannels = document.querySelectorAll('.channel-checkbox:checked').length;
-    const progressBar = document.getElementById('channel-progress');
-    const channelSummary = document.getElementById('channel-summary');
-    
-    if (progressBar) {
-        const percentage = (checkedChannels / totalChannels) * 100;
-        progressBar.style.width = percentage + '%';
-    }
-    
-    if (channelSummary) {
-        channelSummary.textContent = `${checkedChannels} of ${totalChannels} selected`;
-    }
-}
+// Channel progress tracking removed
 
 // Toggle Others text input
 function toggleOthersText() {
@@ -878,7 +845,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Channel checkbox listeners
     document.querySelectorAll('.channel-checkbox').forEach(checkbox => {
         checkbox.addEventListener('change', function() {
-            updateChannelProgress();
             if (currentSelectedLob) {
                 saveLobData(currentSelectedLob);
                 updateFormData();
