@@ -107,40 +107,12 @@
     color: #f57c00 !important;
 }
 
-/* Beautiful Country Headcount Cards */
-.country-card {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 15px;
-    color: white;
-    min-width: 280px;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.country-card:hover {
-    transform: translateY(-5px) scale(1.05);
-    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-}
-
-.country-card .card-body {
-    padding: 8px 24px;
-}
-
-.country-name {
-    font-size: 0.9rem;
-    font-weight: 600;
-    opacity: 0.9;
-    margin-bottom: 8px;
-}
-
-.headcount-badge {
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    font-size: 1.5rem;
-    font-weight: 700;
-    padding: 8px 16px;
-    border-radius: 25px;
+/* Simple Country Headcount Display */
+.headcount-simple {
+    display: inline-block;
+    text-align: center;
+    margin-right: 1.5rem;
+    margin-bottom: 0.5rem;
 }
     border: none;
 }
@@ -753,15 +725,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 const countryName = countryNames[countryCode] || countryCode;
                 const flag = countryFlags[countryCode] || '🌍';
                 
-                const card = document.createElement('div');
-                card.className = 'card country-card border-0 shadow';
-                card.innerHTML = `
-                    <div class="card-body text-center">
-                        <div class="country-flag mb-1" style="font-size: 1.3rem;">${flag}</div>
-                        <div class="headcount-badge" style="font-size: 1.1rem;">${headcount || 0}</div>
-                    </div>
+                const simpleItem = document.createElement('div');
+                simpleItem.className = 'd-inline-block text-center me-4 mb-2';
+                simpleItem.innerHTML = `
+                    <div style="font-size: 1.2rem;">${flag}</div>
+                    <div style="font-size: 1rem; font-weight: bold; color: #666;">${headcount || 0}</div>
                 `;
-                cardsContainer.appendChild(card);
+                cardsContainer.appendChild(simpleItem);
             });
         } else {
             // Show no data card
