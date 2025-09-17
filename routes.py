@@ -134,23 +134,39 @@ def ramp_form_step(step):
     if request.method == 'POST':
         action = request.form.get('action')
         
+        # Always save current step data on any POST request
+        save_step_data(step, form)
+        
+        # For step 3 (Recruitment), also save site configuration state
+        if step == 3:
+            site_config_needed = request.form.get('site_config_needed')
+            if site_config_needed:
+                if 'form_data' not in session:
+                    session['form_data'] = {}
+                session['form_data']['site_config_needed'] = site_config_needed
+        
+        session.modified = True
+        
         if action == 'next':
-            # Save current step data without validation
-            save_step_data(step, form)
-            session.modified = True
-            
             if step < len(FORM_STEPS):
                 return redirect(url_for('ramp_form_step', step=step + 1))
             else:
                 return redirect(url_for('ramp_form_submit'))
         
         elif action == 'previous':
-            # Save current step data (without validation)
-            save_step_data(step, form)
-            session.modified = True
-            
             if step > 1:
                 return redirect(url_for('ramp_form_step', step=step - 1))
+        
+        elif action == 'save':
+            # Data is already saved above, just re-render the same step
+            flash('Form data saved successfully!', 'success')
+        
+        elif action == 'reset':
+            # Clear session data and redirect to same step
+            session.pop('form_data', None)
+            session.modified = True
+            flash('Form has been reset!', 'info')
+            return redirect(url_for('ramp_form_step', step=step))
     
     # Load existing data for this step
     load_step_data(step, form)
