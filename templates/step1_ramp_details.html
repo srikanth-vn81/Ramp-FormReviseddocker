@@ -57,6 +57,9 @@
                                             </div>
                                             <div class="flex-grow-1 date-input-container" id="ramp-start-date-container" style="display: none;">
                                                 {{ form.ramp_start_date(class="form-control border-2 shadow-sm", id="ramp-start-date") }}
+                                                <small class="form-text text-muted fst-italic mt-1">
+                                                    <i class="fas fa-info-circle me-1"></i>Default: 60 days from today (you can select any date)
+                                                </small>
                                             </div>
                                         </div>
                                     </div>
@@ -154,8 +157,28 @@ document.addEventListener('DOMContentLoaded', function() {
             function toggleDateContainer() {
                 if (availability.value === 'available') {
                     container.style.display = 'block';
+                    
+                    // Set default date to 60 days from today for Ramp Start Date
+                    if (availabilityId === 'ramp_start_availability') {
+                        const rampStartInput = document.getElementById('ramp-start-date');
+                        if (rampStartInput && !rampStartInput.value) {
+                            const today = new Date();
+                            const defaultDate = new Date(today);
+                            defaultDate.setDate(today.getDate() + 60);
+                            rampStartInput.value = formatDate(defaultDate);
+                            updateEndDateMin(); // Update min date for end date
+                        }
+                    }
                 } else {
                     container.style.display = 'none';
+                    // Clear the date input when hiding
+                    const dateInput = container.querySelector('input[type="date"]');
+                    if (dateInput) {
+                        dateInput.value = '';
+                        if (availabilityId === 'ramp_start_availability') {
+                            updateEndDateMin(); // Update min date for end date
+                        }
+                    }
                 }
             }
             
