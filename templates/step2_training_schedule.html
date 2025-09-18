@@ -56,98 +56,22 @@
 
                 <!-- Training Support Content (Initially Hidden) -->
                 <div id="training-support-content" style="display: none;">
-                <!-- Training Support Type -->
-                <div class="row g-3 mb-4">
-                    <div class="col-12">
-                        <label class="form-label fw-semibold required">Training Supported By</label>
-                        <div class="d-flex gap-4 mt-2">
-                            {% for value, label in form.training_support_type.choices %}
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" 
-                                           name="{{ form.training_support_type.name }}" 
-                                           id="{{ form.training_support_type.name }}_{{ value }}" 
-                                           value="{{ value }}" 
-                                           {% if form.training_support_type.data == value %}checked{% endif %}>
-                                    <label class="form-check-label" for="{{ form.training_support_type.name }}_{{ value }}">
-                                        {{ label }}
-                                    </label>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Internal Trainer Availability (conditional) -->
-                <div id="internal-availability-section" class="row g-3 mb-4" style="display: none;">
-                    <div class="col-12">
-                        <label class="form-label fw-semibold required">Internal Trainer Available?</label>
-                        <div class="d-flex gap-4 mt-2">
-                            {% for value, label in form.internal_trainer_available.choices %}
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" 
-                                           name="{{ form.internal_trainer_available.name }}" 
-                                           id="{{ form.internal_trainer_available.name }}_{{ value }}" 
-                                           value="{{ value }}" 
-                                           {% if form.internal_trainer_available.data == value %}checked{% endif %}>
-                                    <label class="form-check-label" for="{{ form.internal_trainer_available.name }}_{{ value }}">
-                                        {{ label }}
-                                    </label>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Client Trainer Details (for Client selection) -->
-                <div id="client-trainer-details" class="row g-3 mb-4" style="display: none;">
-                    <div class="col-12">
-                        <div class="alert alert-success">
-                            <h6><i class="fas fa-user-tie me-2"></i>Client Trainer Details</h6>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold required">Client Trainer</label>
-                        {{ form.client_trainer(class="form-select") }}
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold required"># of Total Trainer</label>
-                        {{ form.total_trainers(class="form-control", readonly=true, style="background-color: #f8f9fa; color: #495057;", value="0") }}
-                    </div>
-                </div>
-
-                <!-- Both Trainer Details (for Both selection) -->
-                <div id="both-trainer-details" class="row g-3 mb-4" style="display: none;">
-                    <div class="col-12">
-                        <div class="alert alert-warning">
-                            <h6><i class="fas fa-users me-2"></i>Client & Internal Trainer Details</h6>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label fw-semibold required">Client Trainer</label>
-                        {{ form.client_trainer(class="form-select") }}
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label fw-semibold required">Internal Trainer</label>
-                        {{ form.internal_trainer(class="form-select") }}
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label fw-semibold required"># of Total Trainer</label>
-                        {{ form.total_trainers(class="form-control", readonly=true, style="background-color: #f8f9fa; color: #495057;", value="0") }}
-                    </div>
-                </div>
-
-                <!-- Internal Trainer Details (for Internal selection after Yes) -->
-                <div id="internal-trainer-details" class="row g-3 mb-4" style="display: none;">
+                <!-- Trainer Details -->
+                <div id="trainer-details" class="row g-3 mb-4" style="display: none;">
                     <div class="col-12">
                         <div class="alert alert-info">
-                            <h6><i class="fas fa-user-tie me-2"></i>Internal Trainer Details</h6>
+                            <h6><i class="fas fa-users me-2"></i>Trainer Details</h6>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold required">Client Trainer</label>
+                        {{ form.client_trainer(class="form-select") }}
+                    </div>
+                    <div class="col-md-4">
                         <label class="form-label fw-semibold required">Internal Trainer</label>
                         {{ form.internal_trainer(class="form-select") }}
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label fw-semibold required"># of Total Trainer</label>
                         {{ form.total_trainers(class="form-control", readonly=true, style="background-color: #f8f9fa; color: #495057;", value="0") }}
                     </div>
@@ -168,11 +92,14 @@ function toggleTrainingDetails() {
     const selectedRadio = document.querySelector('input[name="training-availability"]:checked');
     const availability = selectedRadio ? selectedRadio.value : '';
     const content = document.getElementById('training-support-content');
+    const trainerDetails = document.getElementById('trainer-details');
     
     if (availability === 'available') {
         content.style.display = 'block';
+        trainerDetails.style.display = 'block';
     } else {
         content.style.display = 'none';
+        trainerDetails.style.display = 'none';
         // Clear all form data when hiding
         clearTrainingFormData();
     }
@@ -180,16 +107,6 @@ function toggleTrainingDetails() {
 
 // Clear all training form data
 function clearTrainingFormData() {
-    // Clear training support type radio buttons
-    document.querySelectorAll('input[name="training_support_type"]').forEach(function(radio) {
-        radio.checked = false;
-    });
-    
-    // Clear internal trainer availability radio buttons
-    document.querySelectorAll('input[name="internal_trainer_available"]').forEach(function(radio) {
-        radio.checked = false;
-    });
-    
     // Clear all select fields
     document.querySelectorAll('select[name="client_trainer"], select[name="internal_trainer"]').forEach(function(select) {
         select.value = '';
@@ -199,149 +116,40 @@ function clearTrainingFormData() {
     document.querySelectorAll('input[name="total_trainers"]').forEach(function(input) {
         input.value = '0';
     });
-    
-    
-    // Hide all conditional sections
-    const conditionalSections = [
-        'internal-availability-section',
-        'client-trainer-details',
-        'both-trainer-details',
-        'internal-trainer-details'
-    ];
-    
-    conditionalSections.forEach(function(sectionId) {
-        const section = document.getElementById(sectionId);
-        if (section) {
-            section.style.display = 'none';
-        }
-    });
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Training support type logic
-    const trainingSupportRadios = document.querySelectorAll('input[name="training_support_type"]');
-    const internalAvailabilitySection = document.getElementById('internal-availability-section');
-    const internalTrainerAvailableRadios = document.querySelectorAll('input[name="internal_trainer_available"]');
-    const clientTrainerDetails = document.getElementById('client-trainer-details');
-    const bothTrainerDetails = document.getElementById('both-trainer-details');
-    const internalTrainerDetails = document.getElementById('internal-trainer-details');
-    
-    // Handle training support type change
-    trainingSupportRadios.forEach(radio => {
-        radio.addEventListener('change', function() {
-            // Hide all sections first
-            internalAvailabilitySection.style.display = 'none';
-            clientTrainerDetails.style.display = 'none';
-            bothTrainerDetails.style.display = 'none';
-            internalTrainerDetails.style.display = 'none';
-
-            
-            // Reset internal availability selection
-            internalTrainerAvailableRadios.forEach(r => r.checked = false);
-            
-            // Show appropriate section based on selection
-            if (this.value === 'client') {
-                clientTrainerDetails.style.display = 'block';
-
-            } else if (this.value === 'both') {
-                bothTrainerDetails.style.display = 'block';
-
-            } else if (this.value === 'internal') {
-                internalAvailabilitySection.style.display = 'block';
-            }
-            
-            // Recalculate totals after changing sections
-            calculateTotalTrainers();
-        });
-    });
-    
-    // Handle internal trainer availability change
-    internalTrainerAvailableRadios.forEach(radio => {
-        radio.addEventListener('change', function() {
-            if (this.value === 'yes') {
-                internalTrainerDetails.style.display = 'block';
-
-            } else if (this.value === 'no') {
-                internalTrainerDetails.style.display = 'none';
-    
-            }
-            
-            // Recalculate totals after changing availability
-            calculateTotalTrainers();
-        });
-    });
-    
-    
-    // Initialize visibility based on current selection
-    const selectedTrainingSupport = document.querySelector('input[name="training_support_type"]:checked');
-    if (selectedTrainingSupport) {
-        if (selectedTrainingSupport.value === 'client') {
-            clientTrainerDetails.style.display = 'block';
-            showAdditionalFields();
-        } else if (selectedTrainingSupport.value === 'both') {
-            bothTrainerDetails.style.display = 'block';
-            showAdditionalFields();
-        } else if (selectedTrainingSupport.value === 'internal') {
-            internalAvailabilitySection.style.display = 'block';
-            
-            const selectedAvailability = document.querySelector('input[name="internal_trainer_available"]:checked');
-            if (selectedAvailability && selectedAvailability.value === 'yes') {
-                internalTrainerDetails.style.display = 'block';
-
-            }
-        }
-        
-        // Calculate initial totals
-        calculateTotalTrainers();
-    }
-    
-    // Calculate total trainers based on current section
+    // Calculate total trainers based on trainer selections
     function calculateTotalTrainers() {
         let total = 0;
         
-        // Get current training support selection
-        const selectedTrainingSupport = document.querySelector('input[name="training_support_type"]:checked');
+        // Get values from both trainer fields
+        const clientField = document.querySelector('#trainer-details select[name="client_trainer"]');
+        const internalField = document.querySelector('#trainer-details select[name="internal_trainer"]');
         
-        if (selectedTrainingSupport) {
-            if (selectedTrainingSupport.value === 'client') {
-                // Client section: only client trainer
-                const clientField = document.querySelector('#client-trainer-details select[name="client_trainer"]');
-                total = parseInt(clientField?.value) || 0;
-            } else if (selectedTrainingSupport.value === 'both') {
-                // Both section: client + internal
-                const clientField = document.querySelector('#both-trainer-details select[name="client_trainer"]');
-                const internalField = document.querySelector('#both-trainer-details select[name="internal_trainer"]');
-                const client = parseInt(clientField?.value) || 0;
-                const internal = parseInt(internalField?.value) || 0;
-                total = client + internal;
-            } else if (selectedTrainingSupport.value === 'internal') {
-                // Internal section: only internal trainer (if trainer is available)
-                const selectedAvailability = document.querySelector('input[name="internal_trainer_available"]:checked');
-                if (selectedAvailability && selectedAvailability.value === 'yes') {
-                    const internalField = document.querySelector('#internal-trainer-details select[name="internal_trainer"]');
-                    total = parseInt(internalField?.value) || 0;
-                }
-            }
+        const client = parseInt(clientField?.value) || 0;
+        const internal = parseInt(internalField?.value) || 0;
+        total = client + internal;
+        
+        // Update total trainer field
+        const totalField = document.querySelector('#trainer-details input[name="total_trainers"]');
+        if (totalField) {
+            totalField.value = total;
         }
-        
-        // Update all total trainer fields
-        const totalFields = document.querySelectorAll('input[name="total_trainers"]');
-        totalFields.forEach(field => {
-            field.value = total;
-        });
-        
     }
     
-    // Bind change listeners to all trainer selects
-    document.querySelectorAll('select[name="client_trainer"]').forEach(el => {
-        el.addEventListener('change', calculateTotalTrainers);
-    });
-    document.querySelectorAll('select[name="internal_trainer"]').forEach(el => {
+    // Bind change listeners to trainer selects
+    document.querySelectorAll('select[name="client_trainer"], select[name="internal_trainer"]').forEach(el => {
         el.addEventListener('change', calculateTotalTrainers);
     });
     
-    
-    // Initial setup - don't calculate automatically
+    // Initialize visibility if "Available" is already selected
+    const selectedAvailability = document.querySelector('input[name="training-availability"]:checked');
+    if (selectedAvailability && selectedAvailability.value === 'available') {
+        document.getElementById('training-support-content').style.display = 'block';
+        document.getElementById('trainer-details').style.display = 'block';
+        calculateTotalTrainers();
+    }
 });
 </script>
 {% endblock %}
