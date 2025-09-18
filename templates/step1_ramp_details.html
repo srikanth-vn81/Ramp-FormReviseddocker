@@ -16,16 +16,18 @@
             </div>
             <div class="card-body">
                 <div class="row g-3 mb-4">
-                    <!-- Client Type -->
+                    <!-- Client Name -->
                     <div class="col-md-6">
-                        <label class="form-label fw-semibold required">Client Type</label>
-                        {{ form.client_type(class="form-select", id="client-type-select") }}
-                    </div>
-                    
-                    <!-- Client Name (conditionally shown) -->
-                    <div class="col-md-6" id="client-name-container" style="display: none;">
                         <label class="form-label fw-semibold required">Client Name</label>
                         {{ form.client_name(class="form-control", id="client-name-input", placeholder="Enter client name") }}
+                        
+                        <!-- Client Type dropdown (appears when typing) -->
+                        <div class="mt-2" id="client-type-container" style="display: none;">
+                            <label class="form-label fw-semibold text-primary" style="font-size: 0.9rem;">
+                                <i class="fas fa-tag me-1"></i>Is this a new or existing client?
+                            </label>
+                            {{ form.client_type(class="form-select form-select-sm", id="client-type-select") }}
+                        </div>
                     </div>
                     
                     <!-- Ramp Requirement -->
@@ -434,29 +436,36 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Setup client type dropdown functionality
     function setupClientTypeDropdown() {
-        const clientTypeSelect = document.getElementById('client-type-select');
-        const clientNameContainer = document.getElementById('client-name-container');
         const clientNameInput = document.getElementById('client-name-input');
+        const clientTypeContainer = document.getElementById('client-type-container');
+        const clientTypeSelect = document.getElementById('client-type-select');
         
-        if (clientTypeSelect && clientNameContainer && clientNameInput) {
-            function toggleClientNameField() {
-                if (clientTypeSelect.value === 'new' || clientTypeSelect.value === 'existing') {
-                    clientNameContainer.style.display = 'block';
-                    
-                    // Set placeholder based on client type
-                    if (clientTypeSelect.value === 'new') {
-                        clientNameInput.placeholder = 'Enter new client name';
-                    } else if (clientTypeSelect.value === 'existing') {
-                        clientNameInput.placeholder = 'Enter existing client name';
-                    }
+        if (clientNameInput && clientTypeContainer && clientTypeSelect) {
+            function toggleClientTypeDropdown() {
+                // Show dropdown when user starts typing (at least 1 character)
+                if (clientNameInput.value && clientNameInput.value.trim().length > 0) {
+                    clientTypeContainer.style.display = 'block';
                 } else {
-                    clientNameContainer.style.display = 'none';
-                    clientNameInput.value = '';
+                    clientTypeContainer.style.display = 'none';
+                    clientTypeSelect.value = ''; // Reset selection when hiding
                 }
             }
             
-            clientTypeSelect.addEventListener('change', toggleClientNameField);
-            toggleClientNameField(); // Initial call to set correct state
+            // Listen for input events on the client name field
+            clientNameInput.addEventListener('input', toggleClientTypeDropdown);
+            clientNameInput.addEventListener('keyup', toggleClientTypeDropdown);
+            clientNameInput.addEventListener('blur', function() {
+                // Don't hide immediately on blur, give user time to select dropdown
+                setTimeout(function() {
+                    if (!clientTypeSelect.matches(':focus')) {
+                        // Only check again if not focused on the dropdown
+                        toggleClientTypeDropdown();
+                    }
+                }, 150);
+            });
+            
+            // Initial check
+            toggleClientTypeDropdown();
         }
     }
     
