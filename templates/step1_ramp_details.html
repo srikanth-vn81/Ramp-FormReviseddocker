@@ -75,6 +75,9 @@
                                             </div>
                                             <div class="flex-grow-1 date-input-container" id="ramp-end-date-container" style="display: none;">
                                                 {{ form.ramp_end_date(class="form-control border-2 shadow-sm", id="ramp-end-date") }}
+                                                <small class="form-text text-muted fst-italic mt-1">
+                                                    <i class="fas fa-info-circle me-1"></i>Must be same or later than Ramp Start Date
+                                                </small>
                                             </div>
                                         </div>
                                     </div>
@@ -148,6 +151,25 @@
 {% block extra_js %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Get date input elements first
+    const rampStartDateInput = document.getElementById('ramp-start-date');
+    const rampEndDateInput = document.getElementById('ramp-end-date');
+    const rampStartAvailability = document.getElementById('ramp_start_availability');
+    const rampEndAvailability = document.getElementById('ramp_end_availability');
+    
+    // Validate ramp end date function
+    function updateEndDateMin() {
+        if (rampStartDateInput && rampEndDateInput && rampStartDateInput.value) {
+            rampEndDateInput.min = rampStartDateInput.value;
+            
+            // If end date is less than start date, clear it
+            if (rampEndDateInput.value && rampEndDateInput.value < rampStartDateInput.value) {
+                rampEndDateInput.value = '';
+                showDateValidationError('Ramp End Date cannot be earlier than Ramp Start Date');
+            }
+        }
+    }
+    
     // Show/hide date containers based on availability selection
     function setupDateAvailability(availabilityId, containerId) {
         const availability = document.getElementById(availabilityId);
@@ -214,10 +236,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Lead time selection logic
     const leadTimeSelect = document.getElementById('lead-time-selection');
-    const rampStartDateInput = document.getElementById('ramp-start-date');
-    const rampEndDateInput = document.getElementById('ramp-end-date');
-    const rampStartAvailability = document.getElementById('ramp_start_availability');
-    const rampEndAvailability = document.getElementById('ramp_end_availability');
     
     function updateDateAvailability() {
         const selection = leadTimeSelect ? leadTimeSelect.value : '';
@@ -300,18 +318,6 @@ document.addEventListener('DOMContentLoaded', function() {
         leadTimeSelect.addEventListener('change', updateDateAvailability);
     }
     
-    // Validate ramp end date
-    function updateEndDateMin() {
-        if (rampStartDateInput && rampEndDateInput && rampStartDateInput.value) {
-            rampEndDateInput.min = rampStartDateInput.value;
-            
-            // If end date is less than start date, clear it
-            if (rampEndDateInput.value && rampEndDateInput.value < rampStartDateInput.value) {
-                rampEndDateInput.value = '';
-                showDateValidationError('Ramp End Date cannot be earlier than Ramp Start Date');
-            }
-        }
-    }
     
     // Show validation error
     function showDateValidationError(message) {
