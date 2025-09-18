@@ -163,13 +163,56 @@
     </div>
 </div>
 
+<!-- Main Program Details Section (When Available) -->
+<div class="row mt-4" id="main-program-details-section" style="display: none;">
+    <div class="col-lg-8 mx-auto">
+        <div class="card border shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h6 class="card-title mb-0 fw-bold">
+                    <i class="fas fa-graduation-cap me-2"></i>Program Details
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Training Duration</label>
+                        <div class="d-flex gap-2 align-items-center">
+                            <div class="flex-shrink-0" style="min-width: 100px;">
+                                {{ form.training_duration(class="form-select", id="main-training-duration") }}
+                            </div>
+                            <div id="main-training-duration-number-container" style="display: none; min-width: 80px;">
+                                {{ form.training_duration_number(class="form-select", id="main-training-duration-number") }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Nesting Duration</label>
+                        <div class="d-flex gap-2 align-items-center">
+                            <div class="flex-shrink-0" style="min-width: 100px;">
+                                {{ form.nesting_duration(class="form-select", id="main-nesting-duration") }}
+                            </div>
+                            <div id="main-nesting-duration-number-container" style="display: none; min-width: 80px;">
+                                {{ form.nesting_duration_number(class="form-select", id="main-nesting-duration-number") }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Batch Size</label>
+                        {{ form.batch_size(class="form-select", id="main-batch-size") }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Additional Training Details Section (Separate) -->
 <div class="row mt-4" id="additional-training-section" style="display: none;">
     <div class="col-lg-8 mx-auto">
         <div class="card border shadow-sm">
             <div class="card-header bg-primary text-white">
                 <h6 class="card-title mb-0 fw-bold">
-                    <i class="fas fa-graduation-cap me-2"></i>Program Details
+                    <i class="fas fa-graduation-cap me-2"></i>Additional Training Details
                 </h6>
             </div>
             <div class="card-body">
@@ -341,6 +384,7 @@ function toggleProgramDetails() {
     const availability = selectedRadio ? selectedRadio.value : '';
     const content = document.getElementById('program-details-content');
     const lobSection = document.getElementById('lob-details-section');
+    const mainProgramSection = document.getElementById('main-program-details-section');
     const additionalTrainingSection = document.getElementById('additional-training-section');
     const languageChannelSection = document.getElementById('language-channel-section');
     
@@ -348,6 +392,7 @@ function toggleProgramDetails() {
         // Show all sections for available program
         content.style.display = 'block';
         if (lobSection) lobSection.style.display = 'block';
+        if (mainProgramSection) mainProgramSection.style.display = 'block';
         if (additionalTrainingSection) additionalTrainingSection.style.display = 'block';
         if (languageChannelSection) languageChannelSection.style.display = 'block';
         removeMandatoryHighlighting();
@@ -355,6 +400,7 @@ function toggleProgramDetails() {
         // Show only Additional Training Details for unavailable program
         content.style.display = 'block';
         if (lobSection) lobSection.style.display = 'none';
+        if (mainProgramSection) mainProgramSection.style.display = 'none';
         if (additionalTrainingSection) additionalTrainingSection.style.display = 'block';
         if (languageChannelSection) languageChannelSection.style.display = 'none';
         
@@ -1047,6 +1093,46 @@ function updateFormData() {
     console.log('LOB Form Data Updated:', lobData);
 }
 
+// Setup Training Duration dropdowns for both sections
+function setupTrainingDurationDropdowns() {
+    // Main Program Details section dropdowns
+    setupDropdownBehavior('main-training-duration', 'main-training-duration-number-container');
+    setupDropdownBehavior('main-nesting-duration', 'main-nesting-duration-number-container');
+    
+    // Additional Training Details section dropdowns
+    setupDropdownBehavior('training_duration', 'training-duration-number-container');
+    setupDropdownBehavior('nesting_duration', 'nesting-duration-number-container');
+}
+
+// Generic function to setup dropdown behavior
+function setupDropdownBehavior(selectId, containerIds) {
+    const selectElement = document.getElementById(selectId);
+    const container = document.getElementById(containerIds);
+    
+    if (selectElement && container) {
+        selectElement.addEventListener('change', function() {
+            // Show number input for specific selections (like "Days", "Weeks", etc.)
+            if (this.value && this.value !== '' && this.value !== 'Select') {
+                // You can customize this logic based on which values should show the number input
+                if (this.value.includes('day') || this.value.includes('week') || this.value.includes('month')) {
+                    container.style.display = 'block';
+                } else {
+                    container.style.display = 'none';
+                }
+            } else {
+                container.style.display = 'none';
+            }
+        });
+        
+        // Initialize on page load
+        if (selectElement.value && selectElement.value !== '' && selectElement.value !== 'Select') {
+            if (selectElement.value.includes('day') || selectElement.value.includes('week') || selectElement.value.includes('month')) {
+                container.style.display = 'block';
+            }
+        }
+    }
+}
+
 // Initialize the form when the page loads
 document.addEventListener('DOMContentLoaded', function() {
     console.log('WFM Analytics - Program Details Form initialized');
@@ -1181,6 +1267,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    
+    // Training Duration dropdowns for both sections
+    setupTrainingDurationDropdowns();
     
     // Form submission validation
     const form = document.querySelector('form');
