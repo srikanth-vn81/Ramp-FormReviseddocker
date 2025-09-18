@@ -96,7 +96,7 @@ class RampInputForm(FlaskForm):
         validators=[Optional()]
     )
     
-    # Operational assumptions
+    # Support ratios
     supervisor_ratio = StringField('Supervisor Ratio', default='1:1')
     qa_ratio = StringField('QA Ratio', default='1:1')
     trainer_ratio = StringField('Trainer Ratio', default='1:1')

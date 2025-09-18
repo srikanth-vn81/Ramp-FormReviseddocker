@@ -25,7 +25,7 @@ class RampFormController {
         // Trainer field handlers
         this.setupTrainerHandlers();
         
-        // Operational assumptions handlers
+        // Support ratios handlers
         this.setupOperationalAssumptionsHandlers();
         
         // Language support handlers
