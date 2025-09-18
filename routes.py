@@ -86,7 +86,7 @@ FORM_STEPS = {
     3: {'name': 'Recruitment', 'template': 'step6_recruitment.html'},
     4: {'name': 'Program Details', 'template': 'step4_language_channel.html'},
     5: {'name': 'Training Support', 'template': 'step2_training_schedule.html'},
-    6: {'name': 'Support Ratios', 'template': 'step3_operational_assumptions.html'},
+    6: {'name': 'Operational Support Ratios', 'template': 'step3_operational_assumptions.html'},
     7: {'name': 'Submit', 'template': 'step7_submit.html'}
 }
 
