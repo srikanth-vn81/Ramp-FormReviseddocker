@@ -393,8 +393,12 @@ function toggleProgramDetails() {
         content.style.display = 'block';
         if (lobSection) lobSection.style.display = 'block';
         if (mainProgramSection) mainProgramSection.style.display = 'block';
-        if (additionalTrainingSection) additionalTrainingSection.style.display = 'block';
+        if (additionalTrainingSection) additionalTrainingSection.style.display = 'none'; // Hide to avoid conflicts
         if (languageChannelSection) languageChannelSection.style.display = 'block';
+        
+        // Enable main section fields and disable additional section fields
+        toggleFieldStates('main', true);
+        toggleFieldStates('additional', false);
         removeMandatoryHighlighting();
     } else if (availability === 'unavailable') {
         // Show only Additional Training Details for unavailable program
@@ -404,6 +408,10 @@ function toggleProgramDetails() {
         if (additionalTrainingSection) additionalTrainingSection.style.display = 'block';
         if (languageChannelSection) languageChannelSection.style.display = 'none';
         
+        // Enable additional section fields and disable main section fields
+        toggleFieldStates('main', false);
+        toggleFieldStates('additional', true);
+        
         // Highlight mandatory fields in Additional Training Details
         highlightMandatoryFields();
         
@@ -412,8 +420,43 @@ function toggleProgramDetails() {
     } else {
         // Hide everything if nothing selected
         content.style.display = 'none';
+        toggleFieldStates('main', false);
+        toggleFieldStates('additional', false);
         clearProgramFormData();
     }
+}
+
+// Toggle field states to avoid duplicate form submissions
+function toggleFieldStates(section, enabled) {
+    let fieldIds = [];
+    
+    if (section === 'main') {
+        fieldIds = [
+            'main-training-duration',
+            'main-training-duration-number',
+            'main-nesting-duration', 
+            'main-nesting-duration-number',
+            'main-batch-size'
+        ];
+    } else if (section === 'additional') {
+        fieldIds = [
+            'training_duration',
+            'training_duration_number',
+            'nesting_duration',
+            'nesting_duration_number', 
+            'batch_size'
+        ];
+    }
+    
+    fieldIds.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            field.disabled = !enabled;
+            if (!enabled) {
+                field.value = ''; // Clear value when disabling
+            }
+        }
+    });
 }
 
 // Show mandatory fields message for Additional Training Details
