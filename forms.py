@@ -10,6 +10,11 @@ class MultiCheckboxField(SelectMultipleField):
 
 class RampInputForm(FlaskForm):
     # Ramp Details (Step 1)
+    client_type = SelectField(
+        'Client Type',
+        choices=[('', 'Select Client Type'), ('new', 'New Client'), ('existing', 'Existing Client')],
+        validators=[Optional()]
+    )
     client_name = StringField('Client Name', validators=[Optional()])
     ramp_start_date = DateField('Ramp Start Date', validators=[Optional()])
     ramp_end_date = DateField('Ramp End Date', validators=[Optional()])
