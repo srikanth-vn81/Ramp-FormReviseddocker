@@ -95,6 +95,60 @@
                         <label class="form-label">
                             <i class="fas fa-check-square me-1"></i>Select LOBs for Language & Channel Support
                         </label>
+                        
+                        <!-- Resource Summary Section -->
+                        <div class="card border-0 shadow-sm mb-3" style="background: linear-gradient(135deg, #e8f5e8 0%, #f0f9ff 100%);">
+                            <div class="card-body p-3">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2">
+                                        <div class="text-center">
+                                            <div class="text-success fw-bold small">
+                                                <i class="fas fa-chart-pie me-1"></i>Resource Summary
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <div class="row text-center">
+                                            <div class="col-md-3">
+                                                <div class="small text-muted">TOTAL ALLOCATED</div>
+                                                <div class="h5 mb-0 text-primary" id="total-allocated">0</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="small text-muted">REQUIRED</div>
+                                                <div class="h5 mb-0 text-dark" id="total-required">200</div>
+                                                <input type="hidden" id="required-headcount" value="200">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="small text-muted">BALANCE</div>
+                                                <div class="h5 mb-0" id="total-balance">200</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="small text-muted">Allocation Progress</div>
+                                                <div class="progress mt-1" style="height: 8px;">
+                                                    <div class="progress-bar bg-success" 
+                                                         id="allocation-progress-bar" 
+                                                         role="progressbar" 
+                                                         style="width: 0%;" 
+                                                         aria-valuenow="0" 
+                                                         aria-valuemin="0" 
+                                                         aria-valuemax="100">
+                                                    </div>
+                                                </div>
+                                                <div class="small text-center mt-1">
+                                                    <span id="allocation-percentage">0%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Validation Messages -->
+                                <div id="allocation-validation-message" class="mt-3" style="display: none;">
+                                    <!-- Validation messages will appear here -->
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div class="card border-0 shadow-sm" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
                             <div class="card-body p-4">
                                 <div id="lob-checkboxes-container" class="row g-3">
@@ -526,6 +580,7 @@ function generateLobCheckboxes(lobNames) {
                                min="0" 
                                style="border: 2px solid #e3e6f0;"
                                onchange="updateLobHeadcount('${lobName}', this.value)"
+                               oninput="updateLobHeadcount('${lobName}', this.value)"
                                onclick="event.stopPropagation()">
                     </div>
                 </div>
@@ -559,6 +614,9 @@ function generateLobCheckboxes(lobNames) {
     // Update global lobData to remove obsolete entries
     lobData = newLobData;
     
+    // Update Resource Summary after generating LOB cards
+    updateResourceSummary();
+    
     // If current selected LOB is no longer in the list, clear selection
     if (currentSelectedLob && !lobNames.includes(currentSelectedLob)) {
         currentSelectedLob = null;
@@ -583,10 +641,144 @@ function updateLobHeadcount(lobName, headcount) {
     // Update headcount
     lobData[lobName].headcount = parseInt(headcount) || 0;
     
+    // Update Resource Summary
+    updateResourceSummary();
+    
     // Update form data
     updateFormData();
     
     console.log(`Updated headcount for ${lobName}: ${headcount}`, lobData);
+}
+
+// Update Resource Summary validation
+function updateResourceSummary() {
+    // Calculate total allocated from all LOB headcounts
+    let totalAllocated = 0;
+    Object.values(lobData).forEach(lob => {
+        totalAllocated += lob.headcount || 0;
+    });
+    
+    // Get required value
+    const requiredInput = document.getElementById('required-headcount');
+    const required = parseInt(requiredInput.value) || 200;
+    
+    // Calculate balance
+    const balance = required - totalAllocated;
+    
+    // Calculate percentage
+    const percentage = required > 0 ? Math.round((totalAllocated / required) * 100) : 0;
+    
+    // Update display values
+    const totalAllocatedEl = document.getElementById('total-allocated');
+    const totalBalanceEl = document.getElementById('total-balance');
+    const progressBar = document.getElementById('allocation-progress-bar');
+    const percentageEl = document.getElementById('allocation-percentage');
+    const validationMessageDiv = document.getElementById('allocation-validation-message');
+    
+    if (totalAllocatedEl) totalAllocatedEl.textContent = totalAllocated;
+    if (totalBalanceEl) {
+        totalBalanceEl.textContent = balance;
+        // Color coding for balance
+        if (balance > 0) {
+            totalBalanceEl.className = 'h5 mb-0 text-success'; // Green for positive balance (under-allocated)
+        } else if (balance < 0) {
+            totalBalanceEl.className = 'h5 mb-0 text-danger'; // Red for over-allocation
+        } else {
+            totalBalanceEl.className = 'h5 mb-0 text-success'; // Green for perfect match
+        }
+    }
+    
+    // Update progress bar
+    if (progressBar) {
+        const clampedPercentage = Math.min(Math.max(percentage, 0), 100);
+        progressBar.style.width = clampedPercentage + '%';
+        progressBar.setAttribute('aria-valuenow', clampedPercentage);
+        
+        // Change color based on progress
+        progressBar.className = 'progress-bar';
+        if (percentage === 100) {
+            progressBar.classList.add('bg-success'); // Perfect allocation
+        } else if (percentage > 100) {
+            progressBar.classList.add('bg-danger'); // Over-allocated
+        } else if (percentage >= 75) {
+            progressBar.classList.add('bg-info'); // Close to target
+        } else if (percentage >= 50) {
+            progressBar.classList.add('bg-warning'); // Halfway there
+        } else {
+            progressBar.classList.add('bg-danger'); // Far from target
+        }
+    }
+    
+    if (percentageEl) {
+        percentageEl.textContent = percentage + '%';
+    }
+    
+    // Show validation messages
+    if (validationMessageDiv) {
+        if (balance === 0) {
+            // Perfect allocation
+            validationMessageDiv.innerHTML = `
+                <div class="alert alert-success py-2 mb-0" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>
+                    <strong>Perfect Allocation!</strong> All ${required} headcount positions have been allocated across LOBs.
+                </div>
+            `;
+            validationMessageDiv.style.display = 'block';
+        } else if (balance < 0) {
+            // Over-allocated
+            const overAllocated = Math.abs(balance);
+            validationMessageDiv.innerHTML = `
+                <div class="alert alert-danger py-2 mb-0" role="alert">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Over-Allocated!</strong> You have allocated ${overAllocated} more positions than required. Please reduce allocation.
+                </div>
+            `;
+            validationMessageDiv.style.display = 'block';
+        } else if (balance > 0) {
+            // Under-allocated
+            validationMessageDiv.innerHTML = `
+                <div class="alert alert-warning py-2 mb-0" role="alert">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>Under-Allocated:</strong> You still need to allocate ${balance} more positions to reach the required ${required} headcount.
+                </div>
+            `;
+            validationMessageDiv.style.display = 'block';
+        }
+    }
+    
+    // Update form validation state
+    updateFormValidationState(balance === 0);
+    
+    console.log('Resource Summary Updated:', {
+        totalAllocated,
+        required,
+        balance,
+        percentage,
+        isValid: balance === 0
+    });
+}
+
+// Update form validation state - disable/enable form submission
+function updateFormValidationState(isValid) {
+    // Find all form submit buttons (Save and Next buttons)
+    const submitButtons = document.querySelectorAll('button[type="submit"], input[type="submit"], button[name="action"]');
+    
+    submitButtons.forEach(button => {
+        if (!isValid) {
+            button.disabled = true;
+            button.classList.add('btn-secondary');
+            button.classList.remove('btn-primary', 'btn-success');
+            button.title = 'Please allocate exactly the required headcount before proceeding';
+        } else {
+            button.disabled = false;
+            button.classList.remove('btn-secondary');
+            button.classList.add('btn-primary');
+            button.title = '';
+        }
+    });
+    
+    // Store validation state globally for form submission check
+    window.lobAllocationValid = isValid;
 }
 
 // Select a LOB and update the Language & Channel Support section
@@ -776,6 +968,9 @@ function loadLobData(lobName) {
     if (headcountInput) {
         headcountInput.value = data.headcount || 0;
     }
+    
+    // Update Resource Summary with loaded data
+    updateResourceSummary();
     
     // Channel progress removed
 }
@@ -983,6 +1178,34 @@ document.addEventListener('DOMContentLoaded', function() {
             if (currentSelectedLob) {
                 saveLobData(currentSelectedLob);
                 updateFormData();
+            }
+        });
+    }
+    
+    // Form submission validation
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            // Only validate if LOB checkboxes are visible (program details available)
+            const lobCheckboxesSection = document.getElementById('lob-checkboxes-section');
+            if (lobCheckboxesSection && lobCheckboxesSection.style.display !== 'none') {
+                // Check if allocation is valid
+                if (!window.lobAllocationValid) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Scroll to Resource Summary
+                    const resourceSummary = document.getElementById('allocation-validation-message');
+                    if (resourceSummary) {
+                        resourceSummary.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    
+                    // Show error message if not already showing
+                    updateResourceSummary();
+                    
+                    alert('Please ensure all headcount positions are properly allocated before proceeding.');
+                    return false;
+                }
             }
         });
     }
