@@ -153,41 +153,6 @@
                     </div>
                 </div>
 
-                <!-- Additional Fields (shown conditionally) -->
-                <div id="additional-fields" class="additional-fields" style="display: none;">
-                    <hr class="my-4">
-                    <h6 class="text-muted mb-3">
-                        <i class="fas fa-info-circle me-2"></i>Additional Training Details
-                    </h6>
-                    <div class="row g-3">
-                        <div class="col-md-4">
-                            <label class="form-label fw-semibold">Training Duration</label>
-                            <div class="d-flex gap-2 align-items-center">
-                                <div class="flex-shrink-0" style="min-width: 100px;">
-                                    {{ form.training_duration(class="form-select") }}
-                                </div>
-                                <div id="training-duration-number-container" style="display: none; min-width: 80px;">
-                                    {{ form.training_duration_number(class="form-select") }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label fw-semibold">Nesting Duration</label>
-                            <div class="d-flex gap-2 align-items-center">
-                                <div class="flex-shrink-0" style="min-width: 100px;">
-                                    {{ form.nesting_duration(class="form-select") }}
-                                </div>
-                                <div id="nesting-duration-number-container" style="display: none; min-width: 80px;">
-                                    {{ form.nesting_duration_number(class="form-select") }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label fw-semibold">Batch Size</label>
-                            {{ form.batch_size(class="form-select") }}
-                        </div>
-                    </div>
-                </div>
                 </div> <!-- End of training-support-content -->
             </div>
         </div>
@@ -226,7 +191,7 @@ function clearTrainingFormData() {
     });
     
     // Clear all select fields
-    document.querySelectorAll('select[name="client_trainer"], select[name="internal_trainer"], select[name="training_duration"], select[name="nesting_duration"], select[name="batch_size"]').forEach(function(select) {
+    document.querySelectorAll('select[name="client_trainer"], select[name="internal_trainer"]').forEach(function(select) {
         select.value = '';
     });
     
@@ -235,21 +200,13 @@ function clearTrainingFormData() {
         input.value = '0';
     });
     
-    // Clear training/nesting duration number fields
-    const trainingDurationNumber = document.getElementById('training_duration_number');
-    const nestingDurationNumber = document.getElementById('nesting_duration_number');
-    if (trainingDurationNumber) trainingDurationNumber.value = '';
-    if (nestingDurationNumber) nestingDurationNumber.value = '';
     
     // Hide all conditional sections
     const conditionalSections = [
         'internal-availability-section',
         'client-trainer-details',
         'both-trainer-details',
-        'internal-trainer-details',
-        'additional-fields',
-        'training-duration-number-container',
-        'nesting-duration-number-container'
+        'internal-trainer-details'
     ];
     
     conditionalSections.forEach(function(sectionId) {
@@ -277,7 +234,7 @@ document.addEventListener('DOMContentLoaded', function() {
             clientTrainerDetails.style.display = 'none';
             bothTrainerDetails.style.display = 'none';
             internalTrainerDetails.style.display = 'none';
-            hideAdditionalFields();
+
             
             // Reset internal availability selection
             internalTrainerAvailableRadios.forEach(r => r.checked = false);
@@ -285,10 +242,10 @@ document.addEventListener('DOMContentLoaded', function() {
             // Show appropriate section based on selection
             if (this.value === 'client') {
                 clientTrainerDetails.style.display = 'block';
-                showAdditionalFields();
+
             } else if (this.value === 'both') {
                 bothTrainerDetails.style.display = 'block';
-                showAdditionalFields();
+
             } else if (this.value === 'internal') {
                 internalAvailabilitySection.style.display = 'block';
             }
@@ -303,10 +260,10 @@ document.addEventListener('DOMContentLoaded', function() {
         radio.addEventListener('change', function() {
             if (this.value === 'yes') {
                 internalTrainerDetails.style.display = 'block';
-                showAdditionalFields();
+
             } else if (this.value === 'no') {
                 internalTrainerDetails.style.display = 'none';
-                hideAdditionalFields();
+    
             }
             
             // Recalculate totals after changing availability
@@ -314,14 +271,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Show/hide additional fields functions
-    function showAdditionalFields() {
-        document.getElementById('additional-fields').style.display = 'block';
-    }
-    
-    function hideAdditionalFields() {
-        document.getElementById('additional-fields').style.display = 'none';
-    }
     
     // Initialize visibility based on current selection
     const selectedTrainingSupport = document.querySelector('input[name="training_support_type"]:checked');
@@ -338,7 +287,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const selectedAvailability = document.querySelector('input[name="internal_trainer_available"]:checked');
             if (selectedAvailability && selectedAvailability.value === 'yes') {
                 internalTrainerDetails.style.display = 'block';
-                showAdditionalFields();
+
             }
         }
         
@@ -381,10 +330,6 @@ document.addEventListener('DOMContentLoaded', function() {
             field.value = total;
         });
         
-        // Show additional fields for all cases except Internal + No
-        if (total > 0) {
-            showAdditionalFields();
-        }
     }
     
     // Bind change listeners to all trainer selects
@@ -395,27 +340,6 @@ document.addEventListener('DOMContentLoaded', function() {
         el.addEventListener('change', calculateTotalTrainers);
     });
     
-    // Show/hide duration number containers
-    function setupDurationHandlers(durationId, containerId) {
-        const duration = document.getElementById(durationId);
-        const container = document.getElementById(containerId);
-        
-        if (duration && container) {
-            function toggleDurationNumber() {
-                if (duration.value && duration.value !== '') {
-                    container.style.display = 'block';
-                } else {
-                    container.style.display = 'none';
-                }
-            }
-            
-            duration.addEventListener('change', toggleDurationNumber);
-            toggleDurationNumber(); // Initial call
-        }
-    }
-    
-    setupDurationHandlers('training_duration', 'training-duration-number-container');
-    setupDurationHandlers('nesting_duration', 'nesting-duration-number-container');
     
     // Initial setup - don't calculate automatically
 });
