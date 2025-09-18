@@ -11,17 +11,6 @@ class MultiCheckboxField(SelectMultipleField):
 class RampInputForm(FlaskForm):
     # Ramp Details (Step 1)
     client_name = StringField('Client Name', validators=[Optional()])
-    lead_time_selection = SelectField(
-        'Lead Time Selection',
-        choices=[
-            ('', 'Select Lead Time'), 
-            ('30', '30 Days'), 
-            ('60', '60 Days'),
-            ('current_date', 'From Current Date'),
-            ('not_available', 'Currently Unavailable')
-        ],
-        validators=[Optional()]
-    )
     ramp_start_date = DateField('Ramp Start Date', validators=[Optional()])
     ramp_end_date = DateField('Ramp End Date', validators=[Optional()])
     ramp_requirement = IntegerField('Ramp Requirement', validators=[Optional(), NumberRange(min=1)])
