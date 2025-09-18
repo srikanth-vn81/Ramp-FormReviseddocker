@@ -508,13 +508,25 @@ function generateLobCheckboxes(lobNames) {
         const checkboxDiv = document.createElement('div');
         checkboxDiv.className = 'col-md-6 col-lg-4';
         checkboxDiv.innerHTML = `
-            <div class="card border-0 shadow-sm h-100 lob-card" style="transition: all 0.3s ease; cursor: pointer;" onclick="selectLob('${lobName}')">
+            <div class="card border-0 shadow-sm h-100 lob-card" style="transition: all 0.3s ease;">
                 <div class="card-body p-3 text-center">
-                    <div class="form-check d-flex align-items-center justify-content-center">
+                    <div class="form-check d-flex align-items-center justify-content-center mb-3">
                         <input class="form-check-input lob-radio me-2" type="radio" name="selected-lob" id="lob-${index}" value="${lobName}" onchange="selectLob('${lobName}')" style="transform: scale(1.2);">
                         <label class="form-check-label fw-bold text-${color}" for="lob-${index}">
                             <i class="${icon} me-2"></i>${lobName}
                         </label>
+                    </div>
+                    <div class="mt-2">
+                        <label class="form-label fw-semibold text-muted small">Headcount</label>
+                        <input type="number" 
+                               class="form-control form-control-sm text-center lob-headcount" 
+                               id="lob-headcount-${index}" 
+                               data-lob-name="${lobName}"
+                               placeholder="0" 
+                               min="0" 
+                               style="border: 2px solid #e3e6f0;"
+                               onchange="updateLobHeadcount('${lobName}', this.value)"
+                               onclick="event.stopPropagation()">
                     </div>
                 </div>
             </div>
@@ -538,7 +550,8 @@ function generateLobCheckboxes(lobNames) {
                 language_support: '',
                 specify_languages: '',
                 channels: [],
-                others_text: ''
+                others_text: '',
+                headcount: 0
             };
         }
     });
@@ -552,6 +565,28 @@ function generateLobCheckboxes(lobNames) {
         const languageChannelSection = document.getElementById('language-channel-section');
         if (languageChannelSection) languageChannelSection.style.display = 'none';
     }
+}
+
+// Update LOB headcount
+function updateLobHeadcount(lobName, headcount) {
+    // Initialize LOB data if it doesn't exist
+    if (!lobData[lobName]) {
+        lobData[lobName] = {
+            language_support: '',
+            specify_languages: '',
+            channels: [],
+            others_text: '',
+            headcount: 0
+        };
+    }
+    
+    // Update headcount
+    lobData[lobName].headcount = parseInt(headcount) || 0;
+    
+    // Update form data
+    updateFormData();
+    
+    console.log(`Updated headcount for ${lobName}: ${headcount}`, lobData);
 }
 
 // Select a LOB and update the Language & Channel Support section
@@ -683,6 +718,12 @@ function saveLobData(lobName) {
     if (othersText) {
         lobData[lobName].others_text = othersText.value;
     }
+    
+    // Save headcount (find the headcount input for this LOB)
+    const headcountInput = document.querySelector(`input[data-lob-name="${lobName}"]`);
+    if (headcountInput) {
+        lobData[lobName].headcount = parseInt(headcountInput.value) || 0;
+    }
 }
 
 // Load data for the selected LOB into the form
@@ -691,7 +732,8 @@ function loadLobData(lobName) {
         language_support: '',
         specify_languages: '',
         channels: [],
-        others_text: ''
+        others_text: '',
+        headcount: 0
     };
     
     // Load language support
@@ -727,6 +769,12 @@ function loadLobData(lobName) {
     if (othersCheckbox && data.others_text) {
         othersCheckbox.checked = true;
         toggleOthersText();
+    }
+    
+    // Load headcount value
+    const headcountInput = document.querySelector(`input[data-lob-name="${lobName}"]`);
+    if (headcountInput) {
+        headcountInput.value = data.headcount || 0;
     }
     
     // Channel progress removed
