@@ -51,16 +51,20 @@
                                         <label class="form-label fw-bold text-dark mb-2">
                                             <i class="fas fa-play-circle me-2 text-success"></i>Ramp Start Date
                                         </label>
-                                        <div class="d-flex align-items-center gap-3">
+                                        <div class="d-flex align-items-start gap-3">
                                             <div class="flex-shrink-0" style="min-width: 140px;">
                                                 {{ form.ramp_start_availability(class="form-select border-2 shadow-sm") }}
                                             </div>
-                                            <div class="flex-grow-1 date-input-container" id="ramp-start-date-container" style="display: none;">
-                                                {{ form.ramp_start_date(class="form-control border-2 shadow-sm", id="ramp-start-date") }}
-                                                <small class="form-text text-muted fst-italic mt-1">
-                                                    <i class="fas fa-info-circle me-1"></i>Default: 60 days from today (you can select any date)
-                                                </small>
+                                            <div class="flex-grow-1">
+                                                <div class="date-input-container" id="ramp-start-date-container" style="display: none;">
+                                                    {{ form.ramp_start_date(class="form-control border-2 shadow-sm", id="ramp-start-date") }}
+                                                </div>
                                             </div>
+                                        </div>
+                                        <div class="mt-2" id="ramp-start-help-text" style="display: none;">
+                                            <small class="form-text text-muted fst-italic">
+                                                <i class="fas fa-info-circle me-1"></i>Default: 60 days from today (you can select any date)
+                                            </small>
                                         </div>
                                     </div>
                                     
@@ -69,16 +73,20 @@
                                         <label class="form-label fw-bold text-dark mb-2">
                                             <i class="fas fa-stop-circle me-2 text-danger"></i>Ramp End Date
                                         </label>
-                                        <div class="d-flex align-items-center gap-3">
+                                        <div class="d-flex align-items-start gap-3">
                                             <div class="flex-shrink-0" style="min-width: 140px;">
                                                 {{ form.ramp_end_availability(class="form-select border-2 shadow-sm") }}
                                             </div>
-                                            <div class="flex-grow-1 date-input-container" id="ramp-end-date-container" style="display: none;">
-                                                {{ form.ramp_end_date(class="form-control border-2 shadow-sm", id="ramp-end-date") }}
-                                                <small class="form-text text-muted fst-italic mt-1">
-                                                    <i class="fas fa-info-circle me-1"></i>Must be same or later than Ramp Start Date
-                                                </small>
+                                            <div class="flex-grow-1">
+                                                <div class="date-input-container" id="ramp-end-date-container" style="display: none;">
+                                                    {{ form.ramp_end_date(class="form-control border-2 shadow-sm", id="ramp-end-date") }}
+                                                </div>
                                             </div>
+                                        </div>
+                                        <div class="mt-2" id="ramp-end-help-text" style="display: none;">
+                                            <small class="form-text text-muted fst-italic">
+                                                <i class="fas fa-info-circle me-1"></i>Must be same or later than Ramp Start Date
+                                            </small>
                                         </div>
                                     </div>
                                 </div>
@@ -175,10 +183,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const availability = document.getElementById(availabilityId);
         const container = document.getElementById(containerId);
         
+        // Get help text element
+        const helpTextId = availabilityId === 'ramp_start_availability' ? 'ramp-start-help-text' : 'ramp-end-help-text';
+        const helpText = document.getElementById(helpTextId);
+        
         if (availability && container) {
             function toggleDateContainer() {
                 if (availability.value === 'available') {
                     container.style.display = 'block';
+                    if (helpText) helpText.style.display = 'block';
                     
                     // Set default date to 60 days from today for Ramp Start Date
                     if (availabilityId === 'ramp_start_availability') {
@@ -193,6 +206,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 } else {
                     container.style.display = 'none';
+                    if (helpText) helpText.style.display = 'none';
                     // Clear the date input when hiding
                     const dateInput = container.querySelector('input[type="date"]');
                     if (dateInput) {
