@@ -50,14 +50,9 @@
     <div class="col-lg-8 mx-auto">
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h6 class="card-title mb-0 fw-bold">
-                        <i class="fas fa-building me-2"></i>Business Details
-                    </h6>
-                    <button type="submit" name="action" value="save" class="btn btn-outline-light" style="padding: 0.25rem; width: 28px; height: 28px; border-radius: 0.375rem; display: inline-flex; align-items: center; justify-content: center;" title="Save">
-                        <i class="fas fa-save" style="font-size: 0.8rem;"></i>
-                    </button>
-                </div>
+                <h6 class="card-title mb-0 fw-bold">
+                    <i class="fas fa-building me-2"></i>Business Details
+                </h6>
             </div>
             <div class="card-body">
                 <div class="row g-3">
@@ -369,6 +364,13 @@
 <!-- Hidden field to store LOB language and channel data -->
 {{ form.lob_language_channel_data(id="lob-language-channel-data") }}
 </div> <!-- End of program-details-content -->
+
+<!-- Save Button at End of Form -->
+<div class="text-end mt-3">
+    <button type="submit" name="action" value="save" class="btn btn-sm btn-outline-primary" title="Save Progress">
+        <i class="fas fa-save me-1" style="font-size: 0.75rem;"></i>Save
+    </button>
+</div>
 
 {% endblock %}
 
