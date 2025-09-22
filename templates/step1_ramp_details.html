@@ -15,33 +15,68 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="row g-3 mb-4">
-                    <!-- Client Name -->
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold required">Client Name</label>
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="flex-grow-1">
-                                {{ form.client_name(class="form-control", id="client-name-input", placeholder="Enter client name") }}
-                            </div>
-                            <div class="flex-shrink-0" id="client-type-container" style="display: none; min-width: 120px;">
-                                {{ form.client_type(class="form-select form-select-sm", id="client-type-select") }}
-                            </div>
-                        </div>
+                <!-- Business Type Selection -->
+                <div class="mb-4">
+                    <div class="form-label fw-bold text-primary mb-3">
+                        <i class="fas fa-question-circle me-2"></i>Is this a new business or existing business?
                     </div>
-                    
-                    <!-- Ramp Requirement -->
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold required">Ramp Requirement</label>
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="flex-grow-1">
-                                {{ form.ramp_requirement(class="form-control", placeholder="Enter numerical value", id="ramp-requirement-input") }}
-                            </div>
-                            <div class="flex-shrink-0" id="requirement-type-container" style="display: none; min-width: 100px;">
-                                {{ form.ramp_requirement_type(class="form-select", id="ramp-requirement-type") }}
+                    <div class="card border-0 shadow-sm bg-light">
+                        <div class="card-body p-4">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="form-check form-check-inline p-3 border rounded bg-white shadow-sm">
+                                                <input class="form-check-input" type="radio" name="business_type" id="new-business" value="new_business" onchange="toggleBusinessType()">
+                                                <label class="form-check-label fw-bold text-primary ms-2" for="new-business">
+                                                    <i class="fas fa-plus-circle me-2"></i>New Business
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check form-check-inline p-3 border rounded bg-white shadow-sm">
+                                                <input class="form-check-input" type="radio" name="business_type" id="existing-business" value="existing_business" onchange="toggleBusinessType()">
+                                                <label class="form-check-label fw-bold text-info ms-2" for="existing-business">
+                                                    <i class="fas fa-building me-2"></i>Existing Business
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Main Form Content (Initially Hidden) -->
+                <div id="main-form-content" style="display: none;">
+                    <!-- Client Details Section -->
+                    <div class="row g-3 mb-4">
+                        <!-- Existing Business Dropdown (Hidden by default) -->
+                        <div class="col-md-6" id="existing-business-section" style="display: none;">
+                            <label class="form-label fw-semibold required">Select Existing Business:</label>
+                            {{ form.existing_business_select(class="form-control", id="existing-business-select") }}
+                        </div>
+
+                        <!-- Client Name (Hidden by default) -->
+                        <div class="col-md-6" id="client-name-section" style="display: none;">
+                            <label class="form-label fw-semibold required">Client Name</label>
+                            {{ form.client_name(class="form-control", id="client-name-input", placeholder="Enter client name") }}
+                        </div>
+                        
+                        <!-- Ramp Requirement -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold required">Ramp Requirement</label>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="flex-grow-1">
+                                    {{ form.ramp_requirement(class="form-control", placeholder="Enter numerical value", id="ramp-requirement-input") }}
+                                </div>
+                                <div class="flex-shrink-0" id="requirement-type-container" style="display: none; min-width: 100px;">
+                                    {{ form.ramp_requirement_type(class="form-select", id="ramp-requirement-type") }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 
                 
                 <!-- Date Selection Row -->
@@ -101,6 +136,7 @@
                         </div>
                     </div>
                 </div>
+                </div> <!-- End of main-form-content -->
             </div>
         </div>
     </div>
@@ -165,6 +201,44 @@
 
 {% block extra_js %}
 <script>
+// Toggle main form content and client sections based on business type selection
+function toggleBusinessType() {
+    const selectedBusinessType = document.querySelector('input[name="business_type"]:checked');
+    const mainFormContent = document.getElementById('main-form-content');
+    const existingBusinessSection = document.getElementById('existing-business-section');
+    const clientNameSection = document.getElementById('client-name-section');
+    const existingBusinessSelect = document.getElementById('existing-business-select');
+    const clientNameInput = document.getElementById('client-name-input');
+    
+    if (selectedBusinessType) {
+        // Show main form content
+        mainFormContent.style.display = 'block';
+        
+        if (selectedBusinessType.value === 'new_business') {
+            // Show client name field, hide existing business dropdown
+            clientNameSection.style.display = 'block';
+            existingBusinessSection.style.display = 'none';
+            // Clear existing business selection
+            if (existingBusinessSelect) existingBusinessSelect.value = '';
+            
+        } else if (selectedBusinessType.value === 'existing_business') {
+            // Show existing business dropdown, hide client name field
+            existingBusinessSection.style.display = 'block';
+            clientNameSection.style.display = 'none';
+            // Clear client name
+            if (clientNameInput) clientNameInput.value = '';
+        }
+    } else {
+        // Hide main form content when no business type is selected
+        mainFormContent.style.display = 'none';
+        existingBusinessSection.style.display = 'none';
+        clientNameSection.style.display = 'none';
+        // Clear both fields
+        if (existingBusinessSelect) existingBusinessSelect.value = '';
+        if (clientNameInput) clientNameInput.value = '';
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Get date input elements first
     const rampStartDateInput = document.getElementById('ramp-start-date');
@@ -433,42 +507,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     setupRequirementTypeDropdown();
     
-    // Setup client type dropdown functionality
-    function setupClientTypeDropdown() {
-        const clientNameInput = document.getElementById('client-name-input');
-        const clientTypeContainer = document.getElementById('client-type-container');
-        const clientTypeSelect = document.getElementById('client-type-select');
-        
-        if (clientNameInput && clientTypeContainer && clientTypeSelect) {
-            function toggleClientTypeDropdown() {
-                // Show dropdown when user starts typing (at least 1 character)
-                if (clientNameInput.value && clientNameInput.value.trim().length > 0) {
-                    clientTypeContainer.style.display = 'block';
-                } else {
-                    clientTypeContainer.style.display = 'none';
-                    clientTypeSelect.value = ''; // Reset selection when hiding
-                }
-            }
-            
-            // Listen for input events on the client name field
-            clientNameInput.addEventListener('input', toggleClientTypeDropdown);
-            clientNameInput.addEventListener('keyup', toggleClientTypeDropdown);
-            clientNameInput.addEventListener('blur', function() {
-                // Don't hide immediately on blur, give user time to select dropdown
-                setTimeout(function() {
-                    if (!clientTypeSelect.matches(':focus')) {
-                        // Only check again if not focused on the dropdown
-                        toggleClientTypeDropdown();
-                    }
-                }, 150);
-            });
-            
-            // Initial check
-            toggleClientTypeDropdown();
-        }
-    }
+    // Initialize business type functionality
+    const businessTypeRadios = document.querySelectorAll('input[name="business_type"]');
+    businessTypeRadios.forEach(radio => {
+        radio.addEventListener('change', toggleBusinessType);
+    });
     
-    setupClientTypeDropdown();
+    // Initialize on page load if business type is already selected
+    toggleBusinessType();
     
     // Form initialized
 });

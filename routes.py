@@ -93,7 +93,7 @@ FORM_STEPS = {
 def get_form_fields_for_step(step):
     """Get the list of form fields for a specific step"""
     step_fields = {
-        1: ['client_type', 'client_name', 'ramp_start_date', 'ramp_end_date', 'ramp_requirement', 'ramp_requirement_type'],
+        1: ['business_type', 'existing_business_select', 'client_name', 'ramp_start_date', 'ramp_end_date', 'ramp_requirement', 'ramp_requirement_type'],
         2: ['requirement_type', 'requirement_value', 'geo_country', 'can_headcount', 'col_headcount',
             'hkg_headcount', 'ind_headcount', 'mex_headcount', 'pan_headcount', 'phl_headcount', 
             'pol_headcount', 'tto_headcount', 'usa_headcount'],

@@ -10,9 +10,14 @@ class MultiCheckboxField(SelectMultipleField):
 
 class RampInputForm(FlaskForm):
     # Ramp Details (Step 1)
-    client_type = SelectField(
-        'Client Type',
-        choices=[('', 'Select Client Type'), ('new', 'New Client'), ('existing', 'Existing Client')],
+    business_type = RadioField(
+        'Business Type',
+        choices=[('new_business', 'New Business'), ('existing_business', 'Existing Business')],
+        validators=[Optional()]
+    )
+    existing_business_select = SelectField(
+        'Select Existing Business',
+        choices=[('', '-- Choose a business --'), ('business1', 'Business 1'), ('business2', 'Business 2'), ('business3', 'Business 3')],
         validators=[Optional()]
     )
     client_name = StringField('Client Name', validators=[Optional()])
